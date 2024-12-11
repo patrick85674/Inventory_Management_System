@@ -2,11 +2,16 @@
 class Product:
     """Represents a product with a name, price, quantity, and category."""
 
-    def __init__(self, name: str, price: float, quantity: int, category: str):
+    def __init__(self, id: int, name: str, price: float, quantity: int, category: str):
+        self.__id = id
         self.__name: str = name
         self.__price: float = price
         self.__quantity: int = quantity
         self.__category: str = category
+
+    @property
+    def id(self) -> int:
+        return self.__id
 
     @property
     def name(self) -> str:
