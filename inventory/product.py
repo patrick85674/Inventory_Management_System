@@ -31,6 +31,8 @@ class Product:
 
     @name.setter
     def name(self, name: str):
+        if not isinstance(name, str) or not name.strip():
+            raise ValueError("Product name must be a non-empty string.")
         self.__name = name
 
     @property
