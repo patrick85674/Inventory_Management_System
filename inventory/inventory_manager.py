@@ -8,7 +8,7 @@ class InventoryManager:
     @property
     def products(self):
         return list(self._products.keys())
-    
+
     def add_product(self, product):
         """Adds a product to the inventory."""
         if product.name in self._products:
@@ -46,6 +46,3 @@ class InventoryManager:
             return results
         else:
             raise ValueError("No products found matching the keyword.")
-        
-
-        #return results if results else raise"No products found matching the keyword."
