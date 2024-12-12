@@ -31,6 +31,10 @@ class InventoryManager:
             )
             self.add_product(product)
 
+    @property
+    def products(self):
+        return list(self._products.keys())
+
     def add_product(self, product):
         """Adds a product to the inventory."""
         if not Category.is_valid_category(product.category):
@@ -67,7 +71,10 @@ class InventoryManager:
         """Searches for products by a keyword in their names."""
         results = [product.get_info() for product in self._products.values() 
                    if keyword.lower() in product.name.lower()]
-        return results if results else "No products found matching the keyword."
+        if results:
+            return results
+        else:
+            raise ValueError("No products found matching the keyword.")
     
     def get_all_products(self):
         """Returns a list of all products."""
