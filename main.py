@@ -1,4 +1,6 @@
-from inventory.product import Product
+#test test test :)
+
+# from inventory.product import Product
 from inventory.inventory_manager import InventoryManager
 from inventory.product_data import products
 
