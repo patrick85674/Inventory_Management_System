@@ -5,6 +5,10 @@ class InventoryManager:
         # Dictionary to store products with product name as the key
         self._products = {}
 
+    @property
+    def products(self):
+        return list(self._products.keys())
+    
     def add_product(self, product):
         """Adds a product to the inventory."""
         if product.name in self._products:
@@ -38,4 +42,10 @@ class InventoryManager:
         """Searches for products by a keyword in their names."""
         results = [product.get_info() for product in self._products.values() 
                    if keyword.lower() in product.name.lower()]
-        return results if results else "No products found matching the keyword."
+        if results:
+            return results
+        else:
+            raise ValueError("No products found matching the keyword.")
+        
+
+        #return results if results else raise"No products found matching the keyword."
