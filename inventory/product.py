@@ -3,6 +3,18 @@ class Product:
     """Represents a product with a name, price, quantity, and category."""
 
     def __init__(self, id: int, name: str, price: float, quantity: int, category: str):
+        
+        if not isinstance(id, int) or id <= 0:
+            raise ValueError("Product ID must be a positive integer.")
+        if not isinstance(name, str) or not name.strip():
+            raise ValueError("Product name must be a non-empty string.")
+        if not isinstance(price, (int, float)) or price < 0:
+            raise ValueError("Price must be a non-negative number.")
+        if not isinstance(quantity, int) or quantity < 0:
+            raise  ValueError("Quantity must be a non-negative integer.")
+        if not isinstance(category, str) or not category.strip():
+            raise ValueError("Category must be a non-empty string.")
+        
         self.__id = id
         self.__name: str = name
         self.__price: float = price
@@ -19,6 +31,8 @@ class Product:
 
     @name.setter
     def name(self, name: str):
+        if not isinstance(name, str) or not name.strip():
+            raise ValueError("Product name must be a non-empty string.")
         self.__name = name
 
     @property
