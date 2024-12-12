@@ -1,21 +1,18 @@
 from inventory.product import Product
+from inventory.category import Category
 from inventory.inventory_manager import InventoryManager
-from inventory.product_data import products
+
 
 # Initialize inventory manager
 inventory = InventoryManager()
 
-# Add products from the imported data
-for prod in products:
-    product = Product(prod["id"], prod["name"], prod["price"], prod["quantity"], prod["category"])
-    inventory.add_product(product)
 
 # Example operations:
 
 # Print all products
 print("All products in inventory:")
-for product_name in inventory._products:
-    print(inventory.get_product_info(product_name))
+for product in inventory.get_all_products():  # Use a getter for products
+    print(product.get_info())  # Assume each product has a `get_info()` method
 
 # Update quantity of a product
 inventory.update_product_quantity("Laptop", 15)
@@ -33,3 +30,29 @@ if isinstance(search_results, list):
         print(result)
 else:
     print(search_results)
+
+
+# Add a new category
+inventory.add_category(13, "Health Tech")
+
+# Print all categories after adding
+print("\nCategories after adding new category:")
+for category_id, category_name in inventory.get_all_categories().items():
+    print(f"ID: {category_id}, Name: {category_name}")
+
+# Remove a category
+inventory.remove_category(13)
+
+# Print all categories after removing
+print("\nCategories after removing category with ID 13:")
+for category_id, category_name in inventory.get_all_categories().items():
+    print(f"ID: {category_id}, Name: {category_name}")
+
+    # Find a product by its ID and display its information
+try:
+    product_id_to_find = 3  # Example product ID
+    product = inventory.find_product_by_id(product_id_to_find)
+    print(f"Product found: {product.get_info()}")
+except ValueError as e:
+    print(e)
+    
