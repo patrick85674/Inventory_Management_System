@@ -33,10 +33,8 @@ else:
 
 
 
-print("max id cat ", inventory.get_max_category_id())
-
 # Add a new category
-inventory.add_category((inventory.get_max_category_id()+1), "Health Tech")
+inventory.add_category(-1, "Health Tech")
 
 # Print all categories after adding
 print("\nCategories after adding new category:")
@@ -44,7 +42,7 @@ for category_id, category_name in inventory.get_all_categories().items():
     print(f"ID: {category_id}, Name: {category_name}")
 
 # Remove a category
-inventory.remove_category(13)
+inventory.remove_category(12)
 
 # Print all categories after removing
 print("\nCategories after removing category with ID 13:")
