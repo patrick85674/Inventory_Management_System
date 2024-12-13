@@ -10,7 +10,7 @@ class InventoryManager:
         """Initializes the inventory manager with products and categories."""
         self._products: dict = {}
         self._categories: dict = {}
-        
+
     def load_data(self):
         self._initialize_categories()
         self._initialize_products()
@@ -25,7 +25,8 @@ class InventoryManager:
     def _initialize_products(self):
         """Adds products to the inventory from the global products list."""
         for prod in products:
-            # Check if the 'category' key exists; if not, set it to a default category (e.g., 0 or 'Uncategorized')
+            # Check if the 'category' key exists; if not, set it to a
+            # default category (e.g., 0 or 'Uncategorized')
             category = prod.get("category", 0)  
             product = Product(
                 prod["id"],
@@ -50,34 +51,34 @@ class InventoryManager:
                 f"Product '{product.name}' already exists in inventory.")
         self._products[product.name] = product
 
-    def remove_product(self, product_name):
+    def remove_product(self, product_id: int):
         """Removes a product from the inventory."""
-        if product_name not in self._products:
+        if product_id not in self._products:
             raise ValueError(
-                f"Product '{product_name}' not found in inventory.")
-        del self._products[product_name]
+                f"Product id {product_id} not found in inventory.")
+        del self._products[product_id]
 
-    def update_product_quantity(self, product_name, quantity):
+    def update_product_quantity(self, product_id: int, quantity: int):
         """Updates the quantity of a product in the inventory."""
-        if product_name not in self._products:
+        if product_id not in self._products:
             raise ValueError(
-                f"Product '{product_name}' not found in inventory.")
-        self._products[product_name].update_quantity(quantity)
+                f"Product id {product_id} not found in inventory.")
+        self._products[product_id].quantity = quantity
 
-    def get_product_info(self, product_name):
+    def get_product_info(self, product_id: int):
         """Retrieves information about a product."""
-        if product_name not in self._products:
-            return f"Product '{product_name}' not found in inventory."
-        product = self._products[product_name]
+        if product_id not in self._products:
+            return f"Product id {product_id} not found in inventory."
+        product = self._products[product_id]
         return product.get_info()
 
     def get_total_inventory_value(self):
         """Calculates the total value of the inventory."""
         return sum(product.price * product.quantity for product in self._products.values())
 
-    def search_product(self, keyword):
+    def search_product(self, keyword: str):
         """Searches for products by a keyword in their names."""
-        results = [product.get_info() for product in self._products.values() 
+        results = [product.get_info() for product in self._products.values()
                    if keyword.lower() in product.name.lower()]
         if results:
             return results
@@ -90,10 +91,16 @@ class InventoryManager:
 
     def find_product_by_id(self, product_id: int):
         """Finds a product by ID."""
-        for product in self._products.values():
-            if product.id == product_id:
-                return product
-        raise ValueError(f"No product found with ID {product_id}.")
+        if product_id not in self._products:
+            raise ValueError(f"Product id {product_id} not found in inventory.")
+        return self._products[product_id]
+
+    def update_product_price(self, product_id: int, price: float):
+        """Updates the price of a product in the inventory."""
+        if product_id not in self._products:
+            raise ValueError(
+                f"Product id {product_id} not found in inventory.")
+        self._products[product_id].price = price
 
     # Methods for managing categories
 
@@ -125,15 +132,23 @@ class InventoryManager:
     def get_max_category_id(self) -> int:
         """Returns the maximum category ID."""
         return Category.get_max_category_id()
-    
+
     def change_category_name(self, category_id: int, new_name: str):
         """
         Changes the name of a category by its ID.
         """
         if category_id not in self._categories:
-            raise ValueError(f"Category ID {category_id} not found in inventory.")
+            raise ValueError(
+                f"Category ID {category_id} not found in inventory.")
         if not isinstance(new_name, str) or not new_name.strip():
             raise ValueError("Category name must be a non-empty string.")
-        
+
         # Update the category name
         self._categories[category_id] = new_name
+
+    def update_product_category(self, product_id: int, category: int):
+        """Updates the price of a product in the inventory."""
+        if product_id not in self._products:
+            raise ValueError(
+                f"Product id {product_id} not found in inventory.")
+        self._products[product_id].category = category
