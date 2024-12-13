@@ -1,7 +1,7 @@
 products = [
     {"id": 1, "name": "Laptop", "price": 999.99, "quantity": 50, "category": 1},
     {"id": 2, "name": "Smartphone", "price": 699.99, "quantity": 200, "category": 2},
-    {"id": 3, "name": "Tablet", "price": 499.99, "quantity": 100, "category": 2},
+    {"id": 3, "name": "Tablet", "price": 499.99, "quantity": 100 },
     {"id": 4, "name": "Smartwatch", "price": 199.99, "quantity": 150, "category": 3},
     {"id": 5, "name": "Headphones", "price": 89.99, "quantity": 300, "category": 4},
     {"id": 6, "name": "Bluetooth Speaker", "price": 49.99, "quantity": 250, "category": 4},
@@ -22,6 +22,7 @@ products = [
 ]
 
 categories = [
+    {"id": 0, "name": "unknown Category"},
     {"id": 1, "name": "Computers"},
     {"id": 2, "name": "Mobile Devices"},
     {"id": 3, "name": "Wearables"},

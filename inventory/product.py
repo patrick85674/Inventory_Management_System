@@ -3,7 +3,7 @@ from inventory.category import Category
 class Product:
     """Represents a product with a name, price, quantity, and category."""
 
-    def __init__(self, id: int, name: str, price: float, quantity: int, category: int):
+    def __init__(self, id: int, name: str, price: float, quantity: int, category: int = 0):
         
         if not isinstance(id, int) or id <= 0:
             raise ValueError("Product ID must be a positive integer.")

@@ -32,8 +32,9 @@ else:
     print(search_results)
 
 
+print("\nmax id cat ", inventory.get_max_category_id())
 # Add a new category
-inventory.add_category(13, "Health Tech")
+inventory.add_category("Health Tech")
 
 # Print all categories after adding
 print("\nCategories after adding new category:")
@@ -41,7 +42,7 @@ for category_id, category_name in inventory.get_all_categories().items():
     print(f"ID: {category_id}, Name: {category_name}")
 
 # Remove a category
-inventory.remove_category(13)
+inventory.remove_category(12)
 
 # Print all categories after removing
 print("\nCategories after removing category with ID 13:")
@@ -56,3 +57,16 @@ try:
 except ValueError as e:
     print(e)
     
+
+# Display existing categories
+print("Categories before renaming:", inventory.get_all_categories())
+
+# Rename a category
+try:
+    inventory.change_category_name(1, "Tech & Gadgets")
+    print("Category name updated successfully.")
+except ValueError as e:
+    print(f"Error: {e}")
+
+# Display categories again after renaming
+print("Categories after renaming:", inventory.get_all_categories())
