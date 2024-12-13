@@ -5,7 +5,7 @@ from inventory.product import Product
 class TestProduct(unittest.TestCase):
     def setUp(self):
         self.product = Product(id=1, name="Laptop", price=999.99, quantity=50,
-                               category="Computers")
+                               category=1)
 
     def test_quantity(self):
         self.assertEqual(self.product.quantity, 50)
@@ -22,11 +22,11 @@ class TestProduct(unittest.TestCase):
     def test_price(self):
         self.assertEqual(self.product.price, 999.99)
         with self.assertRaises(ValueError):
-            self.product.price = -100.01        
+            self.product.price = -100.01
         self.assertIsInstance(self.product.price, (int, float))
 
     def test_category(self):
-        self.assertEqual(self.product.category, "Computers")
+        self.assertEqual(self.product.category, 1)
 
     def test_product_id(self):
         self.assertEqual(self.product.id, 1)

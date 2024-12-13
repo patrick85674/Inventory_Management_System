@@ -15,7 +15,7 @@ class Product:
             raise  ValueError("Quantity must be a non-negative integer.")
         if not isinstance(category, int) or not Category.is_valid_category(category):
             raise ValueError("Category must be a valid, non-empty integer corresponding to a category ID.")
-  
+
         self.__id = id
         self.__name: str = name
         self.__price: float = price
@@ -40,6 +40,14 @@ class Product:
     @property
     def price(self) -> float:
         return self.__price
+
+    @price.setter
+    def price(self, price: float):
+        if not (isinstance(price, float) or isinstance(price, int)):
+            raise ValueError("Price must be an interger or float.")
+        if price < 0:
+            raise ValueError("Price must be positive.")
+        self.__price = price
 
     @property
     def quantity(self) -> int:

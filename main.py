@@ -5,7 +5,7 @@ from inventory.inventory_manager import InventoryManager
 
 # Initialize inventory manager
 inventory = InventoryManager()
-
+inventory.load_data()
 
 # Example operations:
 
