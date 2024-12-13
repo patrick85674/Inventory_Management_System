@@ -106,7 +106,8 @@ class InventoryManager:
         if category_id not in self._categories:
             raise ValueError(
                 f"Category ID {category_id} not found in inventory.")
-        del self._categories[category_id]
+        # Set the name of the category to "Unknown"
+        self._categories[category_id] = "Unknown"
 
     def get_category_name(self, category_id: int) -> str:
         """Returns the name of the category by its ID."""
@@ -115,3 +116,19 @@ class InventoryManager:
     def get_all_categories(self):
         """Returns all categories."""
         return self._categories
+
+    def get_max_category_id(self) -> int:
+        """Returns the maximum category ID."""
+        return Category.get_max_category_id()
+    
+    def change_category_name(self, category_id: int, new_name: str):
+        """
+        Changes the name of a category by its ID.
+        """
+        if category_id not in self._categories:
+            raise ValueError(f"Category ID {category_id} not found in inventory.")
+        if not isinstance(new_name, str) or not new_name.strip():
+            raise ValueError("Category name must be a non-empty string.")
+        
+        # Update the category name
+        self._categories[category_id] = new_name

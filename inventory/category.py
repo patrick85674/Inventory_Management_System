@@ -33,7 +33,7 @@ class Category:
     @staticmethod
     def is_valid_category(category_id: int) -> bool:
         """Checks if a category ID is valid."""
-        from inventory.data import categories  # Import hier, um Kreisläufe zu vermeiden
+        from inventory.data import categories  # Import here to avoid cycles
         return category_id in [cat["id"] for cat in categories]
 
     @staticmethod
@@ -43,4 +43,12 @@ class Category:
         for cat in categories:
             if cat["id"] == category_id:
                 return cat["name"]
-        return None  # oder Exception werfen, wenn Kategorie nicht gefunden
+        return None  # or throw exception if category not found
+    
+    @staticmethod
+    def get_max_category_id() -> int:
+        """Returns the maximum category ID."""
+        from inventory.data import categories
+        if not categories:
+            return 0  # No categories, so max ID is 0
+        return max(cat["id"] for cat in categories)
