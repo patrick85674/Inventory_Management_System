@@ -20,7 +20,7 @@ class InventoryManager:
             add_category.
         """
         for cat in categories:
-            self.add_category(cat["id"], cat["name"])
+            self.add_category(cat["name"], cat["id"])
 
     def _initialize_products(self):
         """Adds products to the inventory from the global products list."""
@@ -97,11 +97,10 @@ class InventoryManager:
 
     # Methods for managing categories
 
-    def add_category(self, category_id: int, category_name: str):
+    def add_category(self, category_name: str, category_id: int = -1):
         """Adds a category to the inventory after validating it."""
         if category_id == -1:
             category_id = self.get_max_category_id() + 1
-            print("last cat id: ", category_id)
         else:  
             if category_id in self._categories:
                 raise ValueError(f"Category ID {category_id} already exists.")

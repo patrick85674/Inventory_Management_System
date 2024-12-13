@@ -32,9 +32,9 @@ else:
     print(search_results)
 
 
-
+print("\nmax id cat ", inventory.get_max_category_id())
 # Add a new category
-inventory.add_category(-1, "Health Tech")
+inventory.add_category("Health Tech")
 
 # Print all categories after adding
 print("\nCategories after adding new category:")
