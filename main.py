@@ -10,14 +10,16 @@ inventory.load_data()
 # Example operations:
 
 # Print all products
+
 print("All products in inventory:")
 for product in inventory.get_all_products():  # Use a getter for products
     print(product.get_info())  # Assume each product has a `get_info()` method
 
 # Update quantity of a product
-inventory.update_product_quantity("Laptop", 15)
+inventory.update_product_quantity(1, 15)
 print("\nUpdated Laptop quantity:")
-print(inventory.get_product_info("Laptop"))
+
+print(inventory.get_product_info(1))
 
 # Get total inventory value
 print(f"\nTotal Inventory Value: {inventory.get_total_inventory_value()}")
@@ -42,10 +44,11 @@ for category_id, category_name in inventory.get_all_categories().items():
     print(f"ID: {category_id}, Name: {category_name}")
 
 # Remove a category
+print("\nRemove category:")
 inventory.remove_category(12)
 
 # Print all categories after removing
-print("\nCategories after removing category with ID 13:")
+print("\nCategories after rename category with ID 12:")
 for category_id, category_name in inventory.get_all_categories().items():
     print(f"ID: {category_id}, Name: {category_name}")
 
