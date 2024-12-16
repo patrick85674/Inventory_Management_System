@@ -41,7 +41,7 @@ class InventoryManager:
     def products(self):
         return list(self._products.keys())
 
-    def add_product(self, product):
+    def add_product(self, product: Product):
         """Adds a product to the inventory."""
         if not Category.is_valid_category(product.category):
             raise ValueError(f"Category ID {product.category} is not valid.")
@@ -49,7 +49,7 @@ class InventoryManager:
         if product.name in self._products:
             raise ValueError(
                 f"Product '{product.name}' already exists in inventory.")
-        self._products[product.name] = product
+        self._products[product.id] = product
 
     def remove_product(self, product_id: int):
         """Removes a product from the inventory."""
