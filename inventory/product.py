@@ -1,3 +1,4 @@
+from datetime import datetime
 from inventory.category import Category
 
 
@@ -26,6 +27,8 @@ class Product:
         self.__quantity: int = quantity
         self.__category: int = category
         self.__category_name: str = Category.get_category_name_by_id(category)
+        self.__date_added: datetime = datetime.now()
+        self.__last_modified: datetime = self.__date_added
 
     @property
     def id(self) -> int:
@@ -40,6 +43,7 @@ class Product:
         if not isinstance(name, str) or not name.strip():
             raise ValueError("Product name must be a non-empty string.")
         self.__name = name
+        self.__last_modified = datetime.now()
 
     @property
     def price(self) -> float:
@@ -52,6 +56,7 @@ class Product:
         if price < 0:
             raise ValueError("Price must be positive.")
         self.__price = price
+        self.__last_modified = datetime.now()
 
     @property
     def quantity(self) -> int:
@@ -64,6 +69,7 @@ class Product:
         if quantity < 0:
             raise ValueError("Quantity cannot be negative.")
         self.__quantity = quantity
+        self.__last_modified = datetime.now()
 
     @property
     def category(self) -> str:
@@ -75,9 +81,18 @@ class Product:
         if not Category.is_valid_category(category):
             raise ValueError(f"Category ID {category} is not valid.")
         self.__category = category
+        self.__last_modified = datetime.now()
 
     def get_info(self) -> str:
         """Return a string representation of the product's information."""
         return (f"ProductID: {self.__id}, Product name: {self.__name}, "
                 f"price: {self.__price}, quantity: {self.__quantity}, "
                 f"category: {self.__category_name}")
+
+    @property
+    def date_added(self) -> datetime:
+        return self.__date_added
+
+    @property
+    def last_modified(self) -> datetime:
+        return self.__last_modified
