@@ -104,14 +104,19 @@ class InventoryManager:
 
     # Methods for managing categories
 
-    def add_category(self, category_name: str, category_id: int = -1):
+    def add_category(self, category_name: str, category_id: int = -1) -> int:
         """Adds a category to the inventory after validating it."""
+        if not isinstance(category_name, str):
+            raise TypeError("Category must be a string!")
+        if not category_name.strip():
+            raise ValueError("Category must be a non-empty string!")
         if category_id == -1:
             category_id = self.get_max_category_id() + 1
         else:  
             if category_id in self._categories:
                 raise ValueError(f"Category ID {category_id} already exists.")
         self._categories[category_id] = category_name
+        return category_id
 
     def remove_category(self, category_id: int):
         """Removes a category from the inventory."""
@@ -125,9 +130,9 @@ class InventoryManager:
         """Returns the name of the category by its ID."""
         return Category.get_category_name_by_id(category_id)
 
-    def get_all_categories(self):
-        """Returns all categories."""
-        return self._categories
+    def get_all_categories(self) -> list:
+        """Returns all category ids."""
+        return list(self._categories.keys())
 
     def get_max_category_id(self) -> int:
         """Returns the maximum category ID."""
