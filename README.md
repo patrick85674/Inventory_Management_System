@@ -1,5 +1,5 @@
-# PIMS
-## Project inventory management system
+# InventoryPro
+## Track, Manage and Optimize Your Inventory
 This is an Inventory Management System for tracking products, categories, and their associated details, such as quantity and price. It provides a way to add, remove, update, and retrieve product information, as well as manage categories.
 
 ![My Image](/logo_inventorypro.png)
@@ -15,7 +15,7 @@ This is an Inventory Management System for tracking products, categories, and th
 ## **here will be the video or screenshots how to use it**
 
 ## Installation
-To install the **PIMS - Python inventory management system**, follow the steps below:
+To install the **InventoryPro - Python inventory management system**, follow the steps below:
 
 1. Clone the repository:
 
