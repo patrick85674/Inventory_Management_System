@@ -76,14 +76,12 @@ class InventoryManager:
         """Calculates the total value of the inventory."""
         return sum(product.price * product.quantity for product in self._products.values())
 
-    def search_product(self, keyword: str):
+    def search_product(self, keyword: str) -> list[Product]:
         """Searches for products by a keyword in their names."""
-        results = [product.get_info() for product in self._products.values()
+        results = [product for product in self._products.values()
                    if keyword.lower() in product.name.lower()]
-        if results:
-            return results
-        else:
-            raise ValueError("No products found matching the keyword.")
+
+        return results
 
     def get_all_products(self):
         """Returns a list of all products."""

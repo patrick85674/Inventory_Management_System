@@ -54,10 +54,15 @@ class TestInventoryManager(unittest.TestCase):
         """Test searching for products by keyword."""
         self.inventory_manager.add_product(self.product1)
         self.inventory_manager.add_product(self.product2)
+
         search_results = self.inventory_manager.search_product("phone")
-        self.assertIn(self.product2.get_info(), search_results)
-        with self.assertRaises(ValueError):
-            self.inventory_manager.search_product("pheno")
+        self.assertEqual(search_results[0], self.product2)
+        self.assertIsInstance(search_results, list)
+
+        search_results = self.inventory_manager.search_product("phoe")
+        self.assertEqual(search_results, [])
+        self.assertIsInstance(search_results, list)
+
         self.inventory_manager.remove_product(self.product1.id)
         self.inventory_manager.remove_product(self.product2.id)
 
