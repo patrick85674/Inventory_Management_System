@@ -46,6 +46,17 @@ class TestProduct(unittest.TestCase):
                          "price: 999.99, quantity: 50, category: Computers")
         self.assertEqual(self.product.get_info(), expected_info)
 
+    def test_description(self):
+        with self.assertRaises(TypeError):
+            self.product.description = 1234
+
+        self.product.description = ''
+        self.assertEqual(self.product.description, '')
+        self.assertIsInstance(self.product.description, str)
+
+        self.product.description = "Test description"
+        self.assertEqual(self.product.description, "Test description")
+
 
 if __name__ == "__main__":
     unittest.main()
