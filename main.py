@@ -81,10 +81,15 @@ product_quantity = inventory.get_product_info_by_id(product_id, "quantity")
 print_bold_heading("#07 -Quantity:", newline=False)
 print(product_quantity)
 
-#08 Get only the product quantity
-product_quantity = inventory.get_product_info_by_id(product_id, "category")
+#08 Get only the product category
+product_category = inventory.get_product_info_by_id(product_id, "category")
 print_bold_heading("#08 -Category:", newline=False)
-print(product_quantity)
+print(product_category)
+
+#08a Get only the product description
+product_description = inventory.get_product_info_by_id(product_id, "description")
+print_bold_heading("#08a -Description:", newline=False)
+print(product_description)
 
 #09 Update name of a product
 new_product_name = "Laptop X"
@@ -102,6 +107,12 @@ print(inventory.get_product_info_by_id(product_id))
 new_price = 666.66
 inventory.update_product_price(product_id, new_price)
 print_bold_heading(f"\n#11 Updated {product_name} price from {product_price} to {new_price}:")
+print(inventory.get_product_info_by_id(product_id))
+
+#11a Update description of a product
+new_description = "new description"
+inventory.update_product_description(product_id, new_description)
+print_bold_heading(f"\n#11a Updated {product_description} price from {product_description} to {new_description}:")
 print(inventory.get_product_info_by_id(product_id))
 
 #12 Find a product by its ID and display its information
@@ -195,7 +206,7 @@ max_category_id = inventory.get_max_id("category")
 print(max_category_id)
 
 # Test #27: Add a new category
-new_category_name = "Health Tech"
+new_category_name = "Health Tech1"
 print(f"\n#27 Add a new category: {new_category_name}")
 try:
     inventory.add_category(new_category_name)  # Attempt to add a new category

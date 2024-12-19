@@ -24,6 +24,7 @@ class InventoryManager:
         # Load products from the data
         for prod in data.get("products", []):
             category = prod.get("category", 0)
+            description = prod.get("description", "")
             product = Product(
                 prod["id"],
                 prod["name"],
@@ -32,7 +33,8 @@ class InventoryManager:
                 category,
                 self.get_category_info_by_id(category, "name"),
                 prod["date_added"],
-                prod["last_modified"]
+                prod["last_modified"],
+                description
             )
             self.add_product(product=product)
 
@@ -53,7 +55,8 @@ class InventoryManager:
                 "quantity": prod.quantity,
                 "category": prod.category,
                 "date_added": prod.date_added,
-                "last_modified" : prod.last_modified  # Using category ID
+                "last_modified" : prod.last_modified,
+                "description" : prod.description  # Using category ID
             }
             for prod in self._products.values()
         ]
@@ -108,11 +111,13 @@ class InventoryManager:
             if not all(key in product_data for key in ["name", "price", "quantity", "category"]):
                 raise ValueError("The dictionary must contain 'name', 'price', 'quantity', and 'category'.")
 
+
             # Get values from the dictionary
             name = product_data["name"]
             price = product_data["price"]
             quantity = product_data["quantity"]
             category = product_data["category"]
+            description = product_data.get("description", "")  # Default to an empty string if not provided
 
             # Generate new ID for the product
             new_id = self.get_max_id("product") + 1
@@ -122,8 +127,11 @@ class InventoryManager:
             last_modified: datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
             # Create a new Product object
-            new_product = Product(id=new_id, name=name, price=price, quantity=quantity, category=category,
-                                  category_name=category_name, date_added=date_added, last_modified=last_modified)
+            new_product = Product(id=new_id, name=name, price=price, quantity=quantity, 
+                                  category=category, category_name=category_name, 
+                                  date_added=date_added, last_modified=last_modified, 
+                                  description=description
+                                  )
 
             # Add the new product to the inventory
             self._products[new_id] = new_product
@@ -165,14 +173,12 @@ class InventoryManager:
     def is_valid(self, id: int, type: str) -> bool:
         """Checks if the given ID is valid for either product or category."""
         
-        if type == "product":
-            # Check if the product ID exists
-            if id not in self._products:
-                raise ValueError(f"Product ID {id} is not valid.")
+        if type == "product": # Check if the product ID exists
+            # Use validate_product_id to ensure the product exists
+            product = self.validate_product_id(id)
             return True  # ID is valid for product
         
-        elif type == "category":
-            # Check if the category ID exists
+        elif type == "category": # Check if the category ID exists
             if id not in self._categories:
                 raise ValueError(f"Category ID {id} is not valid.")
             return True  # ID is valid for category
@@ -185,16 +191,15 @@ class InventoryManager:
         """Updates the name of either a product or a category in the inventory."""
     
         if not isinstance(name, str) or not name.strip():
-            raise ValueError(f"{type} name must be a non-empty string.")
-        
-        if type == "product":
-            # Update product name
-            if id not in self._products:
-                raise ValueError(f"Product id {id} not found in inventory.")
+                raise ValueError(f"{type.capitalize()} name must be a non-empty string.")
+            
+        if type == "product": # Update product name
+
+            # Use validate_product_id to ensure the product exists
+            product = self.validate_product_id(id)
             self._products[id].name = name  # Calls the setter in Product class
 
-        elif type == "category":
-            # Update category name
+        elif type == "category": # Update category name
             if id not in self._categories:
                 raise ValueError(f"Category id {id} not found in inventory.")
             self._categories[id].name = name  # Calls the setter in Category class
@@ -204,17 +209,18 @@ class InventoryManager:
 
     def update_product_quantity(self, product_id: int, quantity: int):
         """Updates the quantity of a product in the inventory."""
-        if product_id not in self._products:
-            raise ValueError(
-                f"Product id {product_id} not found in inventory.")
+        product = self.validate_product_id(product_id)
         self._products[product_id].quantity = quantity
 
     def update_product_price(self, product_id: int, price: float):
         """Updates the price of a product in the inventory."""
-        if product_id not in self._products:
-            raise ValueError(
-                f"Product id {product_id} not found in inventory.")
+        product = self.validate_product_id(product_id)
         self._products[product_id].price = price
+
+    def update_product_description(self, product_id: int, description: str):
+        """Updates the price of a product in the inventory."""
+        product = self.validate_product_id(product_id)
+        self._products[product_id].description = description
 
     # get informations
     def get_category_info_by_id(self, category_id: int, info_type: str = None) -> str:
@@ -248,8 +254,10 @@ class InventoryManager:
             return str(product.quantity)
         elif info_type == "category":
             return str(product.category_name)
+        elif info_type == "description":
+            return str(product.description)
         else:
-            raise ValueError(f"Invalid info type '{info_type}' specified. Use 'name', 'price', or 'quantity'.")
+            raise ValueError(f"Invalid info type '{info_type}' specified. Use 'name', 'price', 'quantity' or 'description'.")
     
     def get_max_id(self, entity_type: str) -> int:
         """
@@ -290,3 +298,9 @@ class InventoryManager:
         """Returns a list of product ids for a given category."""
         return [product.get_info() for product in self._products.values()
         if product.category == category_id]
+    
+    def validate_product_id(self, product_id: int):
+        """Validates the existence of a product in the inventory by its ID."""
+        if product_id not in self._products:
+            raise ValueError(f"Product id {product_id} not found in inventory.")
+        return self._products[product_id]
