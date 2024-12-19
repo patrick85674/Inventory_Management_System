@@ -1,10 +1,13 @@
 from datetime import datetime
+
+
 class Product:
     """Represents a product with a name, price, quantity, and category."""
 
     def __init__(self, id: int, name: str, price: float, quantity: int, 
                  category: int = 0, category_name: str = "Unknown",
-                 date_added: datetime = None, last_modified: datetime = None, description: str = None):
+                 date_added: datetime = None, last_modified: datetime = None,
+                 description: str = ''):
         if not isinstance(id, int) or id <= 0:
             raise ValueError("Product ID must be a positive integer.")
         if not isinstance(name, str) or not name.strip():
@@ -41,7 +44,7 @@ class Product:
     def name(self) -> str:
         """Returns the name of the product."""
         return self.__name
-          
+
     @name.setter
     def name(self, name: str):
         if not isinstance(name, str) or not name.strip():
@@ -49,12 +52,11 @@ class Product:
         self.__name = name
         self.update_last_modified()  # Update last_modified when name is set
 
-
     @property
     def price(self) -> float:
         """Returns the price of the product."""
         return self.__price
-    
+
     @price.setter
     def price(self, price: float):
         if not (isinstance(price, float) or isinstance(price, int)):
@@ -63,7 +65,6 @@ class Product:
             raise ValueError("Price must be positive.")
         self.__price = price
         self.update_last_modified()  # Update last_modified when name is set
-
 
     @property
     def quantity(self) -> int:
@@ -77,7 +78,6 @@ class Product:
             raise ValueError("Quantity cannot be negative.")
         self.__quantity = quantity
         self.update_last_modified()  # Update last_modified when name is set
-
 
     @property
     def category(self) -> str:
@@ -94,7 +94,7 @@ class Product:
     @property
     def category_name(self) -> str:
         return self.__category_name
-    
+
     @property
     def date_added(self) -> datetime:
         return self.__date_added
@@ -102,7 +102,7 @@ class Product:
     @property
     def last_modified(self) -> datetime:
         return self.__last_modified
-    
+
     @property
     def description(self) -> str:
         return self.__description
@@ -113,12 +113,14 @@ class Product:
             raise TypeError("Description must be a string.")
         self.__description = description
         self.update_last_modified()  # Update last_modified when name is set
-    
+
     def get_info(self) -> str:
         """Return a string representation of the product's information."""
         return (f"ID: {self.__id}, name: {self.__name}, "
                 f"price: {self.__price}, quantity: {self.__quantity}, "
-                f"cat_id: {self.__category}, category: {self.__category_name}, "
-                f"date added: {self.__date_added}, last modified: {self.__last_modified}, "
+                f"cat_id: {self.__category}, "
+                f"category: {self.__category_name}, "
+                f"date added: {self.__date_added}, "
+                f"last modified: {self.__last_modified}, "
                 f"description: {self.__description}"
                 )
