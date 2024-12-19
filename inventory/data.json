@@ -1,0 +1,90 @@
+{
+    "categories": [
+        {
+            "id": 0,
+            "name": "Unknown"
+        },
+        {
+            "id": 1,
+            "name": "Unknown"
+        },
+        {
+            "id": 2,
+            "name": "Mobile Devices"
+        },
+        {
+            "id": 3,
+            "name": "Wearables"
+        },
+        {
+            "id": 4,
+            "name": "Displays"
+        },
+        {
+            "id": 5,
+            "name": "Health Tech"
+        }
+    ],
+    "products": [
+        {
+            "id": 1,
+            "name": "Laptop X",
+            "price": 666.66,
+            "quantity": 215,
+            "category": 1,
+            "date_added": "2024-12-17 15:00:00",
+            "last_modified": "2024-12-19 09:49:04",
+            "description": "new description"
+        },
+        {
+            "id": 2,
+            "name": "Smartphone",
+            "price": 699.99,
+            "quantity": 200,
+            "category": 2,
+            "date_added": "2024-12-17 15:01:00",
+            "last_modified": "2024-12-17 15:01:00",
+            "description": "A feature-packed smartphone offering crystal-clear photos, lightning-fast performance, and unmatched battery life for those always on the go."
+        },
+        {
+            "id": 3,
+            "name": "Tablet",
+            "price": 499.99,
+            "quantity": 100,
+            "category": 0,
+            "date_added": "2024-12-17 15:02:00",
+            "last_modified": "2024-12-17 15:02:00",
+            "description": "The ultimate companion for work and play, this tablet boasts a vibrant display and a lightweight design for unmatched portability."
+        },
+        {
+            "id": 4,
+            "name": "Smartwatch",
+            "price": 199.99,
+            "quantity": 150,
+            "category": 3,
+            "date_added": "2024-12-17 15:03:00",
+            "last_modified": "2024-12-17 15:03:00",
+            "description": "Keep track of your fitness goals and stay connected with this stylish smartwatch, designed for seamless integration into your daily life."
+        },
+        {
+            "id": 5,
+            "name": "Headphones",
+            "price": 89.99,
+            "quantity": 300,
+            "category": 4,
+            "date_added": "2024-12-17 15:04:00",
+            "last_modified": "2024-12-17 15:04:00",
+            "description": "Immerse yourself in high-quality sound with these comfortable and durable headphones, perfect for music lovers and audiophiles."
+        },
+        {
+            "id": 6,
+            "name": "SSD Drive",
+            "price": 111.99,
+            "quantity": 1000,
+            "category": 3,
+            "date_added": "2024-12-19 09:49:04",
+            "last_modified": "2024-12-19 09:49:04",
+            "description": ""
+        }
+    ]
+}
