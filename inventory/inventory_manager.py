@@ -19,7 +19,7 @@ class InventoryManager:
                 cat["name"]
                 )  
             # Create Category instance
-            self.add_category(category=category)  # Add the category to the inventory
+            self.load_categories(category=category)  # Add the category to the inventory
         
         # Load products from the data
         for prod in data.get("products", []):
@@ -31,12 +31,11 @@ class InventoryManager:
                 prod["price"],
                 prod["quantity"],
                 category,
-                self.get_category_info_by_id(category, "name"),
                 prod["date_added"],
                 prod["last_modified"],
                 description
             )
-            self.add_product(product=product)
+            self.load_products(product=product)
 
     def export_to_json(self):
         """Exports the current products and categories to a JSON-compatible dictionary."""
@@ -74,43 +73,43 @@ class InventoryManager:
     def categories(self):
         return list(self._categories.keys())
     
-    def add_category(self, name=None, category=None):
-        """Adds a category to the inventory.
-        If a Category object is provided, it is added directly.
-        If only a name is provided, a new Category object is created and added."""
-        
+    def load_categories(self, category=None):
+        #Loads categories to the inventory.
         if category and isinstance(category, Category):  # If a Category object is passed
             if category.id in self._categories:
                 raise ValueError(f"Category ID {category.id} already exists.")
             self._categories[category.id] = category
-        elif name:  # If only a name is provided, create a new Category
+        else:
+            raise ValueError("You must provide either a Category object or a category name.")
+        
+    def add_category(self, name=None):
+        #Adds a category to the inventory.     
+        if name:  # If only a name is provided, create a new Category
             if name in [category.name for category in self._categories.values()]:
                 raise ValueError(f"Category name '{name}' already exists.")
-            new_id = self.get_max_id("category") + 1  # Generate new category ID
+            new_id = self.get_max_category_id() + 1  # Generate new category ID
             new_category = Category(new_id, name)  # Create a new Category object
             self._categories[new_id] = new_category  # Add the new category to the inventory
         else:
             raise ValueError("You must provide either a Category object or a category name.")
 
-    def add_product(self, product_data: dict = None, product=None):
-        """Adds a product to the inventory.
-        If a Product object is provided, it is added directly.
-        If a dictionary with attributes (name, price, quantity, category) is provided, 
-        a new Product object is created and added."""
-        
-        # Case 1: If a Product object is passed
+    def load_products(self, product=None):
+        #Load products to the inventory.
+
         if product and isinstance(product, Product):
             if product.id in self._products:
                 raise ValueError(f"Product ID {product.id} already exists.")
             self._products[product.id] = product
             print(f"Product '{product.name}' added successfully.")
-        
-        # Case 2: If a dictionary with product attributes is passed
-        elif product_data:
+        else:
+            raise ValueError("You must provide either a Product object or a dictionary with product data.")
+
+    def add_product(self, product_data: dict = None, product=None):
+        # Adds a product to the inventory.
+        if product_data:
             # Ensure the dictionary contains the required keys
             if not all(key in product_data for key in ["name", "price", "quantity", "category"]):
                 raise ValueError("The dictionary must contain 'name', 'price', 'quantity', and 'category'.")
-
 
             # Get values from the dictionary
             name = product_data["name"]
@@ -120,23 +119,20 @@ class InventoryManager:
             description = product_data.get("description", "")  # Default to an empty string if not provided
 
             # Generate new ID for the product
-            new_id = self.get_max_id("product") + 1
+            new_id = self.get_max_product_id() + 1
 
-            category_name = self.get_category_info_by_id(category, "name")
             date_added: datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             last_modified: datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
             # Create a new Product object
             new_product = Product(id=new_id, name=name, price=price, quantity=quantity, 
-                                  category=category, category_name=category_name, 
-                                  date_added=date_added, last_modified=last_modified, 
-                                  description=description
+                                  category=category, date_added=date_added, 
+                                  last_modified=last_modified, description=description
                                   )
 
             # Add the new product to the inventory
             self._products[new_id] = new_product
             print(f"Product '{name}' added successfully with ID {new_id}.")
-        
         else:
             raise ValueError("You must provide either a Product object or a dictionary with product data.")
 
@@ -186,26 +182,33 @@ class InventoryManager:
         else:
             raise ValueError(f"Invalid type '{type}' provided. Must be 'product' or 'category'.")
 
-    # updates
-    def update_name(self, id: int, name: str, type: str):
-        """Updates the name of either a product or a category in the inventory."""
-    
+    # update product name
+    def update_product_name(self, product_id: int, name: str):
+        """
+        Updates the name of a product in the inventory.
+        """
         if not isinstance(name, str) or not name.strip():
-                raise ValueError(f"{type.capitalize()} name must be a non-empty string.")
-            
-        if type == "product": # Update product name
+            raise ValueError("Product name must be a non-empty string.")
+        
+        # Use validate_product_id to ensure the product exists
+        product = self.validate_product_id(product_id)
+        product.name = name  # Calls the setter in the Product class
+        print(f"Updated product ID {product_id} name to '{name}'.")
 
-            # Use validate_product_id to ensure the product exists
-            product = self.validate_product_id(id)
-            self._products[id].name = name  # Calls the setter in Product class
+    # update category name
+    def update_category_name(self, category_id: int, name: str):
+        """
+        Updates the name of a category in the inventory.
+        """
+        if not isinstance(name, str) or not name.strip():
+            raise ValueError("Category name must be a non-empty string.")
+        
+        if category_id not in self._categories:
+            raise ValueError(f"Category ID {category_id} not found in inventory.")
+        
+        self._categories[category_id].name = name  # Calls the setter in the Category class
+        print(f"Updated category ID {category_id} name to '{name}'.")
 
-        elif type == "category": # Update category name
-            if id not in self._categories:
-                raise ValueError(f"Category id {id} not found in inventory.")
-            self._categories[id].name = name  # Calls the setter in Category class
-
-        else:
-            raise ValueError(f"Invalid type '{type}' provided. Must be 'product' or 'category'.")
 
     def update_product_quantity(self, product_id: int, quantity: int):
         """Updates the quantity of a product in the inventory."""
@@ -252,30 +255,30 @@ class InventoryManager:
             return str(product.price)
         elif info_type == "quantity":
             return str(product.quantity)
-        elif info_type == "category":
-            return str(product.category_name)
         elif info_type == "description":
             return str(product.description)
         else:
             raise ValueError(f"Invalid info type '{info_type}' specified. Use 'name', 'price', 'quantity' or 'description'.")
     
-    def get_max_id(self, entity_type: str) -> int:
+    def get_max_product_id(self) -> int:
         """
-        Returns the maximum ID of either products or categories.
-        :param entity_type: 'product' for max product ID, 'category' for max category ID.
-        :return: Maximum ID of the selected entity type.
+        Returns the maximum ID of products in the inventory.
+        :return: Maximum product ID, or 0 if no products exist.
         """
-        if entity_type == "product":
-            if not self._products:
-                return 0  # No products, so max product ID is 0
-            return max(self._products.keys())  # Get max product ID
-        elif entity_type == "category":
-            if not self._categories:
-                return 0  # No categories, so max category ID is 0
-            return max(self._categories.keys())  # Get max category ID
-        else:
-            raise ValueError("Invalid entity_type. Use 'product' or 'category'.")
-        
+        if not self._products:
+            return 0  # No products, so max product ID is 0
+        return max(self._products.keys())  # Get max product ID
+
+
+    def get_max_category_id(self) -> int:
+        """
+        Returns the maximum ID of categories in the inventory.
+        :return: Maximum category ID, or 0 if no categories exist.
+        """
+        if not self._categories:
+            return 0  # No categories, so max category ID is 0
+        return max(self._categories.keys())  # Get max category ID
+
     def get_total_inventory_value(self):
         """Calculates the total value of the inventory."""
         return sum(product.price * product.quantity for product in self._products.values())
@@ -304,3 +307,13 @@ class InventoryManager:
         if product_id not in self._products:
             raise ValueError(f"Product id {product_id} not found in inventory.")
         return self._products[product_id]
+    
+    def get_product_category_name(self, product_id: int) -> str:
+        # Validate and fetch the product
+        product = self.validate_product_id(product_id)
+        
+        # Retrieve the category name using the product's category ID
+        category_name = self.get_category_info_by_id(product.category, "name")
+        if not category_name:
+            raise ValueError(f"Category ID {product.category} is invalid or does not exist.")        
+        return category_name
