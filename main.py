@@ -86,9 +86,9 @@ print_bold_heading("#07 -Quantity:", newline=False)
 print(product_quantity)
 
 #08 Get only the product category
-product_category = inventory.get_product_info_by_id(product_id, "category")
+product_category_name = inventory.get_product_category_name(product_id)
 print_bold_heading("#08 -Category:", newline=False)
-print(product_category)
+print(product_category_name)
 
 #08a Get only the product description
 product_description = inventory.get_product_info_by_id(product_id, "description")
@@ -97,7 +97,7 @@ print(product_description)
 
 #09 Update name of a product
 new_product_name = "Laptop X"
-inventory.update_name(product_id, new_product_name, "product")
+inventory.update_product_name(product_id, new_product_name)
 print_bold_heading(f"\n#09 Updated product name from '{product_name}' to '{new_product_name}':")
 print(inventory.get_product_info_by_id(product_id))
 
@@ -137,7 +137,7 @@ print(inventory.products)
 
 #15 get max product ID
 print_bold_heading("\n#15 Get max Product ID:", newline=False)
-max_product_id = inventory.get_max_id("product")
+max_product_id = inventory.get_max_product_id()
 print(max_product_id)
 
 #16 Get total inventory value
@@ -173,7 +173,7 @@ clear_terminal()
 print_bold_heading("\n******** CATEGORIES ********")
 
 #19 Get list ID of categories
-print_bold_heading("\n19 List of cat-id:", newline=False)
+print_bold_heading("\n#19 List of cat-id:", newline=False)
 print(inventory.categories)
 
 #02 Fetch all categories and print their details
@@ -194,7 +194,7 @@ print(category_name)
 
 #23 Update name of a category
 new_category_name = "New Tech & Gadgets"
-inventory.update_name(category_id, new_category_name, "category")
+inventory.update_category_name(category_id, new_category_name)
 print_bold_heading(f"\n#23 Updated product name from '{category_name}' to '{new_category_name}':")
 
 #24 Get only the category name
@@ -208,7 +208,7 @@ inventory.remove_category(category_id)
 
 #26 get max category ID
 print_bold_heading("\n#26 Get max Category ID:", newline=False)
-max_category_id = inventory.get_max_id("category")
+max_category_id = inventory.get_max_category_id()
 print(max_category_id)
 
 #27 Add a new category

@@ -26,7 +26,6 @@ class Product:
         self.__price: float = price
         self.__quantity: int = quantity
         self.__category: int = category
-        self.__category_name: str = category_name
         self.__date_added: datetime = date_added
         self.__last_modified: datetime = date_added
         self.__description = description
@@ -92,10 +91,6 @@ class Product:
         self.update_last_modified()  # Update last_modified when name is set
 
     @property
-    def category_name(self) -> str:
-        return self.__category_name
-
-    @property
     def date_added(self) -> datetime:
         return self.__date_added
 
@@ -119,7 +114,6 @@ class Product:
         return (f"ID: {self.__id}, name: {self.__name}, "
                 f"price: {self.__price}, quantity: {self.__quantity}, "
                 f"cat_id: {self.__category}, "
-                f"category: {self.__category_name}, "
                 f"date added: {self.__date_added}, "
                 f"last modified: {self.__last_modified}, "
                 f"description: {self.__description}"
