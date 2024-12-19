@@ -27,11 +27,11 @@ print(f"\nTotal Inventory Value: {inventory.get_total_inventory_value()}")
 # Search for products
 print("\nSearch results for 'phone':")
 search_results = inventory.search_product("phone")
-if isinstance(search_results, list):
+if search_results:
     for result in search_results:
         print(result)
 else:
-    print(search_results)
+    print("No results!")
 
 
 print("\nmax id cat ", inventory.get_max_category_id())

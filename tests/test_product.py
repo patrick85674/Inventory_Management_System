@@ -46,6 +46,25 @@ class TestProduct(unittest.TestCase):
                          "price: 999.99, quantity: 50, category: Computers")
         self.assertEqual(self.product.get_info(), expected_info)
 
+    def test_last_modified(self):
+        product = Product(id=1, name="Test", price=9.9, quantity=1, category=1)
+
+        date_last = product.last_modified
+        product.name = "New name"
+        self.assertIsNot(date_last, product.last_modified)
+
+        date_last = product.last_modified
+        product.price = 10.0
+        self.assertIsNot(date_last, product.last_modified)
+
+        date_last = product.last_modified
+        product.quantity = 2
+        self.assertIsNot(date_last, product.last_modified)
+
+        date_last = product.last_modified
+        product.category = 2
+        self.assertIsNot(date_last, product.last_modified)
+
     def test_description(self):
         with self.assertRaises(TypeError):
             self.product.description = 1234
