@@ -6,7 +6,7 @@ class Product:
     """Represents a product with a name, price, quantity, and category."""
 
     def __init__(self, id: int, name: str, price: float, quantity: int,
-                 category: int = 0):
+                 category: int = 0, description: str = ''):
 
         if not isinstance(id, int) or id <= 0:
             raise ValueError("Product ID must be a positive integer.")
@@ -20,6 +20,8 @@ class Product:
                 or not Category.is_valid_category(category)):
             raise ValueError("Category must be a valid, non-empty integer"
                              " corresponding to a category ID.")
+        if not isinstance(description, str):
+            raise TypeError("Description must be a string.")
 
         self.__id: int = id
         self.__name: str = name
@@ -29,6 +31,7 @@ class Product:
         self.__category_name: str = Category.get_category_name_by_id(category)
         self.__date_added: datetime = datetime.now()
         self.__last_modified: datetime = self.__date_added
+        self.__description = description
 
     @property
     def id(self) -> int:
@@ -96,3 +99,14 @@ class Product:
     @property
     def last_modified(self) -> datetime:
         return self.__last_modified
+
+    @property
+    def description(self) -> str:
+        return self.__description
+
+    @description.setter
+    def description(self, description: str):
+        if not isinstance(description, str):
+            raise TypeError("Description must be a string.")
+        self.__description = description
+        self.__last_modified = datetime.now()
