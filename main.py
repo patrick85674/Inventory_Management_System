@@ -24,6 +24,9 @@ def print_bold_heading(text: str, newline: bool = True):
     """Prints text in bold, with an optional newline."""
     print(f"\033[1m{text}\033[0m", end="\n" if newline else " ")
 
+def push_key_for_next(message="Press Enter to continue..."):
+    """Pauses execution until the user presses Enter."""
+    input(message)
 
 # Assuming 'inventory' is an instance of InventoryManager
 
@@ -35,11 +38,12 @@ def print_inventory_info(info_type: str):
         for product_id in inventory.get_products():
             print(inventory.get_product_info_by_id(product_id))  # Get product info by ID
     elif info_type == "category":
-        print_bold_heading("\n#02All categories in inventory:")
+        print_bold_heading("\n#02 All categories in inventory:")
         for category_id in inventory.get_categories():
             print(inventory.get_category_info_by_id(category_id))  # Get category info by ID
     else:
         print(f"Invalid type '{info_type}' specified. Please choose 'products' or 'categories'.")
+
 
 clear_terminal()
 
@@ -163,6 +167,8 @@ else:
 print_inventory_info("product") 
 
 # Category - Test #############################################
+push_key_for_next("Press Enter to continue...")
+clear_terminal()
 
 print_bold_heading("\n******** CATEGORIES ********")
 
@@ -205,9 +211,9 @@ print_bold_heading("\n#26 Get max Category ID:", newline=False)
 max_category_id = inventory.get_max_id("category")
 print(max_category_id)
 
-# Test #27: Add a new category
-new_category_name = "Health Tech1"
-print(f"\n#27 Add a new category: {new_category_name}")
+#27 Add a new category
+new_category_name = "Health Tech"
+print_bold_heading(f"\n#27 Add a new category: {new_category_name}")
 try:
     inventory.add_category(new_category_name)  # Attempt to add a new category
     print(f"Category '{new_category_name}' added successfully.")
@@ -218,6 +224,8 @@ except ValueError as e:
 print_inventory_info("category")
 
 # Saveing ######################################################
+push_key_for_next()
+clear_terminal()
 
 print_bold_heading("\n******** JSON-File! ********\n")
 
