@@ -81,7 +81,7 @@ class InventoryManager:
             raise ValueError(f"Category ID {category.id} already exists.")
         self._categories[category.id] = category
 
-    def add_category(self, name: str):
+    def add_category(self, name: str) -> int:
         """Adds a category to the inventory."""
         if name in [category.name for category in self._categories.values()]:
             raise ValueError(f"Category name '{name}' already exists.")
@@ -89,6 +89,7 @@ class InventoryManager:
         new_category = Category(new_id, name)
         # Add the new category to the inventory
         self._categories[new_id] = new_category
+        return new_id
 
     def load_products(self, product: Product):
         """Load products to the inventory."""
