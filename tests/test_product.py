@@ -42,8 +42,9 @@ class TestProduct(unittest.TestCase):
         self.assertEqual(self.product.id, 1)
 
     def test_get_info(self):
-        expected_info = ("ProductID: 1, Product name: Laptop, "
-                         "price: 999.99, quantity: 50, category: Computers")
+        expected_info = ("ID: 1, name: Laptop, "
+                         "price: 999.99, quantity: 50, cat_id: 1, "
+                         "date added: None, last modified: None, description: ")
         self.assertEqual(self.product.get_info(), expected_info)
 
     def test_last_modified(self):
