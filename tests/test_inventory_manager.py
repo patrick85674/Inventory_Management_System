@@ -25,6 +25,11 @@ class TestInventoryManager(unittest.TestCase):
         result = self.inventory_manager.products
         self.assertIsInstance(result, list)
 
+    def test_categories(self):
+        """Test getting all categories from the inventory."""
+        result = self.inventory_manager.categories
+        self.assertIsInstance(result, list)
+
     def test_add_product(self):
         """Test adding a product to the inventory."""
         id = self.inventory_manager.add_product(self.product1_data)
@@ -94,6 +99,16 @@ class TestInventoryManager(unittest.TestCase):
         self.assertEqual(product.id, id)
         self.inventory_manager.remove_product(id)
 
+    def test_find_category_by_id(self):
+        """Test to find a category by id in the inventory."""
+        with self.assertRaises(ValueError):
+            self.inventory_manager.find_category_by_id(-1)
+
+        id = self.inventory_manager.add_category("Test category")
+        product = self.inventory_manager.find_category_by_id(id)
+        self.assertEqual(product.id, id)
+        self.inventory_manager.remove_category(id)
+
     def test_update_product_price(self):
         """Test updating the price of a product in the inventory."""
         id = self.inventory_manager.add_product(self.product1_data)
@@ -133,6 +148,14 @@ class TestInventoryManager(unittest.TestCase):
         """Test getting all categories in a dict."""
         result = self.inventory_manager.get_categories()
         self.assertIsInstance(result, dict)
+
+    def test_update_product_name(self):
+        """Test to change the product name."""
+        id = self.inventory_manager.add_product(self.product1_data)
+        self.inventory_manager.update_product_name(id, "New test name")
+        product = self.inventory_manager.find_product_by_id(id)
+        self.assertEqual(product.name, "New test name")
+        self.inventory_manager.remove_product(id)
 
     def test_update_category_name(self):
         """Test to change the category name."""
