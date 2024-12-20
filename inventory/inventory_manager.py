@@ -102,7 +102,7 @@ class InventoryManager:
             raise ValueError(f"Product ID {product.id} already exists.")
         self._products[product.id] = product
 
-    def add_product(self, product_data: dict = None, product=None):
+    def add_product(self, product_data: dict) -> id:
         # Adds a product to the inventory.
         if product_data:
             # Ensure the dictionary contains the required keys
@@ -130,7 +130,7 @@ class InventoryManager:
 
             # Add the new product to the inventory
             self._products[new_id] = new_product
-            print(f"Product '{name}' added successfully with ID {new_id}.")
+            return new_id
         else:
             raise ValueError("You must provide either a Product object or a dictionary with product data.")
 
@@ -197,7 +197,6 @@ class InventoryManager:
             raise ValueError(f"Category ID {category_id} not found in inventory.")
 
         self._categories[category_id].name = name  # Calls the setter in the Category class
-        print(f"Updated category ID {category_id} name to '{name}'.")
 
     def update_product_quantity(self, product_id: int, quantity: int):
         """Updates the quantity of a product in the inventory."""
@@ -213,6 +212,11 @@ class InventoryManager:
         """Updates the price of a product in the inventory."""
         self.validate_product_id(product_id)
         self._products[product_id].description = description
+
+    def update_product_category(self, product_id: int, category_id: int):
+        """Update the category id of a product in the inventory."""
+        self.validate_product_id(product_id)
+        self._products[product_id].category = category_id
 
     # get informations
     def get_category_info_by_id(self, category_id: int, info_type: str = None) -> str:
@@ -275,7 +279,7 @@ class InventoryManager:
     def search_product(self, keyword: str) -> list[Product]:
         """Searches for products by a keyword in their names."""
         # Find products matching the keyword in their names (case insensitive)
-        results = [product.get_info() for product in self._products.values()
+        results = [product for product in self._products.values()
                    if keyword.lower() in product.name.lower()]
         return results  # Return list of matching products
 
@@ -284,6 +288,12 @@ class InventoryManager:
         if product_id not in self._products:
             raise ValueError(f"Product id {product_id} not found in inventory.")
         return self._products[product_id]
+
+    def find_category_by_id(self, category_id: int):
+        """Finds a category by ID."""
+        if category_id not in self._categories:
+            raise ValueError(f"Category id {category_id} not found in inventory.")
+        return self._categories[category_id]
 
     def get_products_by_category(self, category_id: int) -> list:
         """Returns a list of product ids for a given category."""
