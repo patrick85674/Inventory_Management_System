@@ -108,42 +108,41 @@ class InventoryManager:
 
     def add_product(self, product_data: dict) -> id:
         # Adds a product to the inventory.
-        if product_data:
-            # Ensure the dictionary contains the required keys
-            keys = ["name", "price", "quantity", "category"]
-            if not all(key in product_data for key in keys):
-                raise ValueError("The dictionary must contain 'name', "
-                                 "'price', 'quantity', and 'category'.")
+        if not isinstance(product_data, dict):
+            raise TypeError("Product data must be a dictionary.")
 
-            # Get values from the dictionary
-            name = product_data["name"]
-            price = product_data["price"]
-            quantity = product_data["quantity"]
-            category = product_data["category"]
-            # Default to an empty string if not provided
-            description = product_data.get("description", "")
+        # Ensure the dictionary contains the required keys
+        keys = ["name", "price", "quantity", "category"]
+        if not all(key in product_data for key in keys):
+            raise ValueError("The dictionary must contain 'name', "
+                             "'price', 'quantity', and 'category'.")
 
-            # Generate new ID for the product
-            new_id = self.get_max_product_id() + 1
+        # Get values from the dictionary
+        name = product_data["name"]
+        price = product_data["price"]
+        quantity = product_data["quantity"]
+        category = product_data["category"]
+        # Default to an empty string if not provided
+        description = product_data.get("description", "")
 
-            date_added: datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            last_modified: datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        # Generate new ID for the product
+        new_id = self.get_max_product_id() + 1
 
-            # Create a new Product object
-            new_product = Product(id=new_id, name=name, price=price,
-                                  quantity=quantity,
-                                  category=category,
-                                  date_added=date_added,
-                                  last_modified=last_modified,
-                                  description=description
-                                  )
+        date_added: datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        last_modified: datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-            # Add the new product to the inventory
-            self._products[new_id] = new_product
-            return new_id
-        else:
-            raise ValueError("You must provide either a Product object or "
-                             "a dictionary with product data.")
+        # Create a new Product object
+        new_product = Product(id=new_id, name=name, price=price,
+                              quantity=quantity,
+                              category=category,
+                              date_added=date_added,
+                              last_modified=last_modified,
+                              description=description
+                              )
+
+        # Add the new product to the inventory
+        self._products[new_id] = new_product
+        return new_id
 
     def remove_product(self, product_id: int):
         """Removes a product from the inventory."""
