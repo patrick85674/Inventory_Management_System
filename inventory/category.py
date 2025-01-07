@@ -6,7 +6,7 @@ class Category:
             raise ValueError("Category ID must be a positive integer.")
         if not isinstance(name, str) or not name.strip():
             raise ValueError("Category name must be a non-empty string.")
-        
+
         self.__id = category_id
         self.__name = name
 
