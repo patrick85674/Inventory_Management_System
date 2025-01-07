@@ -163,6 +163,12 @@ if isinstance(search_results, list):
 else:
     print(search_results)
 
+# Check for availability ID
+print_bold_heading("\n#18a availability ID 1:")
+print(inventory.is_product_available(1))  # True
+print_bold_heading("\n#18b availability ID 2:")
+print(inventory.is_product_available(2))  # False
+
 #02 Fetch all products and print their details
 print_inventory_info("product") 
 

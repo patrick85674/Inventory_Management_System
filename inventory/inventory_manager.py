@@ -324,3 +324,14 @@ class InventoryManager:
             raise ValueError(f"Category ID {product.category} is invalid "
                              "or does not exist.")
         return category_name
+
+    def is_product_available(self, product_id: int) -> bool:
+        """
+        Checks if a product is available in the inventory by its ID.
+        :param product_id: Product ID (int).
+        :return: True if the product exists and quantity > 0, otherwise False.
+        """
+        # Attempt to retrieve the product using the given ID
+        product = self._products.get(product_id)
+        # Check if the product exists and has a quantity greater than 0
+        return product is not None and product.quantity > 0
