@@ -4,7 +4,7 @@ from datetime import datetime
 class Product:
     """Represents a product with a name, price, quantity, and category."""
 
-    def __init__(self, id: int, name: str, price: float, quantity: int, 
+    def __init__(self, id: int, name: str, price: float, quantity: int,
                  category: int = 0, category_name: str = "Unknown",
                  date_added: datetime = None, last_modified: datetime = None,
                  description: str = ''):
