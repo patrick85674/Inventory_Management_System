@@ -92,27 +92,7 @@ class TrackedInventoryManager(InventoryManager):
         # Updates the product category and tracks user action
         super().update_product_category(product_id, category)
 
-# Example initialization and usage
-if __name__ == "__main__":
-    # Initialize UserInventoryManager
-    user_inventory_manager = UserInventoryManager()
 
-    # Initialize inventory manager with tracking
-    inventory_manager = TrackedInventoryManager()
-
-    # Load initial data for categories and products
-    inventory_manager.load_data()
-
-    # Example of adding a product
-    product = Product(id=1, name="Product A", price=100, quantity=10, category=1)
-    inventory_manager.add_product(product)
-
-    # Example of updating a product's quantity
-    inventory_manager.update_product_quantity(1, 15)
-
-    # Retrieve the logged actions for a user
-    user_actions = user_inventory_manager.get_action_log(user_id=1)
-    print(user_actions)
 from datetime import datetime
 from functools import wraps
 from flask import Flask, request, jsonify
