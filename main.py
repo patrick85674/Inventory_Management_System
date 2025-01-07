@@ -64,7 +64,7 @@ print_inventory_info("product")
 
 #03 Example to check if a product ID is valid
 print_bold_heading(f"\n#03 Check if a product ID {product_id} is valid:", newline=False)
-print(inventory.product_exists(product_id))  # Will return True if valid, otherwise raise an error
+print(inventory.product_exists(product_id))  # Will return True if valid, otherwise False
 
 #04 Print details of product
 print_bold_heading(f"\n#04 Details of product with ID {product_id}:")
@@ -181,7 +181,7 @@ print_inventory_info("category")
 
 #20 Example to check if a product ID is valid
 print_bold_heading(f"\n#20 Check if a category ID {category_id} is valid:", newline=False)
-print(inventory.category_exists(category_id))  # Will return True if valid, otherwise raise an error
+print(inventory.category_exists(category_id))  # Will return True if valid, otherwise False
 
 #21 Print details of category with ID 1
 print_bold_heading("\n#21 Details of category with ID 1:")
