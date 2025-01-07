@@ -91,8 +91,8 @@ class TestInventoryManager(unittest.TestCase):
 
     def test_find_product_by_id(self):
         """Test to find a product by id in the inventory."""
-        with self.assertRaises(ValueError):
-            self.inventory_manager.find_product_by_id(-1)
+        result = self.inventory_manager.find_product_by_id(-1)
+        self.assertEqual(result, None)
 
         id = self.inventory_manager.add_product(self.product1_data)
         product = self.inventory_manager.find_product_by_id(id)
@@ -101,8 +101,8 @@ class TestInventoryManager(unittest.TestCase):
 
     def test_find_category_by_id(self):
         """Test to find a category by id in the inventory."""
-        with self.assertRaises(ValueError):
-            self.inventory_manager.find_category_by_id(-1)
+        result = self.inventory_manager.find_category_by_id(-1)
+        self.assertEqual(result, None)
 
         id = self.inventory_manager.add_category("Test category")
         product = self.inventory_manager.find_category_by_id(id)

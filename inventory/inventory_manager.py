@@ -290,18 +290,16 @@ class InventoryManager:
                    if keyword.lower() in product.name.lower()]
         return results  # Return list of matching products
 
-    def find_product_by_id(self, product_id: int):
+    def find_product_by_id(self, product_id: int) -> Product:
         """Finds a product by ID."""
         if product_id not in self._products:
-            raise ValueError(f"Product id {product_id} not found "
-                             "in the inventory.")
+            return None
         return self._products[product_id]
 
-    def find_category_by_id(self, category_id: int):
+    def find_category_by_id(self, category_id: int) -> Category:
         """Finds a category by ID."""
         if category_id not in self._categories:
-            raise ValueError(f"Category id {category_id} not found "
-                             "in the inventory.")
+            return None
         return self._categories[category_id]
 
     def get_products_by_category(self, category_id: int) -> list:
