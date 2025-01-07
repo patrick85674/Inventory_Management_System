@@ -7,13 +7,13 @@ class TestCategory(unittest.TestCase):
         self.category = Category(category_id=1, name="Test category")
 
     def test_init(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             Category(category_id=1.1, name="Test1")
         with self.assertRaises(ValueError):
             Category(category_id=1, name="")
         with self.assertRaises(ValueError):
             Category(category_id=1, name=" ")
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             Category(category_id=1, name=10)
 
     def test_id(self):
@@ -26,7 +26,7 @@ class TestCategory(unittest.TestCase):
         self.assertEqual(result, "Test category")
         self.assertIsInstance(result, str)
 
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             self.category.name = 10
         with self.assertRaises(ValueError):
             self.category.name = ""

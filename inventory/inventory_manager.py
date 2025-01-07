@@ -178,9 +178,6 @@ class InventoryManager:
         """
         Updates the name of a product in the inventory.
         """
-        if not isinstance(name, str) or not name.strip():
-            raise ValueError("Product name must be a non-empty string.")
-
         # Use validate_product_id to ensure the product exists
         product = self.validate_product_id(product_id)
         product.name = name  # Calls the setter in the Product class
@@ -190,9 +187,6 @@ class InventoryManager:
         """
         Updates the name of a category in the inventory.
         """
-        if not isinstance(name, str) or not name.strip():
-            raise ValueError("Category name must be a non-empty string.")
-
         if category_id not in self._categories:
             raise ValueError(f"Category ID {category_id} not found in inventory.")
 

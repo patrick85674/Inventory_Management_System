@@ -13,11 +13,15 @@ class TestProduct(unittest.TestCase):
 
         self.product.quantity = 30
         self.assertEqual(self.product.quantity, 30)
+        with self.assertRaises(TypeError):
+            self.product.quantity = "5"
         with self.assertRaises(ValueError):
             self.product.quantity = -5
 
     def test_name(self):
         self.assertEqual(self.product.name, "Laptop")
+        with self.assertRaises(TypeError):
+            self.product.name = 22
         with self.assertRaises(ValueError):
             self.product.name = ""
         with self.assertRaises(ValueError):
@@ -26,6 +30,8 @@ class TestProduct(unittest.TestCase):
 
     def test_price(self):
         self.assertEqual(self.product.price, 999.99)
+        with self.assertRaises(TypeError):
+            self.product.price = "100"
         with self.assertRaises(ValueError):
             self.product.price = -100.01
         self.assertIsInstance(self.product.price, (int, float))
@@ -37,6 +43,8 @@ class TestProduct(unittest.TestCase):
 
     def test_category(self):
         self.assertEqual(self.product.category, 1)
+        with self.assertRaises(TypeError):
+            self.product.category = "111"
 
     def test_product_id(self):
         self.assertEqual(self.product.id, 1)

@@ -123,7 +123,7 @@ class TestInventoryManager(unittest.TestCase):
             self.inventory_manager.add_category("")
         with self.assertRaises(ValueError):
             self.inventory_manager.add_category(" ")
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             self.inventory_manager.add_category(123456)
 
         id = self.inventory_manager.add_category("Test category")
@@ -168,7 +168,7 @@ class TestInventoryManager(unittest.TestCase):
             self.inventory_manager.update_category_name(id, "")
         with self.assertRaises(ValueError):
             self.inventory_manager.update_category_name(id, " ")
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             self.inventory_manager.update_category_name(id, 123456)
 
         self.inventory_manager.remove_category(id)

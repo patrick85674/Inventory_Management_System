@@ -8,13 +8,21 @@ class Product:
                  category: int = 0, category_name: str = "Unknown",
                  date_added: datetime = None, last_modified: datetime = None,
                  description: str = ''):
-        if not isinstance(id, int) or id <= 0:
+        if not isinstance(id, int):
+            raise TypeError("Product ID must be an integer.")
+        if id <= 0:
             raise ValueError("Product ID must be a positive integer.")
-        if not isinstance(name, str) or not name.strip():
+        if not isinstance(name, str):
+            raise TypeError("Product name must be a string.")
+        if not name.strip():
             raise ValueError("Product name must be a non-empty string.")
-        if not isinstance(price, (int, float)) or price < 0:
+        if not isinstance(price, (int, float)):
+            raise TypeError("Price must be an integer or float.")
+        if price < 0:
             raise ValueError("Price must be a non-negative number.")
-        if not isinstance(quantity, int) or quantity < 0:
+        if not isinstance(quantity, int):
+            raise TypeError("Quantity must be an integer.")
+        if quantity < 0:
             raise ValueError("Quantity must be a non-negative integer.")
         if (not isinstance(category, int)):
             raise ValueError("Category must be a valid, non-empty integer")
@@ -46,7 +54,9 @@ class Product:
 
     @name.setter
     def name(self, name: str):
-        if not isinstance(name, str) or not name.strip():
+        if not isinstance(name, str):
+            raise TypeError("Product name must be a string.")
+        if not name.strip():
             raise ValueError("Product name must be a non-empty string.")
         self.__name = name
         self.update_last_modified()  # Update last_modified when name is set
@@ -59,7 +69,7 @@ class Product:
     @price.setter
     def price(self, price: float):
         if not (isinstance(price, float) or isinstance(price, int)):
-            raise ValueError("Price must be an interger or float.")
+            raise TypeError("Price must be an integer or float.")
         if price < 0:
             raise ValueError("Price must be positive.")
         self.__price = price
@@ -72,7 +82,7 @@ class Product:
     @quantity.setter
     def quantity(self, quantity: int):
         if not (isinstance(quantity, int)):
-            raise ValueError("Quantity must be an interger.")
+            raise TypeError("Quantity must be an interger.")
         if quantity < 0:
             raise ValueError("Quantity cannot be negative.")
         self.__quantity = quantity
@@ -86,7 +96,7 @@ class Product:
     def category(self, category: int):
         """Update the category of the product."""
         if not (isinstance(category, int)):
-            raise ValueError("category must be an interger.")
+            raise TypeError("category must be an interger.")
         self.__category = category
         self.update_last_modified()  # Update last_modified when name is set
 
