@@ -327,18 +327,13 @@ class InventoryManager:
                              "or does not exist.")
         return category_name
 
-    def is_product_available(self, identifier: int | str) -> bool:
+    def is_product_available(self, product_id: int) -> bool:
         """
-        Checks if a product is available in the inventory.
-        :param identifier: Product ID (int) or name (str).
+        Checks if a product is available in the inventory by its ID.
+        :param product_id: Product ID (int).
         :return: True if the product exists and quantity > 0, otherwise False.
         """
-        if isinstance(identifier, int):  # Check by ID
-            product = self._products.get(identifier)
-            if product and product.quantity > 0:
-                return True
-        elif isinstance(identifier, str):  # Check by name
-            for product in self._products.values():
-                if product.name.lower() == identifier.lower() and product.quantity > 0:
-                    return True
-        return False  # Product not found or quantity <= 0
+        # Attempt to retrieve the product using the given ID
+        product = self._products.get(product_id)
+        # Check if the product exists and has a quantity greater than 0
+        return product is not None and product.quantity > 0
