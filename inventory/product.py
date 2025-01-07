@@ -5,7 +5,7 @@ class Product:
     """Represents a product with a name, price, quantity, and category."""
 
     def __init__(self, id: int, name: str, price: float, quantity: int,
-                 category: int = 0, category_name: str = "Unknown",
+                 category: int = 0,
                  date_added: datetime = None, last_modified: datetime = None,
                  description: str = ''):
         if not isinstance(id, int):
@@ -25,7 +25,7 @@ class Product:
         if quantity < 0:
             raise ValueError("Quantity must be a non-negative integer.")
         if (not isinstance(category, int)):
-            raise ValueError("Category must be a valid, non-empty integer")
+            raise TypeError("Category must be a valid, non-empty integer")
         if not isinstance(description, str):
             raise TypeError("Description must be a string.")
 
@@ -59,7 +59,7 @@ class Product:
         if not name.strip():
             raise ValueError("Product name must be a non-empty string.")
         self.__name = name
-        self.update_last_modified()  # Update last_modified when name is set
+        self.update_last_modified()
 
     @property
     def price(self) -> float:
@@ -73,7 +73,7 @@ class Product:
         if price < 0:
             raise ValueError("Price must be positive.")
         self.__price = price
-        self.update_last_modified()  # Update last_modified when name is set
+        self.update_last_modified()
 
     @property
     def quantity(self) -> int:
@@ -86,7 +86,7 @@ class Product:
         if quantity < 0:
             raise ValueError("Quantity cannot be negative.")
         self.__quantity = quantity
-        self.update_last_modified()  # Update last_modified when name is set
+        self.update_last_modified()
 
     @property
     def category(self) -> str:
@@ -98,7 +98,7 @@ class Product:
         if not (isinstance(category, int)):
             raise TypeError("category must be an interger.")
         self.__category = category
-        self.update_last_modified()  # Update last_modified when name is set
+        self.update_last_modified()
 
     @property
     def date_added(self) -> datetime:
@@ -117,7 +117,7 @@ class Product:
         if not isinstance(description, str):
             raise TypeError("Description must be a string.")
         self.__description = description
-        self.update_last_modified()  # Update last_modified when name is set
+        self.update_last_modified()
 
     def get_info(self) -> str:
         """Return a string representation of the product's information."""
