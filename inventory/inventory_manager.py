@@ -168,22 +168,11 @@ class InventoryManager:
         """Returns the dictionary of categories."""
         return self._categories
 
-    # check valid
-    def is_valid(self, id: int, type: str) -> bool:
-        """Checks if the given ID is valid for either product or category."""
+    def product_exists(self, product_id: int) -> bool:
+        return self.find_product_by_id(product_id) is not None
 
-        if type == "product":  # Check if the product ID exists
-            # Use validate_product_id to ensure the product exists
-            self.validate_product_id(id)
-            return True  # ID is valid for product
-
-        elif type == "category":  # Check if the category ID exists
-            if id not in self._categories:
-                raise ValueError(f"Category ID {id} is not valid.")
-            return True  # ID is valid for category
-        else:
-            raise ValueError(f"Invalid type '{type}' provided. "
-                             "Must be 'product' or 'category'.")
+    def category_exists(self, category_id: int):
+        return self.find_category_by_id(category_id) is not None
 
     # update product name
     def update_product_name(self, product_id: int, name: str):
