@@ -43,8 +43,11 @@ class InventoryManager:
         JSON-compatible dictionary."""
         # Serialize categories
         categories = [
-            {"id": cat.id, "name": cat.name} if isinstance(cat, Category) else {"id": cat_id, "name": name}
-            for cat_id, cat in self._categories.items()
+            {
+                "id": cat.id,
+                "name": cat.name
+            }
+            for cat in self._categories.values()
         ]
 
         # Serialize products
