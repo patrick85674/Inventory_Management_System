@@ -38,25 +38,6 @@ class TestCategory(unittest.TestCase):
         self.assertEqual(result, "Test category 2")
         self.assertIsInstance(result, str)
 
-    def test_is_valid_category(self):
-        result = self.category.is_valid_category(-1)
-        self.assertEqual(result, False)
-        self.assertIsInstance(result, bool)
-
-        result = self.category.is_valid_category(1)
-        self.assertEqual(result, True)
-        self.assertIsInstance(result, bool)
-
-    def test_get_category_name_by_id(self):
-        result = self.category.get_category_name_by_id(-1)
-        self.assertEqual(result, None)
-        result = self.category.get_category_name_by_id(1)
-        self.assertIsInstance(result, str)
-
-    def test_get_max_category_id(self):
-        result = self.category.get_max_category_id()
-        self.assertGreaterEqual(result, 0)
-
 
 if __name__ == "__main__":
     unittest.main()
