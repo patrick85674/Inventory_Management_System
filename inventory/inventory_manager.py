@@ -281,9 +281,11 @@ class InventoryManager:
         return (sum(product.price * product.quantity
                     for product in self._products.values()))
 
-def get_total_inventory_value_by_category(self, category):
+    def get_total_inventory_value_by_category(self, category_id: int):
         """Calculates the total value of the inventory for a given category."""
-        return sum(product.price * product.quantity for product in self._products.values() if product.category == category)
+        return (sum(product.price * product.quantity for product in
+                    self._products.values()
+                    if product.category == category_id))
 
     # search #
     def search_product(self, keyword: str) -> list[Product]:
