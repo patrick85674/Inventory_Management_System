@@ -38,6 +38,9 @@ class Product:
         self.__last_modified: datetime = date_added
         self.__description = description
 
+    def __str__(self) -> str:
+        return self.get_info()
+    
     def update_last_modified(self):
         """Updates the last_modified timestamp."""
         self.__last_modified = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
