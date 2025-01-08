@@ -89,7 +89,7 @@ class Product:
         self.update_last_modified()
 
     @property
-    def category(self) -> str:
+    def category(self) -> int:
         return self.__category
 
     @category.setter
