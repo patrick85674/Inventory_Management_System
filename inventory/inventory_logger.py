@@ -48,7 +48,6 @@ class InventoryLogger:
         self.__logs.append(message)
         if self._filestream:
             self._filestream.write(message + '\n')
-        print("Test " + message)
 
     def get_logs(self) -> str:
         """Return the stored messages as a text with line breaks."""
