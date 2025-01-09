@@ -183,6 +183,17 @@ class TestInventoryManager(unittest.TestCase):
         self.inventory_manager.remove_product(product.id)
         self.inventory_manager.remove_category(cat_id)
 
+    def test_is_product_available(self):
+        """Test if a product is available. """
+        id = self.inventory_manager.add_product(self.product1_data)
+        result = self.inventory_manager.is_product_available(id)
+        self.assertEqual(result, True)
+        # test zero quantity
+        self.inventory_manager.update_product_quantity(id, 0)
+        result = self.inventory_manager.is_product_available(id)
+        self.assertEqual(result, False)
+        self.inventory_manager.remove_product(id)
+
 
 if __name__ == "__main__":
     unittest.main()
