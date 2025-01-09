@@ -1,12 +1,13 @@
-from datetime import datetime
-
+import time
 
 class Product:
     """Represents a product with a name, price, quantity, and category."""
 
     def __init__(self, id: int, name: str, price: float, quantity: int,
+
                  category_id: int = 0,
-                 date_added: datetime = None, last_modified: datetime = None,
+                 date_added: float = None, last_modified: float = None,
+
                  description: str = ''):
         if not isinstance(id, int):
             raise TypeError("Product ID must be an integer.")
@@ -34,13 +35,13 @@ class Product:
         self.__price: float = price
         self.__quantity: int = quantity
         self.__category_id: int = category_id
-        self.__date_added: datetime = date_added
-        self.__last_modified: datetime = date_added
+        self.__date_added: float = date_added
+        self.__last_modified: float = last_modified
         self.__description = description
 
     def update_last_modified(self):
         """Updates the last_modified timestamp."""
-        self.__last_modified = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.__last_modified: int  = int(time.time())
 
     @property
     def id(self) -> int:
@@ -101,11 +102,11 @@ class Product:
         self.update_last_modified()
 
     @property
-    def date_added(self) -> datetime:
+    def date_added(self) -> float:
         return self.__date_added
 
     @property
-    def last_modified(self) -> datetime:
+    def last_modified(self) -> float:
         return self.__last_modified
 
     @property
