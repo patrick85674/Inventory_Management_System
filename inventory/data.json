@@ -32,8 +32,8 @@
             "price": 666.66,
             "quantity": 215,
             "category": 1,
-            "date_added": "2024-12-17 15:00:00",
-            "last_modified": "2024-12-19 09:49:04",
+            "date_added": 1734447600,
+            "last_modified": 1736424943,
             "description": "new description"
         },
         {
@@ -42,8 +42,8 @@
             "price": 699.99,
             "quantity": 200,
             "category": 2,
-            "date_added": "2024-12-17 15:01:00",
-            "last_modified": "2024-12-17 15:01:00",
+            "date_added": 1734447660,
+            "last_modified": 1734447660,
             "description": "A feature-packed smartphone offering crystal-clear photos, lightning-fast performance, and unmatched battery life for those always on the go."
         },
         {
@@ -52,8 +52,8 @@
             "price": 499.99,
             "quantity": 100,
             "category": 0,
-            "date_added": "2024-12-17 15:02:00",
-            "last_modified": "2024-12-17 15:02:00",
+            "date_added": 1734447720,
+            "last_modified": 1734447720,
             "description": "The ultimate companion for work and play, this tablet boasts a vibrant display and a lightweight design for unmatched portability."
         },
         {
@@ -62,8 +62,8 @@
             "price": 199.99,
             "quantity": 150,
             "category": 3,
-            "date_added": "2024-12-17 15:03:00",
-            "last_modified": "2024-12-17 15:03:00",
+            "date_added": 1734447780,
+            "last_modified": 1734447780,
             "description": "Keep track of your fitness goals and stay connected with this stylish smartwatch, designed for seamless integration into your daily life."
         },
         {
@@ -72,8 +72,8 @@
             "price": 89.99,
             "quantity": 300,
             "category": 4,
-            "date_added": "2024-12-17 15:04:00",
-            "last_modified": "2024-12-17 15:04:00",
+            "date_added": 1734447840,
+            "last_modified": 1734447840,
             "description": "Immerse yourself in high-quality sound with these comfortable and durable headphones, perfect for music lovers and audiophiles."
         },
         {
@@ -82,8 +82,8 @@
             "price": 111.99,
             "quantity": 1000,
             "category": 3,
-            "date_added": "2024-12-19 09:49:04",
-            "last_modified": "2024-12-19 09:49:04",
+            "date_added": 1736424943.8829517,
+            "last_modified": 1736424943.8829517,
             "description": ""
         }
     ]

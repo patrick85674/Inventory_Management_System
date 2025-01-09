@@ -1,6 +1,7 @@
 from inventory.product import Product
 from inventory.category import Category
 from datetime import datetime
+import time
 
 
 class InventoryManager:
@@ -128,8 +129,8 @@ class InventoryManager:
         # Generate new ID for the product
         new_id = self.get_max_product_id() + 1
 
-        date_added: datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        last_modified: datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        date_added:float= float(time.time())
+        last_modified:float = date_added
 
         # Create a new Product object
         new_product = Product(id=new_id, name=name, price=price,
@@ -254,6 +255,10 @@ class InventoryManager:
             return str(product.quantity)
         elif info_type == "description":
             return str(product.description)
+        elif info_type == "date_added":
+            return str(product.date_added)
+        elif info_type == "last_modified":
+            return str(product.last_modified)
         else:
             raise ValueError(f"Invalid info type '{info_type}' specified. Use "
                              "'name', 'price', 'quantity' or 'description'.")
@@ -340,3 +345,10 @@ class InventoryManager:
         product = self._products.get(product_id)
         # Check if the product exists and has a quantity greater than 0
         return product is not None and product.quantity > 0
+    
+    @staticmethod
+    def format_timestamp(timestamp):
+        # Gehe davon aus, dass der Timestamp ein String ist und wandle ihn in einen Integer um
+        timestamp = int(timestamp)  # Umwandlung von str zu int
+        return datetime.fromtimestamp(timestamp).strftime("%Y-%m-%d %H:%M:%S")
+
