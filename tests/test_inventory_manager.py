@@ -67,6 +67,17 @@ class TestInventoryManager(unittest.TestCase):
         self.inventory_manager.remove_product(id1)
         self.inventory_manager.remove_product(id2)
 
+    def test_get_total_inventory_value_by_category(self):
+        """Test calculating the total inventory value."""
+        id1 = self.inventory_manager.add_product(self.product1_data)
+        id2 = self.inventory_manager.add_product(self.product2_data)
+        value = self.inventory_manager.get_total_inventory_value_by_category(1)
+        self.assertEqual(value, 999.99 * 50)
+        value = self.inventory_manager.get_total_inventory_value_by_category(2)
+        self.assertEqual(value, 699.99 * 200)
+        self.inventory_manager.remove_product(id1)
+        self.inventory_manager.remove_product(id2)
+
     def test_search_product(self):
         """Test searching for products by keyword."""
         id1 = self.inventory_manager.add_product(self.product1_data)
