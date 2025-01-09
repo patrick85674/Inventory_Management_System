@@ -179,7 +179,7 @@ class TestInventoryManager(unittest.TestCase):
         product_id = self.inventory_manager.add_product(self.product1_data)
         self.inventory_manager.update_product_category(product_id, cat_id)
         product = self.inventory_manager.find_product_by_id(product_id)
-        self.assertEqual(product.category, cat_id)
+        self.assertEqual(product.category_id, cat_id)
         self.inventory_manager.remove_product(product.id)
         self.inventory_manager.remove_category(cat_id)
 

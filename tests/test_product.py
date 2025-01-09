@@ -5,7 +5,7 @@ from inventory.product import Product
 class TestProduct(unittest.TestCase):
     def setUp(self):
         self.product = Product(id=1, name="Laptop", price=999.99, quantity=50,
-                               category=1)
+                               category_id=1)
 
     def test_init(self):
         with self.assertRaises(TypeError):
@@ -17,7 +17,7 @@ class TestProduct(unittest.TestCase):
         with self.assertRaises(TypeError):
             Product(id=1, name="Test", price=6, quantity="1")
         with self.assertRaises(TypeError):
-            Product(id=1, name="Test", price=6, quantity=1, category="9")
+            Product(id=1, name="Test", price=6, quantity=1, category_id="9")
         with self.assertRaises(TypeError):
             Product(id=1, name="Test", price=6, quantity=1, description=9)
 
@@ -60,10 +60,10 @@ class TestProduct(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.product.price = -100
 
-    def test_category(self):
-        self.assertEqual(self.product.category, 1)
+    def test_category_id(self):
+        self.assertEqual(self.product.category_id, 1)
         with self.assertRaises(TypeError):
-            self.product.category = "2"
+            self.product.category_id = "2"
 
     def test_product_id(self):
         self.assertEqual(self.product.id, 1)
@@ -71,11 +71,12 @@ class TestProduct(unittest.TestCase):
     def test_get_info(self):
         expected_info = ("ID: 1, name: Laptop, "
                          "price: 999.99, quantity: 50, cat_id: 1, "
-                         "date added: None, last modified: None, description: ")
+                         "date added: None, last modified: None, "
+                         "description: ")
         self.assertEqual(self.product.get_info(), expected_info)
 
     def test_last_modified(self):
-        product = Product(id=1, name="Test", price=9.9, quantity=1, category=1)
+        product = Product(id=1, name="Test", price=9.9, quantity=1, category_id=1)
 
         date_last = product.last_modified
         product.name = "New name"
@@ -90,11 +91,11 @@ class TestProduct(unittest.TestCase):
         self.assertIsNot(date_last, product.last_modified)
 
         date_last = product.last_modified
-        product.category = 2
+        product.category_id = 2
         self.assertIsNot(date_last, product.last_modified)
 
     def test_update_last_modified(self):
-        product = Product(id=1, name="Test", price=9.9, quantity=1, category=1)
+        product = Product(id=1, name="Test", price=9.9, quantity=1, category_id=1)
 
         date_last = product.last_modified
         product.update_last_modified()
