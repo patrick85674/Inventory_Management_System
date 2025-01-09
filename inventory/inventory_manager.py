@@ -26,14 +26,14 @@ class InventoryManager:
 
         # Load products from the data
         for prod in data.get("products", []):
-            category = prod.get("category", 0)
+            category_id = prod.get("category_id", 0)
             description = prod.get("description", '')
             product = Product(
                 prod["id"],
                 prod["name"],
                 prod["price"],
                 prod["quantity"],
-                category,
+                category_id,
                 prod["date_added"],
                 prod["last_modified"],
                 description
@@ -59,7 +59,7 @@ class InventoryManager:
                 "name": prod.name,
                 "price": prod.price,
                 "quantity": prod.quantity,
-                "category": prod.category,
+                "category_id": prod.category_id,
                 "date_added": prod.date_added,
                 "last_modified": prod.last_modified,
                 "description": prod.description
@@ -137,7 +137,7 @@ class InventoryManager:
         # Create a new Product object
         new_product = Product(id=new_id, name=name, price=price,
                               quantity=quantity,
-                              category=category,
+                              category_id=category,
                               date_added=date_added,
                               last_modified=last_modified,
                               description=description
@@ -231,10 +231,10 @@ class InventoryManager:
     def update_product_category(self, product_id: int, category_id: int):
         """Update the category id of a product in the inventory."""
         self.validate_product_id(product_id)
-        old_id = self._products[product_id].category
+        old_id = self._products[product_id].category_id
         self._logger.log(f"Updating product category {old_id} to "
                          f"{category_id}, product id {product_id}.")
-        self._products[product_id].category = category_id
+        self._products[product_id].category_id = category_id
 
     # get informations
     def get_category_info_by_id(self, category_id: int,
@@ -303,9 +303,11 @@ class InventoryManager:
         return (sum(product.price * product.quantity
                     for product in self._products.values()))
 
-def get_total_inventory_value_by_category(self, category):
+    def get_total_inventory_value_by_category(self, category_id: int):
         """Calculates the total value of the inventory for a given category."""
-        return sum(product.price * product.quantity for product in self._products.values() if product.category == category)
+        return (sum(product.price * product.quantity for product in
+                    self._products.values()
+                    if product.category_id == category_id))
 
     # search #
     def search_product(self, keyword: str) -> list[Product]:
@@ -330,7 +332,7 @@ def get_total_inventory_value_by_category(self, category):
     def get_products_by_category(self, category_id: int) -> list:
         """Returns a list of product ids for a given category."""
         return [product.get_info() for product in self._products.values()
-                if product.category == category_id]
+                if product.category_id == category_id]
 
     def validate_product_id(self, product_id: int):
         """Validates the existence of a product in the inventory by its ID."""
@@ -344,9 +346,9 @@ def get_total_inventory_value_by_category(self, category):
         product = self.validate_product_id(product_id)
 
         # Retrieve the category name using the product's category ID
-        category_name = self.get_category_info_by_id(product.category, "name")
+        category_name = self.get_category_info_by_id(product.category_id, "name")
         if not category_name:
-            raise ValueError(f"Category ID {product.category} is invalid "
+            raise ValueError(f"Category ID {product.category_id} is invalid "
                              "or does not exist.")
         return category_name
 
