@@ -97,6 +97,18 @@ product_quantity = inventory.get_product_info_by_id(product_id, "quantity")
 print_bold_heading("#07 -Quantity:", newline=False)
 print(product_quantity)
 
+# 07a Get only the product quantity
+product_date_added = inventory.get_product_info_by_id(product_id, "date_added")
+print_bold_heading("#07a -date_added:", newline=False)
+print(inventory.format_timestamp(product_date_added))
+
+# 07b Get only the product quantity
+product_last_modified = inventory.get_product_info_by_id(
+    product_id, "last_modified"
+    )
+print_bold_heading("#07b -last_modified:", newline=False)
+print(inventory.format_timestamp(product_last_modified))
+
 # 08 Get only the product category
 product_category_name = inventory.get_product_category_name(product_id)
 print_bold_heading("#08 -Category:", newline=False)
