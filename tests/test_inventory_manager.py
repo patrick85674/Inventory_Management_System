@@ -1,9 +1,11 @@
 import unittest
-from inventory.product import Product
+from unittest.mock import patch
 from inventory.inventory_manager import InventoryManager
 
 
 class TestInventoryManager(unittest.TestCase):
+    @patch("inventory.inventory_logger.InventoryLogger._open_filestream",
+           lambda *p: None)
     def setUp(self):
         """Create an InventoryManager instance for testing."""
         self.inventory_manager = InventoryManager()

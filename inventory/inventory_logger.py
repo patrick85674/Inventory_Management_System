@@ -11,6 +11,7 @@ class InventoryLogger:
         """Initialize the logger and set up the log storage."""
         self.__logs: list[str] = []
         self.__filename: str = filename
+        self._filestream = None
         self._open_filestream()
 
     def __del__(self):
@@ -42,6 +43,7 @@ class InventoryLogger:
             now: str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             self.log(f"Stop logging at {now}.")
             self._filestream.close()
+            self._filestream = None
 
     def log(self, message: str):
         """Log a message by appending it to the log storage."""
