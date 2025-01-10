@@ -13,6 +13,7 @@ class InventoryManager:
         self._products: dict[int, Product] = {}
         self._categories: dict[int, Category] = {}
         self._logger: InventoryLogger = InventoryLogger()
+        self._logger.logToFile(filename="inventory.log")
 
     def load_data_from_json(self, data):
         """Loads products and categories from a JSON structure."""
