@@ -37,12 +37,12 @@ def push_key_for_next(message="Press Enter to continue..."):
 def print_inventory_info(info_type: str):
     """Prints all products or categories depending on the info_type."""
     if info_type == "product":
-        print_bold_heading("\n#02 All products in inventory:")
+        print_bold_heading("\n#02 All products in the inventory:")
         for product_id in inventory.get_products():
             # Get product info by ID
             print(inventory.get_product_info_by_id(product_id))
     elif info_type == "category":
-        print_bold_heading("\n#02 All categories in inventory:")
+        print_bold_heading("\n#02 All categories in the inventory:")
         for category_id in inventory.get_categories():
             # Get category info by ID
             print(inventory.get_category_info_by_id(category_id))
@@ -58,21 +58,20 @@ clear_terminal()
 # Test IDs
 product_id = 1
 category_id = 1
-test_id = 1
 # Product - Test
 
 print_bold_heading("******** PRODUCTS ********")
 
 # 01 - Get list ID of products
-print_bold_heading("\n#01 List of Product IDs:", newline=False)
+print_bold_heading("\n#01 List of product IDs:", newline=False)
 print(inventory.products)
 
 # 02 Fetch all products and print their details
 print_inventory_info("product")
 
-# 03 Example to check if a product ID is valid
+# 03 Example to check if a product exists
 print_bold_heading(
-    f"\n#03 Check if a product ID {product_id} is valid:",
+    f"\n#03 Check if the product exists, product ID {product_id}:",
     newline=False
     )
 # Will return True if valid, otherwise False
@@ -152,8 +151,8 @@ print(inventory.get_product_info_by_id(product_id))
 new_description = "new description"
 inventory.update_product_description(product_id, new_description)
 print_bold_heading(
-    f"\n#11a Updated {product_description} price from {product_description} to"
-    f" {new_description}:"
+    f"\n#11a Updated description of {product_name} from {product_description} "
+    f"to {new_description}:"
 )
 print(inventory.get_product_info_by_id(product_id))
 
@@ -170,11 +169,11 @@ print_bold_heading("\n#13 Remove product with ID 6:")
 inventory.remove_product(6)
 
 # 14 Get list ID of products
-print_bold_heading("\n#14 List of product-id:")
+print_bold_heading("\n#14 List of product IDs:")
 print(inventory.products)
 
 # 15 get max product ID
-print_bold_heading("\n#15 Get max Product ID:", newline=False)
+print_bold_heading("\n#15 Get max product ID:", newline=False)
 max_product_id = inventory.get_max_product_id()
 print(max_product_id)
 
@@ -202,10 +201,10 @@ else:
     print(search_results)
 
 # Check for availability ID
-print_bold_heading("\n#18a availability ID 1:")
-print(inventory.is_product_available(1))  # True
-print_bold_heading("\n#18b availability ID 2:")
-print(inventory.is_product_available(2))  # False
+print_bold_heading("\n#18a Check availability of product ID 1:")
+print(inventory.is_product_available(1))
+print_bold_heading("\n#18b Check availability of product ID 2:")
+print(inventory.is_product_available(2))
 
 # 02 Fetch all products and print their details
 print_inventory_info("product")
@@ -217,18 +216,17 @@ clear_terminal()
 print_bold_heading("\n******** CATEGORIES ********")
 
 # 19 Get list ID of categories
-print_bold_heading("\n#19 List of cat-id:", newline=False)
+print_bold_heading("\n#19 List of category IDs:", newline=False)
 print(inventory.categories)
 
 # 02 Fetch all categories and print their details
 print_inventory_info("category")
 
-# 20 Example to check if a product ID is valid
+# 20 Example to check if a category exists
 print_bold_heading(
-    f"\n#20 Check if a category ID {category_id} is "
-    "valid:", newline=False
+    f"\n#20 Check if the category exists, ID {category_id}:", newline=False
 )
-# Will return True if valid, otherwise False
+# Will return True if it exists, otherwise False
 print(inventory.category_exists(category_id))
 
 # 21 Print details of category with ID 1
@@ -238,7 +236,7 @@ print(inventory.get_category_info_by_id(1))
 # 22 Get only the category name
 category_name = inventory.get_category_info_by_id(category_id, "name")
 print_bold_heading(
-    f"\n#22 Get Category name from ID"
+    f"\n#22 Get Category name from ID "
     f"{category_id}:", newline=False
 )
 print(category_name)
@@ -247,14 +245,14 @@ print(category_name)
 new_category_name = "New Tech & Gadgets"
 inventory.update_category_name(category_id, new_category_name)
 print_bold_heading(
-    f"\n#23 Updated product name from "
+    f"\n#23 Updated category name from "
     f"'{category_name}' to '{new_category_name}':"
 )
 
 # 24 Get only the category name
 category_name: str = inventory.get_category_info_by_id(category_id, "name")
 print_bold_heading(
-    f"\n#24 Get Category name from ID {category_id}:", newline=False
+    f"\n#24 Get category name by ID {category_id}:", newline=False
     )
 print(category_name)
 
