@@ -121,13 +121,15 @@ print_bold_heading("#08a -Description:", newline=False)
 print(product_description)
 
 # 09 Update name of a product
-new_product_name = "Laptop X"
+new_product_name = "Laptop Y"
 inventory.update_product_name(product_id, new_product_name)
 print_bold_heading(
     f"\n#09 Updated product name from '{product_name}' "
     f"to '{new_product_name}':"
 )
 print(inventory.get_product_info_by_id(product_id))
+print(f"Renaming the product back to: {product_name}")
+inventory.update_product_name(product_id, product_name)
 
 # 10 Update quantity of a product
 new_quantity = 215
@@ -166,7 +168,11 @@ except ValueError as e:
 
 # 13 Remove product
 print_bold_heading("\n#13 Remove product with ID 6:")
-inventory.remove_product(6)
+try:
+    inventory.remove_product(6)
+    print("Removed product with ID 6.")
+except ValueError:
+    print("Product with id 6 not found!")
 
 # 14 Get list ID of products
 print_bold_heading("\n#14 List of product IDs:")
@@ -189,7 +195,9 @@ new_product_data = {
     "category": 3
 }
 print_bold_heading("\n#17 Add a new Product:")
-inventory.add_product(new_product_data)
+new_product_id = inventory.add_product(new_product_data)
+print(f"Added product with the ID: {new_product_id}")
+print(inventory.find_product_by_id(new_product_id))
 
 # 18 Search for Product
 print_bold_heading("\n#18 Search results for 'phone':")
