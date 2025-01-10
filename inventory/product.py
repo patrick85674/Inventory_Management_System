@@ -1,12 +1,13 @@
-from datetime import datetime
-
+import time
 
 class Product:
     """Represents a product with a name, price, quantity, and category."""
 
     def __init__(self, id: int, name: str, price: float, quantity: int,
-                 category: int = 0,
-                 date_added: datetime = None, last_modified: datetime = None,
+
+                 category_id: int = 0,
+                 date_added: float = None, last_modified: float = None,
+
                  description: str = ''):
         if not isinstance(id, int):
             raise TypeError("Product ID must be an integer.")
@@ -24,8 +25,8 @@ class Product:
             raise TypeError("Quantity must be an integer.")
         if quantity < 0:
             raise ValueError("Quantity must be a non-negative integer.")
-        if (not isinstance(category, int)):
-            raise TypeError("Category must be a valid, non-empty integer")
+        if (not isinstance(category_id, int)):
+            raise TypeError("Category id must be an integer.")
         if not isinstance(description, str):
             raise TypeError("Description must be a string.")
 
@@ -33,9 +34,9 @@ class Product:
         self.__name: str = name
         self.__price: float = price
         self.__quantity: int = quantity
-        self.__category: int = category
-        self.__date_added: datetime = date_added
-        self.__last_modified: datetime = date_added
+        self.__category_id: int = category_id
+        self.__date_added: float = date_added
+        self.__last_modified: float = last_modified
         self.__description = description
 
     def __str__(self) -> str:
@@ -43,7 +44,7 @@ class Product:
     
     def update_last_modified(self):
         """Updates the last_modified timestamp."""
-        self.__last_modified = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.__last_modified: int  = int(time.time())
 
     @property
     def id(self) -> int:
@@ -92,23 +93,23 @@ class Product:
         self.update_last_modified()
 
     @property
-    def category(self) -> int:
-        return self.__category
+    def category_id(self) -> int:
+        return self.__category_id
 
-    @category.setter
-    def category(self, category: int):
+    @category_id.setter
+    def category_id(self, category_id: int):
         """Update the category of the product."""
-        if not (isinstance(category, int)):
+        if not (isinstance(category_id, int)):
             raise TypeError("category must be an interger.")
-        self.__category = category
+        self.__category_id = category_id
         self.update_last_modified()
 
     @property
-    def date_added(self) -> datetime:
+    def date_added(self) -> float:
         return self.__date_added
 
     @property
-    def last_modified(self) -> datetime:
+    def last_modified(self) -> float:
         return self.__last_modified
 
     @property
@@ -126,7 +127,7 @@ class Product:
         """Return a string representation of the product's information."""
         return (f"ID: {self.__id}, name: {self.__name}, "
                 f"price: {self.__price}, quantity: {self.__quantity}, "
-                f"cat_id: {self.__category}, "
+                f"cat_id: {self.__category_id}, "
                 f"date added: {self.__date_added}, "
                 f"last modified: {self.__last_modified}, "
                 f"description: {self.__description}"
