@@ -130,45 +130,64 @@ def search_product():
 def add_product():
     def submit_product():
         try:
-            details = entry_add_product.get().split(",")
-            if len(details) == 4:
-                product_name, price, quantity, category_id = details
+            product_name = entry_name.get()
+            price = entry_price.get()
+            quantity = entry_quantity.get()
+            category_id = entry_category.get()
+
+            # Check if all fields are filled
+            if product_name and price and quantity and category_id:
                 new_product = {
                     "name": product_name,
                     "price": float(price),
                     "quantity": int(quantity),
                     "category": int(category_id)
-                    }
+                }
                 inventory.add_product(new_product)
                 messagebox.showinfo(
                     "Success", f"Product '{product_name}' added successfully."
-                    )
+                )
                 save()
                 new_window.destroy()
             else:
                 messagebox.showwarning(
                     "Input Error",
-                    "Please provide product details in the format: "
-                    "name, price, quantity, category_id."
-                    )
-        except Exception as e:
-            messagebox.showerror("Error", f"Error: {e}")
+                    "Please provide all product details "
+                    "(name, price, quantity, category_id)."
+                )
+        except ValueError:
+            messagebox.showerror(
+                "Error",
+                "Please enter valid values for price, quantity, and category."
+            )
 
     new_window = tk.Toplevel(window)
     new_window.title("Add New Product")
-    new_window.geometry("400x200")
+    new_window.geometry("400x350")
 
-    tk.Label(
-        new_window,
-        text="Enter product details (name, price, quantity, category_id):"
-        ).pack(pady=10)
-    entry_add_product = tk.Entry(new_window)
-    entry_add_product.pack(pady=10)
+    # Labels and Entry widgets for each product detail
+    tk.Label(new_window, text="Enter product name:").pack(pady=5)
+    entry_name = tk.Entry(new_window)
+    entry_name.pack(pady=5)
+
+    tk.Label(new_window, text="Enter product price:").pack(pady=5)
+    entry_price = tk.Entry(new_window)
+    entry_price.pack(pady=5)
+
+    tk.Label(new_window, text="Enter product quantity:").pack(pady=5)
+    entry_quantity = tk.Entry(new_window)
+    entry_quantity.pack(pady=5)
+
+    tk.Label(new_window, text="Enter product category ID:").pack(pady=5)
+    entry_category = tk.Entry(new_window)
+    entry_category.pack(pady=5)
+
+    # Submit button
     submit_button = tk.Button(
         new_window,
         text="Add Product",
         command=submit_product
-        )
+    )
     submit_button.pack(pady=10)
 
 
