@@ -104,7 +104,8 @@ print(product_category_name)
 
 # 08a Get only the product description
 product_description = inventory.get_product_info_by_id(
-    product_id, "description")
+    product_id, "description"
+    )
 print_bold_heading("#08a -Description:", newline=False)
 print(product_description)
 
