@@ -39,6 +39,9 @@ class Product:
         self.__last_modified: float = last_modified
         self.__description = description
 
+    def __str__(self) -> str:
+        return self.get_info()
+    
     def update_last_modified(self):
         """Updates the last_modified timestamp."""
         self.__last_modified: int  = int(time.time())
