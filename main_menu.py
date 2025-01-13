@@ -33,7 +33,7 @@ def push_key_for_next(message="Press Enter to continue..."):
 
 
 # Main menu loop
-print("Welcome to the command-line interface of InventoryPro!'")
+print("Welcome to InventoryPro!'")
 print("What would you like to do?")
 
 while True:
