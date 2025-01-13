@@ -38,6 +38,10 @@ class TestCategory(unittest.TestCase):
         self.assertEqual(result, "Test category 2")
         self.assertIsInstance(result, str)
 
+    def test_get_info(self):
+        self.assertIsInstance(self.category.get_info(), str)
+        self.assertIsNot(self.category.get_info(), "")
+
 
 if __name__ == "__main__":
     unittest.main()
