@@ -33,7 +33,7 @@ def save():
 
 
 def show_login_window():
-    def login():
+    def login(event=None):
         username = entry_username.get()
         password = entry_password.get()
 
@@ -62,6 +62,8 @@ def show_login_window():
 
     login_button = tk.Button(login_window, text="Login", command=login)
     login_button.pack(pady=10)
+
+    login_window.bind('<Return>', login)
 
     login_window.mainloop()
 
@@ -93,7 +95,7 @@ def show_main_window():
 
     # Function to show products by categories
     def show_products_by_category():
-        def submit_category_id():
+        def submit_category_id(event=None):
             try:
                 category_id = int(entry_category_id.get())
                 if category_id in range(
@@ -131,9 +133,13 @@ def show_main_window():
             )
         submit_button.pack(pady=10)
 
+        new_category_window.bind('<Return>', submit_category_id)
+
+        new_category_window.lift()
+
     # Function to search for products
     def search_product():
-        def submit_search():
+        def submit_search(event=None):
             search_term = str(entry_search.get())
             if search_term:
                 try:
@@ -152,6 +158,10 @@ def show_main_window():
                     "Input Error",
                     "Please enter a product name."
                     )
+            # Lift the window to the front
+            new_window.lift()
+            # Destroy the window after submission
+            new_window.destroy()
 
         new_window = tk.Toplevel(window)
         new_window.title("Product Search")
@@ -167,9 +177,13 @@ def show_main_window():
             )
         submit_button.pack(pady=10)
 
+        new_window.bind('<Return>', submit_search)
+
+        new_window.lift()
+
     # Function to add new product
     def add_product():
-        def submit_product():
+        def submit_product(event=None):
             try:
                 product_name = entry_name.get()
                 price = entry_price.get()
@@ -229,9 +243,11 @@ def show_main_window():
         )
         submit_button.pack(pady=10)
 
+        new_window.bind('<Return>', submit_product)
+
     # Function to add new category
     def add_category():
-        def submit_category():
+        def submit_category(event=None):
             category_name = entry_add_category.get()
             if category_name:
                 try:
@@ -264,9 +280,11 @@ def show_main_window():
             )
         submit_button.pack(pady=10)
 
+        new_window.bind('<Return>', submit_category)
+
     # Function to update product details
     def update_product():
-        def submit_update():
+        def submit_update(event=None):
             try:
                 product_id = entry_product_id.get()
                 new_value = entry_new_value.get()
@@ -361,9 +379,11 @@ def show_main_window():
             )
         submit_button.pack(pady=10)
 
+        new_window.bind('<Return>', submit_update)
+
     # Function to remove product or category
     def remove_item():
-        def submit_removal():
+        def submit_removal(event=None):
             try:
                 choice = var_choice.get()
                 if choice == 1:  # Remove Product
@@ -439,6 +459,10 @@ def show_main_window():
             new_window, text="Submit Removal", command=submit_removal
             )
         submit_button.pack(pady=10)
+
+        new_window.bind('<Return>', submit_removal)
+
+        new_window.lift()
 
     def show_inventory_value_options():
         def show_total_value():
