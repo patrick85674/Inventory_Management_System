@@ -48,8 +48,8 @@ while True:
     5 - Remove a product or a category
     6 - Update a product or a category
     7 - Show products by category
-    8 - TIV
-    9 - TIV by category
+    8 - Show total inventory value
+    9 - Show total inventory value by category
     0 - Exit
     """)
     x = input("Please enter choice: ")
