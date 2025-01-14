@@ -321,7 +321,10 @@ class InventoryManager:
         # Find products matching the keyword in their names (case insensitive)
         results = [product for product in self._products.values()
                    if keyword.lower() in product.name.lower()]
-        return results  # Return list of matching products
+        if results:
+            return results  # Return list of matching products
+        else:
+            return None
 
     def find_product_by_id(self, product_id: int) -> Product:
         """Finds a product by ID."""
