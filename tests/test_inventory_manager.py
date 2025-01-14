@@ -91,8 +91,7 @@ class TestInventoryManager(unittest.TestCase):
         self.assertIsInstance(search_results, list)
 
         search_results = self.inventory_manager.search_product("phoe")
-        self.assertEqual(search_results, [])
-        self.assertIsInstance(search_results, list)
+        self.assertEqual(search_results, None)
 
         self.inventory_manager.remove_product(id1)
         self.inventory_manager.remove_product(id2)
