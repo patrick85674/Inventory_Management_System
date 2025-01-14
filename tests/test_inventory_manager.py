@@ -1,9 +1,11 @@
 import unittest
-from inventory.product import Product
+from unittest.mock import patch
 from inventory.inventory_manager import InventoryManager
 
 
 class TestInventoryManager(unittest.TestCase):
+    @patch("inventory.inventory_logger.InventoryLogger._open_filestream",
+           lambda *p: None)
     def setUp(self):
         """Create an InventoryManager instance for testing."""
         self.inventory_manager = InventoryManager()
@@ -67,6 +69,17 @@ class TestInventoryManager(unittest.TestCase):
         self.inventory_manager.remove_product(id1)
         self.inventory_manager.remove_product(id2)
 
+    def test_get_total_inventory_value_by_category(self):
+        """Test calculating the total inventory value."""
+        id1 = self.inventory_manager.add_product(self.product1_data)
+        id2 = self.inventory_manager.add_product(self.product2_data)
+        value = self.inventory_manager.get_total_inventory_value_by_category(1)
+        self.assertEqual(value, 999.99 * 50)
+        value = self.inventory_manager.get_total_inventory_value_by_category(2)
+        self.assertEqual(value, 699.99 * 200)
+        self.inventory_manager.remove_product(id1)
+        self.inventory_manager.remove_product(id2)
+
     def test_search_product(self):
         """Test searching for products by keyword."""
         id1 = self.inventory_manager.add_product(self.product1_data)
@@ -78,8 +91,7 @@ class TestInventoryManager(unittest.TestCase):
         self.assertIsInstance(search_results, list)
 
         search_results = self.inventory_manager.search_product("phoe")
-        self.assertEqual(search_results, [])
-        self.assertIsInstance(search_results, list)
+        self.assertEqual(search_results, None)
 
         self.inventory_manager.remove_product(id1)
         self.inventory_manager.remove_product(id2)
@@ -179,9 +191,20 @@ class TestInventoryManager(unittest.TestCase):
         product_id = self.inventory_manager.add_product(self.product1_data)
         self.inventory_manager.update_product_category(product_id, cat_id)
         product = self.inventory_manager.find_product_by_id(product_id)
-        self.assertEqual(product.category, cat_id)
+        self.assertEqual(product.category_id, cat_id)
         self.inventory_manager.remove_product(product.id)
         self.inventory_manager.remove_category(cat_id)
+
+    def test_is_product_available(self):
+        """Test if a product is available. """
+        id = self.inventory_manager.add_product(self.product1_data)
+        result = self.inventory_manager.is_product_available(id)
+        self.assertEqual(result, True)
+        # test zero quantity
+        self.inventory_manager.update_product_quantity(id, 0)
+        result = self.inventory_manager.is_product_available(id)
+        self.assertEqual(result, False)
+        self.inventory_manager.remove_product(id)
 
 
 if __name__ == "__main__":

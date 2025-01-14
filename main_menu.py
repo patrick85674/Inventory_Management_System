@@ -33,24 +33,29 @@ def push_key_for_next(message="Press Enter to continue..."):
 
 
 # Main menu loop
-print("Welcome to inventory!'\nWhat would you like to do?\n")
-print("""
-      Choose an option:
+print("Welcome to InventoryPro!'")
+print("What would you like to do?")
+
+while True:
+
+    print("""
+    Choose an option:
 
     1 - Products info
     2 - Category info
-    3 - Search
-    4 - Add new
-    5 - Remove
-    6 - Update
+    3 - Search product
+    4 - Add a new product or a category
+    5 - Remove a product or a category
+    6 - Update a product or a category
     7 - Show products by category
-    8 - TIV
-    9 - TIV by category
+    8 - Show total inventory value
+    9 - Show total inventory value by category
     0 - Exit
-""")
-x: int = int(input("Please enter choice: "))  # Convert input to an integer
+    """)
+    x = input("Please enter choice: ")
+    if x.isdigit():
+        x = int(x)
 
-while x != 0:
     if x == 1:  # Get a list of all products
         print("\nAll products in inventory:")
         for product_id in inventory.get_products():
@@ -294,27 +299,15 @@ while x != 0:
             print("Invalid category ID.")
         print()
 
+    elif x == 0:  # Exit
+        break
+
     else:  # Invalid choice
         print("\nInvalid choice. Please try again.")
         print()
 
     push_key_for_next()
     clear_terminal()
-
-    print("""
-    Choose an option:
-    1 - Products info
-    2 - Category info
-    3 - Search
-    4 - Add new
-    5 - Remove
-    6 - Update
-    7 - Show products by category
-    8 - TIV
-    9 - TIV by category
-    0 - Exit
-""")
-    x = int(input("Please enter choice: "))  # Request input again
 
 try:
     exported_data = inventory.export_to_json()

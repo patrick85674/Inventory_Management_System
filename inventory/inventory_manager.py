@@ -1,6 +1,7 @@
 from inventory.product import Product
 from inventory.category import Category
-from datetime import datetime
+from inventory.inventory_logger import InventoryLogger
+import time
 
 
 class InventoryManager:
@@ -10,6 +11,8 @@ class InventoryManager:
         """Initializes the inventory manager with products and categories."""
         self._products: dict[int, Product] = {}
         self._categories: dict[int, Category] = {}
+        self._logger: InventoryLogger = InventoryLogger()
+        self._logger.logToFile(filename="inventory.log")
 
     def load_data_from_json(self, data):
         """Loads products and categories from a JSON structure."""
@@ -18,20 +21,20 @@ class InventoryManager:
             category = Category(
                 cat["id"],
                 cat["name"]
-                )  
+                )
             # Add the category to the inventory
             self.load_categories(category=category)
 
         # Load products from the data
         for prod in data.get("products", []):
-            category = prod.get("category", 0)
+            category_id = prod.get("category_id", 0)
             description = prod.get("description", '')
             product = Product(
                 prod["id"],
                 prod["name"],
                 prod["price"],
                 prod["quantity"],
-                category,
+                category_id,
                 prod["date_added"],
                 prod["last_modified"],
                 description
@@ -39,7 +42,7 @@ class InventoryManager:
             self.load_products(product=product)
 
     def export_to_json(self):
-        """Exports the current products and categories to a 
+        """Exports the current products and categories to a
         JSON-compatible dictionary."""
         # Serialize categories
         categories = [
@@ -57,7 +60,7 @@ class InventoryManager:
                 "name": prod.name,
                 "price": prod.price,
                 "quantity": prod.quantity,
-                "category": prod.category,
+                "category_id": prod.category_id,
                 "date_added": prod.date_added,
                 "last_modified": prod.last_modified,
                 "description": prod.description
@@ -93,6 +96,7 @@ class InventoryManager:
         new_category = Category(new_id, name)
         # Add the new category to the inventory
         self._categories[new_id] = new_category
+        self._logger.log(f"Adding new category {name}, id {new_id}.")
         return new_id
 
     def load_products(self, product: Product):
@@ -128,13 +132,13 @@ class InventoryManager:
         # Generate new ID for the product
         new_id = self.get_max_product_id() + 1
 
-        date_added: datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        last_modified: datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        date_added: float = float(time.time())
+        last_modified: float = date_added
 
         # Create a new Product object
         new_product = Product(id=new_id, name=name, price=price,
                               quantity=quantity,
-                              category=category,
+                              category_id=category,
                               date_added=date_added,
                               last_modified=last_modified,
                               description=description
@@ -142,6 +146,7 @@ class InventoryManager:
 
         # Add the new product to the inventory
         self._products[new_id] = new_product
+        self._logger.log(f"Adding new product {name}, id {new_id}.")
         return new_id
 
     def remove_product(self, product_id: int):
@@ -149,6 +154,8 @@ class InventoryManager:
         if product_id not in self._products:
             raise ValueError(
                 f"Product id {product_id} not found in inventory.")
+        name = self._products[product_id].name
+        self._logger.log(f"Removing product {name}, id {product_id}.")
         del self._products[product_id]
 
     def remove_category(self, category_id: int):
@@ -156,6 +163,8 @@ class InventoryManager:
         if category_id not in self._categories:
             raise ValueError(
                 f"Category ID {category_id} not found in inventory.")
+        name = self._categories[category_id].name
+        self._logger.log(f"Removing category {name}, id {category_id}.")
         # Set the name of the category to "Unknown"
         self._categories[category_id].name = "Unknown"
 
@@ -180,6 +189,9 @@ class InventoryManager:
         """
         # Use validate_product_id to ensure the product exists
         product = self.validate_product_id(product_id)
+        oldname = product.name
+        self._logger.log(f"Updating product name {oldname} to {name}, "
+                         f"id {product_id}.")
         product.name = name  # Calls the setter in the Product class
 
     # update category name
@@ -190,29 +202,40 @@ class InventoryManager:
         if category_id not in self._categories:
             raise ValueError(f"Category ID {category_id} not "
                              "found in the inventory.")
-
+        oldname = self._categories[category_id].name
+        self._logger.log(f"Updating category name {oldname} to {name}, "
+                         f"id {category_id}.")
         # Calls the setter in the Category class
         self._categories[category_id].name = name
 
     def update_product_quantity(self, product_id: int, quantity: int):
         """Updates the quantity of a product in the inventory."""
         self.validate_product_id(product_id)
+        self._logger.log(f"Updating product quantity {quantity}, "
+                         f"id {product_id}.")
         self._products[product_id].quantity = quantity
 
     def update_product_price(self, product_id: int, price: float):
         """Updates the price of a product in the inventory."""
         self.validate_product_id(product_id)
+        self._logger.log(f"Updating product price {price}, "
+                         f"id {product_id}.")
         self._products[product_id].price = price
 
     def update_product_description(self, product_id: int, description: str):
         """Updates the price of a product in the inventory."""
         self.validate_product_id(product_id)
+        self._logger.log(f"Updating product description {description}, "
+                         f"id {product_id}.")
         self._products[product_id].description = description
 
     def update_product_category(self, product_id: int, category_id: int):
         """Update the category id of a product in the inventory."""
         self.validate_product_id(product_id)
-        self._products[product_id].category = category_id
+        old_id = self._products[product_id].category_id
+        self._logger.log(f"Updating product category {old_id} to "
+                         f"{category_id}, product id {product_id}.")
+        self._products[product_id].category_id = category_id
 
     # get informations
     def get_category_info_by_id(self, category_id: int,
@@ -254,6 +277,10 @@ class InventoryManager:
             return str(product.quantity)
         elif info_type == "description":
             return str(product.description)
+        elif info_type == "date_added":
+            return str(product.date_added)
+        elif info_type == "last_modified":
+            return str(product.last_modified)
         else:
             raise ValueError(f"Invalid info type '{info_type}' specified. Use "
                              "'name', 'price', 'quantity' or 'description'.")
@@ -285,7 +312,7 @@ class InventoryManager:
         """Calculates the total value of the inventory for a given category."""
         return (sum(product.price * product.quantity for product in
                     self._products.values()
-                    if product.category == category_id))
+                    if product.category_id == category_id))
 
     # search #
     def search_product(self, keyword: str) -> list[Product]:
@@ -294,7 +321,7 @@ class InventoryManager:
         results = [product for product in self._products.values()
                    if keyword.lower() in product.name.lower()]
         if results:
-            return results
+            return results  # Return list of matching products
         else:
             return None
 
@@ -313,7 +340,7 @@ class InventoryManager:
     def get_products_by_category(self, category_id: int) -> list:
         """Returns a list of product ids for a given category."""
         return [product.get_info() for product in self._products.values()
-                if product.category == category_id]
+                if product.category_id == category_id]
 
     def validate_product_id(self, product_id: int):
         """Validates the existence of a product in the inventory by its ID."""
@@ -327,9 +354,10 @@ class InventoryManager:
         product = self.validate_product_id(product_id)
 
         # Retrieve the category name using the product's category ID
-        category_name = self.get_category_info_by_id(product.category, "name")
+        category_name = self.get_category_info_by_id(product.category_id,
+                                                     "name")
         if not category_name:
-            raise ValueError(f"Category ID {product.category} is invalid "
+            raise ValueError(f"Category ID {product.category_id} is invalid "
                              "or does not exist.")
         return category_name
 
