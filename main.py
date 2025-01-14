@@ -2,7 +2,7 @@
 # from inventory.category import Category
 from inventory.inventory_manager import InventoryManager
 from data_handler import DataHandler
-# from datetime import datetime
+from datetime import datetime
 import json
 import os
 
@@ -99,14 +99,16 @@ print(product_quantity)
 # 07a Get only the product quantity
 product_date_added = inventory.get_product_info_by_id(product_id, "date_added")
 print_bold_heading("#07a -date_added:", newline=False)
-print(inventory.format_timestamp(product_date_added))
+print(datetime.fromtimestamp(
+    float(product_date_added)).strftime("%Y-%m-%d %H:%M:%S"))
 
 # 07b Get only the product quantity
 product_last_modified = inventory.get_product_info_by_id(
     product_id, "last_modified"
     )
 print_bold_heading("#07b -last_modified:", newline=False)
-print(inventory.format_timestamp(product_last_modified))
+print(datetime.fromtimestamp(
+    float(product_last_modified)).strftime("%Y-%m-%d %H:%M:%S"))
 
 # 08 Get only the product category
 product_category_name = inventory.get_product_category_name(product_id)
