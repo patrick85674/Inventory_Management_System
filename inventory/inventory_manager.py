@@ -1,7 +1,6 @@
 from inventory.product import Product
 from inventory.category import Category
 from inventory.inventory_logger import InventoryLogger
-from datetime import datetime
 import time
 
 
@@ -22,7 +21,7 @@ class InventoryManager:
             category = Category(
                 cat["id"],
                 cat["name"]
-                )  
+                )
             # Add the category to the inventory
             self.load_categories(category=category)
 
@@ -43,7 +42,7 @@ class InventoryManager:
             self.load_products(product=product)
 
     def export_to_json(self):
-        """Exports the current products and categories to a 
+        """Exports the current products and categories to a
         JSON-compatible dictionary."""
         # Serialize categories
         categories = [
@@ -133,8 +132,8 @@ class InventoryManager:
         # Generate new ID for the product
         new_id = self.get_max_product_id() + 1
 
-        date_added:float= float(time.time())
-        last_modified:float = date_added
+        date_added: float = float(time.time())
+        last_modified: float = date_added
 
         # Create a new Product object
         new_product = Product(id=new_id, name=name, price=price,
@@ -352,7 +351,8 @@ class InventoryManager:
         product = self.validate_product_id(product_id)
 
         # Retrieve the category name using the product's category ID
-        category_name = self.get_category_info_by_id(product.category_id, "name")
+        category_name = self.get_category_info_by_id(product.category_id,
+                                                     "name")
         if not category_name:
             raise ValueError(f"Category ID {product.category_id} is invalid "
                              "or does not exist.")
@@ -368,10 +368,3 @@ class InventoryManager:
         product = self._products.get(product_id)
         # Check if the product exists and has a quantity greater than 0
         return product is not None and product.quantity > 0
-    
-    @staticmethod
-    def format_timestamp(timestamp):
-        # Gehe davon aus, dass der Timestamp ein String ist und wandle ihn in einen Integer um
-        timestamp = int(timestamp)  # Umwandlung von str zu int
-        return datetime.fromtimestamp(timestamp).strftime("%Y-%m-%d %H:%M:%S")
-
