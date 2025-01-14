@@ -33,7 +33,7 @@ def save():
 
 
 def show_login_window():
-    def login():
+    def login(event=None):
         username = entry_username.get()
         password = entry_password.get()
 
@@ -62,6 +62,8 @@ def show_login_window():
 
     login_button = tk.Button(login_window, text="Login", command=login)
     login_button.pack(pady=10)
+
+    login_window.bind('<Return>', login)
 
     login_window.mainloop()
 
@@ -93,7 +95,7 @@ def show_main_window():
 
     # Function to show products by categories
     def show_products_by_category():
-        def submit_category_id():
+        def submit_category_id(event=None):
             try:
                 category_id = int(entry_category_id.get())
                 if category_id in range(
@@ -131,15 +133,21 @@ def show_main_window():
             )
         submit_button.pack(pady=10)
 
+        new_category_window.bind('<Return>', submit_category_id)
+
+        new_category_window.lift()
+
     # Function to search for products
     def search_product():
-        def submit_search():
+        def submit_search(event=None):
             search_term = str(entry_search.get())
             if search_term:
                 try:
                     search_results = inventory.search_product(search_term)
                     output_text = f"Product Info for '{search_term}':\n"
-                    if isinstance(search_results, list):
+                    if not search_results:
+                        output_text = f"0 products found with '{search_term}'."
+                    elif isinstance(search_results, list):
                         for result in search_results:
                             output_text += f"{result}\n{'-'*40}\n"
                     else:
@@ -152,6 +160,10 @@ def show_main_window():
                     "Input Error",
                     "Please enter a product name."
                     )
+            # Lift the window to the front
+            new_window.lift()
+            # Destroy the window after submission
+            new_window.destroy()
 
         new_window = tk.Toplevel(window)
         new_window.title("Product Search")
@@ -167,55 +179,81 @@ def show_main_window():
             )
         submit_button.pack(pady=10)
 
+        new_window.bind('<Return>', submit_search)
+
+        new_window.lift()
+
     # Function to add new product
     def add_product():
-        def submit_product():
+        def submit_product(event=None):
             try:
-                details = entry_add_product.get().split(",")
-                if len(details) == 4:
-                    product_name, price, quantity, category_id = details
+                product_name = entry_name.get()
+                price = entry_price.get()
+                quantity = entry_quantity.get()
+                category_id = entry_category.get()
+
+                # Check if all fields are filled
+                if product_name and price and quantity and category_id:
                     new_product = {
                         "name": product_name,
                         "price": float(price),
                         "quantity": int(quantity),
                         "category": int(category_id)
-                        }
+                    }
                     inventory.add_product(new_product)
                     messagebox.showinfo(
                         "Success",
                         f"Product '{product_name}' added successfully."
-                        )
+                    )
                     save()
                     new_window.destroy()
                 else:
                     messagebox.showwarning(
                         "Input Error",
-                        "Please provide product details in the format: "
-                        "name, price, quantity, category_id."
-                        )
-            except Exception as e:
-                messagebox.showerror("Error", f"Error: {e}")
+                        "Please provide all product details "
+                        "(name, price, quantity, category_id)."
+                    )
+            except ValueError:
+                messagebox.showerror(
+                    "Error",
+                    "Please enter valid values for "
+                    "price, quantity, and category."
+                )
 
         new_window = tk.Toplevel(window)
         new_window.title("Add New Product")
-        new_window.geometry("400x200")
+        new_window.geometry("400x350")
 
-        tk.Label(
-            new_window,
-            text="Enter product details (name, price, quantity, category_id):"
-            ).pack(pady=10)
-        entry_add_product = tk.Entry(new_window)
-        entry_add_product.pack(pady=10)
+        # Labels and Entry widgets for each product detail
+        tk.Label(new_window, text="Enter product name:").pack(pady=5)
+        entry_name = tk.Entry(new_window)
+        entry_name.pack(pady=5)
+
+        tk.Label(new_window, text="Enter product price:").pack(pady=5)
+        entry_price = tk.Entry(new_window)
+        entry_price.pack(pady=5)
+
+        tk.Label(new_window, text="Enter product quantity:").pack(pady=5)
+        entry_quantity = tk.Entry(new_window)
+        entry_quantity.pack(pady=5)
+
+        tk.Label(new_window, text="Enter product category ID:").pack(pady=5)
+        entry_category = tk.Entry(new_window)
+        entry_category.pack(pady=5)
+
+        # Submit button
         submit_button = tk.Button(
             new_window,
             text="Add Product",
             command=submit_product
-            )
+        )
         submit_button.pack(pady=10)
+
+        new_window.bind('<Return>', submit_product)
 
     # Function to add new category
     def add_category():
-        def submit_category():
+        def submit_category(event=None):
             category_name = entry_add_category.get()
             if category_name:
                 try:
@@ -248,9 +286,11 @@ def show_main_window():
             )
         submit_button.pack(pady=10)
 
+        new_window.bind('<Return>', submit_category)
+
     # Function to update product details
     def update_product():
-        def submit_update():
+        def submit_update(event=None):
             try:
                 product_id = entry_product_id.get()
                 new_value = entry_new_value.get()
@@ -297,8 +337,12 @@ def show_main_window():
                         "Input Error", "Please select a valid update option."
                         )
                 save()
+
+                # Lift the window to the front
+                new_window.lift()
                 # Close the update window after submission
                 new_window.destroy()
+
             except Exception as e:
                 messagebox.showerror("Error", f"Error: {e}")
 
@@ -345,9 +389,11 @@ def show_main_window():
             )
         submit_button.pack(pady=10)
 
+        new_window.bind('<Return>', submit_update)
+
     # Function to remove product or category
     def remove_item():
-        def submit_removal():
+        def submit_removal(event=None):
             try:
                 choice = var_choice.get()
                 if choice == 1:  # Remove Product
@@ -385,8 +431,12 @@ def show_main_window():
                         "Please select either Product or Category to remove."
                         )
                 save()
+
+                # Lift the window to the front
+                new_window.lift()
                 # Close the removal window after submission
                 new_window.destroy()
+
             except Exception as e:
                 messagebox.showerror("Error", f"Error: {e}")
 
@@ -424,6 +474,10 @@ def show_main_window():
             )
         submit_button.pack(pady=10)
 
+        new_window.bind('<Return>', submit_removal)
+
+        new_window.lift()
+
     def show_inventory_value_options():
         def show_total_value():
             total_value = inventory.get_total_inventory_value()
@@ -435,7 +489,7 @@ def show_main_window():
             new_window.destroy()
 
         def show_value_by_category():
-            def submit_category_id():
+            def submit_category_id(event=None):
                 try:
                     category_id = int(entry_category_id.get())
                     if category_id in range(
@@ -456,6 +510,12 @@ def show_main_window():
                         messagebox.showwarning(
                             "Invalid Input", "Category ID is not valid."
                             )
+
+                    # Lift the window to the front
+                    new_window.lift()
+                    # Destroy the window after submission
+                    new_window.destroy()
+
                 except ValueError as e:
                     messagebox.showerror("Error", f"Invalid input: {e}")
 
@@ -476,6 +536,9 @@ def show_main_window():
                 command=submit_category_id
                 )
             submit_button.pack(pady=10)
+
+            # For the update_product function
+            new_category_window.bind('<Return>', submit_category_id)
 
         # Create a new window with options to choose
         new_window = tk.Toplevel(window)
