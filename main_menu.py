@@ -41,8 +41,8 @@ while True:
     print("""
     Choose an option:
 
-    1 - Products info
-    2 - Category info
+    1 - List all products
+    2 - List all categories
     3 - Search product
     4 - Add a new product or a category
     5 - Remove a product or a category
