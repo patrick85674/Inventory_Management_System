@@ -52,7 +52,9 @@ while True:
     9 - TIV by category
     0 - Exit
     """)
-    x: int = int(input("Please enter choice: "))  # Convert input to an integer
+    x = input("Please enter choice: ")
+    if x.isdigit():
+        x = int(x)
 
     if x == 1:  # Get a list of all products
         print("\nAll products in inventory:")
