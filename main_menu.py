@@ -266,8 +266,11 @@ while True:
                 products_by_category = inventory.get_products_by_category(
                     category_id)
                 print(f"\nProducts in category ID {category_id}:")
-                for product in products_by_category:
-                    print(product)
+                if not products_by_category:
+                    print("None")
+                else:
+                    for product in products_by_category:
+                        print(product)
             except ValueError as e:
                 print(e)
         else:
