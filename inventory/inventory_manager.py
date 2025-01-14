@@ -296,7 +296,7 @@ class InventoryManager:
         if results:
             return results
         else:
-            raise ValueError("No products found matching the keyword.")
+            return None
 
     def find_product_by_id(self, product_id: int) -> Product:
         """Finds a product by ID."""
