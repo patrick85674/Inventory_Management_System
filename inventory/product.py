@@ -1,5 +1,6 @@
 import time
 
+
 class Product:
     """Represents a product with a name, price, quantity, and category."""
 
@@ -41,10 +42,10 @@ class Product:
 
     def __str__(self) -> str:
         return self.get_info()
-    
+
     def update_last_modified(self):
         """Updates the last_modified timestamp."""
-        self.__last_modified: int  = int(time.time())
+        self.__last_modified = time.time()
 
     @property
     def id(self) -> int:
