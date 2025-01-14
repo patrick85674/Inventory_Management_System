@@ -97,26 +97,28 @@ def show_products_by_category():
 
     new_category_window.lift()
 
+
 # Function to search for products
 def search_product():
     def submit_search(event=None):
         search_term = str(entry_search.get())
         if search_term:
-            try:
-                search_results = inventory.search_product(search_term)
-                output_text = f"Product Info for '{search_term}':\n"
-                if isinstance(search_results, list):
-                    for result in search_results:
-                        output_text += f"{result}\n{'-'*40}\n"
-                else:
-                    output_text += f"{search_results}\n{'-'*40}\n"
-                display_output(output_text)
-            except ValueError as e:
-                messagebox.showerror("Error", f"Error: {e}")
+            search_results = inventory.search_product(search_term)
+            output_text = f"Product Info for '{search_term}':\n"
+            # Check if the search result is empty or not found
+            if not search_results:
+                output_text = f"0 products found with '{search_term}'."
+            elif isinstance(search_results, list):
+                for result in search_results:
+                    output_text += f"{result}\n{'-'*40}\n"
+            else:
+                output_text += f"{search_results}\n{'-'*40}\n"
+            display_output(output_text)
         else:
             messagebox.showwarning(
                 "Input Error", "Please enter a product name."
                 )
+
         # Lift the window to the front
         new_window.lift()
         # Destroy the window after submission
@@ -245,7 +247,8 @@ def add_category():
         )
     submit_button.pack(pady=10)
 
-    new_window.bind('<Return>', submit_category)   # For the update_product function
+    # For the update_product function
+    new_window.bind('<Return>', submit_category)
 
     new_window.lift()
 
@@ -260,7 +263,7 @@ def update_product():
             if not product_id or not new_value:
                 messagebox.showwarning(
                     "Input Error",
-                    "Please provide both product ID and new value."
+                    "Product ID does not exist."
                     )
                 return
 
@@ -300,7 +303,12 @@ def update_product():
                     "Please select a valid update option."
                     )
             save()
-            new_window.destroy()  # Close the update window after submission
+
+            # Lift the window to the front
+            new_window.lift()
+            # Destroy the window after submission
+            new_window.destroy()
+
         except Exception as e:
             messagebox.showerror("Error", f"Error: {e}")
 
@@ -347,7 +355,8 @@ def update_product():
         )
     submit_button.pack(pady=10)
 
-    new_window.bind('<Return>', submit_update)   # For the update_product function
+    # For the update_product function
+    new_window.bind('<Return>', submit_update)
 
 
 # Function to remove product or category
@@ -390,7 +399,12 @@ def remove_item():
                     "Please select either Product or Category to remove."
                     )
             save()
-            new_window.destroy()  # Close the removal window after submission
+
+            # Lift the window to the front
+            new_window.lift()
+            # Close the removal window after submission
+            new_window.destroy()
+
         except Exception as e:
             messagebox.showerror("Error", f"Error: {e}")
 
@@ -444,7 +458,7 @@ def show_inventory_value_options():
         new_window.destroy()
 
     def show_value_by_category():
-        def submit_category_id():
+        def submit_category_id(event=None):
             try:
                 category_id = int(entry_category_id.get())
                 if category_id in range(
@@ -465,6 +479,12 @@ def show_inventory_value_options():
                     messagebox.showwarning(
                         "Invalid Input", "Category ID is not valid."
                         )
+
+                # Lift the window to the front
+                new_window.lift()
+                # Destroy the window after submission
+                new_window.destroy()
+
             except ValueError as e:
                 messagebox.showerror("Error", f"Invalid input: {e}")
 
@@ -483,6 +503,9 @@ def show_inventory_value_options():
             command=submit_category_id
             )
         submit_button.pack(pady=10)
+
+        # For the update_product function
+        new_category_window.bind('<Return>', submit_category_id)
 
     # Create a new window with options to choose
     new_window = tk.Toplevel(window)
