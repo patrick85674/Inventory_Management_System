@@ -1,4 +1,5 @@
 import time
+from datetime import datetime
 
 
 class Product:
@@ -126,10 +127,20 @@ class Product:
 
     def get_info(self) -> str:
         """Return a string representation of the product's information."""
+        if self.__date_added:
+            date_added: str = datetime.fromtimestamp(
+                self.__date_added).strftime("%Y-%m-%d %H:%M:%S")
+        else:
+            date_added: str = "Undefined"
+        if self.__last_modified:
+            last_modified: str = (datetime.fromtimestamp(
+                self.__last_modified).strftime("%Y-%m-%d %H:%M:%S"))
+        else:
+            last_modified: str = "Undefined"
         return (f"ID: {self.__id}, name: {self.__name}, "
                 f"price: {self.__price}, quantity: {self.__quantity}, "
-                f"cat_id: {self.__category_id}, "
-                f"date added: {self.__date_added}, "
-                f"last modified: {self.__last_modified}, "
+                f"category id: {self.__category_id}, "
+                f"date added: {date_added}, "
+                f"last modified: {last_modified}, "
                 f"description: {self.__description}"
                 )
