@@ -2,8 +2,9 @@ from inventory.product import Product
 from inventory.category import Category
 from inventory.inventory_logger import InventoryLogger
 import time
+from user.user_manager import require_login
 
-
+@require_login
 class InventoryManager:
     """Manages a collection of products and categories in an inventory."""
 

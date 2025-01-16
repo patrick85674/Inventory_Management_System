@@ -5,9 +5,8 @@ from user.user import User
 
 
 def require_login(func):
-    # Ensure user is logged in before accessing certain functions
     def wrapper(*args, **kwargs):
-        if not User.current_user:
+        if not UserManager.is_user_logged_in():
             print("You must be logged in to perform this action.")
             return None
         return func(*args, **kwargs)
@@ -186,6 +185,11 @@ class UserManager:
         user.lock_until = None  # Clear lock_until if login is successful
         User.current_user = user
         return user
+    
+    @staticmethod
+    def is_user_logged_in():
+        """Returns True if a user is logged in, otherwise False."""
+        return bool(User.current_user)
 
     @require_login
     def logout(self):
