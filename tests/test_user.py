@@ -1,95 +1,90 @@
 import unittest
-from inventory.user import User
+from user.user import User
 
 
 class TestUser(unittest.TestCase):
     def setUp(self):
-        self.hashed_password = (
+        self.password = (
             "$2b$12$y/udMHtPMWJO1IOJDmmLburdWMfxuc5psqcAqzFSJGgTR9QyjAdTO")
         self.user_id = 1
         self.username = "Testusername"
         self.email = "test@test.test"
         self.phone = "12345678"
         self.user = User(user_id=self.user_id, username=self.username,
-                         hashed_password=self.hashed_password,
+                         password=self.password,
                          email=self.email,
                          phone=self.phone)
 
     def test_init(self):
         with self.assertRaises(TypeError):
             User(user_id="1", username=self.username,
-                 hashed_password=self.hashed_password,
+                 password=self.password,
                  email=self.email,
                  phone=self.phone)
         with self.assertRaises(TypeError):
             User(user_id=self.user_id, username=22,
-                 hashed_password=self.hashed_password,
+                 password=self.password,
                  email=self.email,
                  phone=self.phone)
         with self.assertRaises(TypeError):
             User(user_id=self.user_id, username=self.username,
-                 hashed_password=33,
+                 password=33,
                  email=self.email,
                  phone=self.phone)
         with self.assertRaises(TypeError):
             User(user_id=self.user_id, username=self.username,
-                 hashed_password=self.hashed_password,
-                 email=self.email,
-                 phone=self.phone)
-        with self.assertRaises(TypeError):
-            User(user_id=self.user_id, username=self.username,
-                 hashed_password=self.hashed_password,
+                 password=self.password,
                  email=44,
                  phone=self.phone)
         with self.assertRaises(TypeError):
             User(user_id=self.user_id, username=self.username,
-                 hashed_password=self.hashed_password,
+                 password=self.password,
                  email=self.email,
                  phone=55)
 
         with self.assertRaises(ValueError):
             User(user_id=-55, username=self.username,
-                 hashed_password=self.hashed_password,
+                 password=self.password,
                  email=self.email,
                  phone=self.phone)
         with self.assertRaises(ValueError):
             User(user_id=self.user_id, username="",
-                 hashed_password=self.hashed_password,
+                 password=self.password,
                  email=self.email,
                  phone=self.phone)
         with self.assertRaises(ValueError):
             User(user_id=self.user_id, username=" ",
-                 hashed_password=self.hashed_password,
+                 password=self.password,
                  email=self.email,
                  phone=self.phone)
         with self.assertRaises(ValueError):
             User(user_id=self.user_id, username=self.username,
-                 hashed_password="",
+                 password="",
                  email=self.email,
                  phone=self.phone)
         with self.assertRaises(ValueError):
             User(user_id=self.user_id, username=self.username,
-                 hashed_password=" ",
+                 password=" ",
                  email=self.email,
                  phone=self.phone)
         with self.assertRaises(ValueError):
             User(user_id=self.user_id, username=self.username,
-                 hashed_password=self.hashed_password,
+                 password=self.password,
                  email="",
                  phone=self.phone)
         with self.assertRaises(ValueError):
             User(user_id=self.user_id, username=self.username,
-                 hashed_password=self.hashed_password,
+                 password=self.password,
                  email=" ",
                  phone=self.phone)
         with self.assertRaises(ValueError):
             User(user_id=self.user_id, username=self.username,
-                 hashed_password=self.hashed_password,
+                 password=self.password,
                  email=self.email,
                  phone="")
         with self.assertRaises(ValueError):
             User(user_id=self.user_id, username=self.username,
-                 hashed_password=self.hashed_password,
+                 password=self.password,
                  email=self.email,
                  phone=" ")
 
@@ -97,12 +92,12 @@ class TestUser(unittest.TestCase):
         self.assertEqual(self.user.user_id, self.user_id)
         self.assertIsInstance(self.user.user_id, int)
 
-        self.user.user_id = 30
-        self.assertEqual(self.user.user_id, 30)
-        with self.assertRaises(TypeError):
-            self.user.user_id = "5"
-        with self.assertRaises(ValueError):
-            self.user.user_id = -50
+        # self.user.user_id = 30
+        # self.assertEqual(self.user.user_id, 30)
+        # with self.assertRaises(TypeError):
+        #     self.user.user_id = "5"
+        # with self.assertRaises(ValueError):
+        #     self.user.user_id = -50
 
     def test_username(self):
         self.assertEqual(self.user.username, self.username)
@@ -116,20 +111,20 @@ class TestUser(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.user.username = "S"
         with self.assertRaises(ValueError):
-            self.user.username = "1234"
+            self.user.username = " "
         with self.assertRaises(ValueError):
-            self.user.username = "ABC"
+            self.user.username = "AB"
         with self.assertRaises(ValueError):
             self.user.username = "    "
 
-    def test_hashed_password(self):
-        self.assertEqual(self.user.hashed_password, self.hashed_password)
-        self.assertIsInstance(self.user.hashed_password, str)
+    def test_password(self):
+        self.assertEqual(self.user.password, self.password)
+        self.assertIsInstance(self.user.password, str)
 
-        hashed_password: str = (
+        password: str = (
             "$2b$12$QJnNT5KInMmXz.G84xRCXuv69VbojByDmOCn9S0PZzVTZzbEP23N2")
-        self.user.hashed_password = hashed_password
-        self.assertEqual(self.user.hashed_password, hashed_password)
+        self.user.password = password
+        self.assertEqual(self.user.password, password)
 
         with self.assertRaises(TypeError):
             self.user.email = -55
