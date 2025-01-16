@@ -71,6 +71,7 @@ class User:
     def _validate_password(self, password: str):
         if not isinstance(password, str):
             raise TypeError("Password must be a string.")
+        
         if not password.strip():
             raise ValueError("Password must be a non-empty string.")
         if len(password) < 8:
@@ -83,7 +84,7 @@ class User:
             raise ValueError("Password must contain at least one lowercase letter.")
         if not any(char in "!@#$%^&*()-_+=" for char in password):
             raise ValueError("Password must contain at least one special character (!@#$%^&*()-_+=).")
-
+        
     # Helper method for validating email
     def _validate_email(self, email: str):
         if email is not None:
