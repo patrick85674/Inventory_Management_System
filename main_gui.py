@@ -555,7 +555,7 @@ button_frame.pack(pady=10)
 # Add buttons for menu options
 btn_show_products = tk.Button(
     button_frame,
-    text="Show Products",
+    text="List all products",
     command=show_products,
     width=20
 )
@@ -563,7 +563,7 @@ btn_show_products.grid(column=0, row=0, sticky=tk.NSEW, padx=2, pady=2)
 
 btn_show_categories = tk.Button(
     button_frame,
-    text="Show Categories",
+    text="List all categories",
     command=show_categories,
     width=20
 )
@@ -572,7 +572,7 @@ btn_show_categories.grid(column=0, row=1, sticky=tk.NSEW, padx=2, pady=2)
 # Add a new button for showing products by category
 btn_show_products_by_category = tk.Button(
     button_frame,
-    text="Show Products by Category",
+    text="List products by category",
     command=show_products_by_category,
     width=30
 )
@@ -581,7 +581,7 @@ btn_show_products_by_category.grid(column=1, row=0, sticky=tk.NSEW,
 
 btn_search_product = tk.Button(
     button_frame,
-    text="Search Product",
+    text="Search product",
     command=search_product,
     width=20
 )
@@ -589,7 +589,7 @@ btn_search_product.grid(column=1, row=1, sticky=tk.NSEW, padx=2, pady=2)
 
 btn_add_product = tk.Button(
     button_frame,
-    text="Add Product",
+    text="Add product",
     command=add_product,
     width=20
 )
@@ -597,7 +597,7 @@ btn_add_product.grid(column=2, row=0, sticky=tk.NSEW, padx=2, pady=2)
 
 btn_add_category = tk.Button(
     button_frame,
-    text="Add Category",
+    text="Add category",
     command=add_category,
     width=20
 )
@@ -606,7 +606,7 @@ btn_add_category.grid(column=2, row=1, sticky=tk.NSEW, padx=2, pady=2)
 # Add the "Update Product" button to the main window
 btn_update_product = tk.Button(
     button_frame,
-    text="Update Product",
+    text="Update product",
     command=update_product,
     width=20
 )
@@ -615,7 +615,7 @@ btn_update_product.grid(column=3, row=0, sticky=tk.NSEW, padx=2, pady=2)
 # Add the "Remove Product/Category" button to the main window
 btn_remove_item = tk.Button(
     button_frame,
-    text="Remove Product/Category",
+    text="Remove product/category",
     command=remove_item,
     width=20
 )
@@ -624,7 +624,7 @@ btn_remove_item.grid(column=3, row=1, sticky=tk.NSEW, padx=2, pady=2)
 # Add a new button for Total Inventory Value options
 btn_inventory_value_options = tk.Button(
     button_frame,
-    text="Total Inventory Value",
+    text="Total inventory value",
     command=show_inventory_value_options,
     width=30
 )
@@ -633,7 +633,7 @@ btn_inventory_value_options.grid(column=4, row=0, sticky=tk.NSEW,
 
 btn_inventory_value_options = tk.Button(
     button_frame,
-    text="Total Inventory Value by Category",
+    text="Total inventory value by category",
     command=show_inventory_value_options,
     width=30
 )
