@@ -447,85 +447,59 @@ def remove_item():
     new_window.lift()
 
 
-def show_inventory_value_options():
-    def show_total_value():
-        total_value = inventory.get_total_inventory_value()
-        output_text = (
-            f"\nTotal Inventory Value for All Products: €"
-            f"{total_value:.2f}\n"
-        )
-        display_output(output_text)
-        new_window.destroy()
+def show_total_value():
+    total_value = inventory.get_total_inventory_value()
+    output_text = (
+        f"\nTotal Inventory Value for All Products: €"
+        f"{total_value:.2f}\n"
+    )
+    display_output(output_text)
 
-    def show_value_by_category():
-        def submit_category_id(event=None):
-            try:
-                category_id = int(entry_category_id.get())
-                if category_id in range(
-                    0, inventory.get_max_category_id() + 1
-                ):
-                    total_value = (
-                        inventory.get_total_inventory_value_by_category(
-                            category_id
-                            )
-                    )
-                    output_text = (
-                        f"\nTotal Inventory Value for Category ID"
-                        f"{category_id}: €{total_value:.2f}\n"
-                    )
-                    display_output(output_text)
-                    new_category_window.destroy()
-                else:
-                    messagebox.showwarning(
-                        "Invalid Input", "Category ID is not valid."
+
+def show_value_by_category():
+    def submit_category_id(event=None):
+        try:
+            category_id = int(entry_category_id.get())
+            if category_id in range(
+                0, inventory.get_max_category_id() + 1
+            ):
+                total_value = (
+                    inventory.get_total_inventory_value_by_category(
+                        category_id
                         )
+                )
+                output_text = (
+                    f"\nTotal Inventory Value for Category ID"
+                    f"{category_id}: €{total_value:.2f}\n"
+                )
+                display_output(output_text)
+                new_category_window.destroy()
+            else:
+                messagebox.showwarning(
+                    "Invalid Input", "Category ID is not valid."
+                    )
+        except ValueError as e:
+            messagebox.showerror("Error", f"Invalid input: {e}")
 
-                # Lift the window to the front
-                new_window.lift()
-                # Destroy the window after submission
-                new_window.destroy()
+    # New window to enter category ID
+    new_category_window = tk.Toplevel(window)
+    new_category_window.title("Enter Category ID")
+    new_category_window.geometry("400x200")
 
-            except ValueError as e:
-                messagebox.showerror("Error", f"Invalid input: {e}")
+    tk.Label(new_category_window, text="Enter category ID:").pack(pady=10)
+    entry_category_id = tk.Entry(new_category_window)
+    entry_category_id.pack(pady=10)
 
-        # New window to enter category ID
-        new_category_window = tk.Toplevel(window)
-        new_category_window.title("Enter Category ID")
-        new_category_window.geometry("400x200")
-
-        tk.Label(new_category_window, text="Enter category ID:").pack(pady=10)
-        entry_category_id = tk.Entry(new_category_window)
-        entry_category_id.pack(pady=10)
-
-        submit_button = tk.Button(
-            new_category_window,
-            text="Get Value by Category",
-            command=submit_category_id
-            )
-        submit_button.pack(pady=10)
-
-        # For the update_product function
-        new_category_window.bind('<Return>', submit_category_id)
-
-    # Create a new window with options to choose
-    new_window = tk.Toplevel(window)
-    new_window.title("Total Inventory Value Options")
-    new_window.geometry("400x200")
-
-    # Add buttons for both options
-    btn_total_value = tk.Button(
-        new_window,
-        text="Total Inventory Value (All Products)",
-        command=show_total_value
+    submit_button = tk.Button(
+        new_category_window,
+        text="Get Value by Category",
+        command=submit_category_id
         )
-    btn_total_value.pack(pady=10)
+    submit_button.pack(pady=10)
 
-    btn_value_by_category = tk.Button(
-        new_window,
-        text="Total Value by Category",
-        command=show_value_by_category
-        )
-    btn_value_by_category.pack(pady=10)
+    new_category_window.bind('<Return>', submit_category_id)
+
+    new_category_window.lift()
 
 
 # Initialize the main window
@@ -576,8 +550,8 @@ btn_show_products_by_category = tk.Button(
     command=show_products_by_category,
     width=30
 )
-btn_show_products_by_category.grid(column=1, row=0, sticky=tk.NSEW,
-                                   padx=2, pady=2)
+
+btn_show_products_by_category.grid(column=3, row=0, sticky=tk.NSEW, padx=2, pady=2)
 
 btn_search_product = tk.Button(
     button_frame,
@@ -585,7 +559,8 @@ btn_search_product = tk.Button(
     command=search_product,
     width=20
 )
-btn_search_product.grid(column=1, row=1, sticky=tk.NSEW, padx=2, pady=2)
+
+btn_search_product.grid(column=1, row=0, sticky=tk.NSEW, padx=2, pady=2)
 
 btn_add_product = tk.Button(
     button_frame,
@@ -610,7 +585,8 @@ btn_update_product = tk.Button(
     command=update_product,
     width=20
 )
-btn_update_product.grid(column=3, row=0, sticky=tk.NSEW, padx=2, pady=2)
+
+btn_update_product.grid(column=1, row=1, sticky=tk.NSEW, padx=2, pady=2)
 
 # Add the "Remove Product/Category" button to the main window
 btn_remove_item = tk.Button(
@@ -624,8 +600,8 @@ btn_remove_item.grid(column=3, row=1, sticky=tk.NSEW, padx=2, pady=2)
 # Add a new button for Total Inventory Value options
 btn_inventory_value_options = tk.Button(
     button_frame,
-    text="Total inventory value",
-    command=show_inventory_value_options,
+    text="Total Inventory Value",
+    command=show_total_value,
     width=30
 )
 btn_inventory_value_options.grid(column=4, row=0, sticky=tk.NSEW,
@@ -633,10 +609,11 @@ btn_inventory_value_options.grid(column=4, row=0, sticky=tk.NSEW,
 
 btn_inventory_value_options = tk.Button(
     button_frame,
-    text="Total inventory value by category",
-    command=show_inventory_value_options,
+    text="Total Inventory Value by Category",
+    command=show_value_by_category,
     width=30
 )
+
 btn_inventory_value_options.grid(column=4, row=1, sticky=tk.NSEW,
                                  padx=2, pady=2)
 
