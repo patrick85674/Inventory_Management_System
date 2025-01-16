@@ -549,8 +549,8 @@ background_label = tk.Label(window, image=background_image)
 background_label.place(relwidth=1, relheight=1)  # It covers the full window
 
 # Create a frame for buttons
-button_frame = tk.Frame(window, bg="blue")
-button_frame.pack(fill=tk.X, pady=10)
+button_frame = tk.Frame(window, bg="black")
+button_frame.pack(pady=10)
 
 # Add buttons for menu options
 btn_show_products = tk.Button(
@@ -559,7 +559,7 @@ btn_show_products = tk.Button(
     command=show_products,
     width=20
 )
-btn_show_products.pack(side=tk.LEFT, padx=5)
+btn_show_products.grid(column=0, row=0, sticky=tk.NSEW, padx=2, pady=2)
 
 btn_show_categories = tk.Button(
     button_frame,
@@ -567,7 +567,7 @@ btn_show_categories = tk.Button(
     command=show_categories,
     width=20
 )
-btn_show_categories.pack(side=tk.LEFT, padx=5)
+btn_show_categories.grid(column=0, row=1, sticky=tk.NSEW, padx=2, pady=2)
 
 # Add a new button for showing products by category
 btn_show_products_by_category = tk.Button(
@@ -576,7 +576,8 @@ btn_show_products_by_category = tk.Button(
     command=show_products_by_category,
     width=30
 )
-btn_show_products_by_category.pack(side=tk.LEFT, padx=5)
+btn_show_products_by_category.grid(column=1, row=0, sticky=tk.NSEW,
+                                   padx=2, pady=2)
 
 btn_search_product = tk.Button(
     button_frame,
@@ -584,7 +585,7 @@ btn_search_product = tk.Button(
     command=search_product,
     width=20
 )
-btn_search_product.pack(side=tk.LEFT, padx=5)
+btn_search_product.grid(column=1, row=1, sticky=tk.NSEW, padx=2, pady=2)
 
 btn_add_product = tk.Button(
     button_frame,
@@ -592,7 +593,7 @@ btn_add_product = tk.Button(
     command=add_product,
     width=20
 )
-btn_add_product.pack(side=tk.LEFT, padx=5)
+btn_add_product.grid(column=2, row=0, sticky=tk.NSEW, padx=2, pady=2)
 
 btn_add_category = tk.Button(
     button_frame,
@@ -600,7 +601,7 @@ btn_add_category = tk.Button(
     command=add_category,
     width=20
 )
-btn_add_category.pack(side=tk.LEFT, padx=5)
+btn_add_category.grid(column=2, row=1, sticky=tk.NSEW, padx=2, pady=2)
 
 # Add the "Update Product" button to the main window
 btn_update_product = tk.Button(
@@ -609,7 +610,7 @@ btn_update_product = tk.Button(
     command=update_product,
     width=20
 )
-btn_update_product.pack(side=tk.LEFT, padx=5)
+btn_update_product.grid(column=3, row=0, sticky=tk.NSEW, padx=2, pady=2)
 
 # Add the "Remove Product/Category" button to the main window
 btn_remove_item = tk.Button(
@@ -618,7 +619,7 @@ btn_remove_item = tk.Button(
     command=remove_item,
     width=20
 )
-btn_remove_item.pack(side=tk.LEFT, padx=5)
+btn_remove_item.grid(column=3, row=1, sticky=tk.NSEW, padx=2, pady=2)
 
 # Add a new button for Total Inventory Value options
 btn_inventory_value_options = tk.Button(
@@ -627,7 +628,17 @@ btn_inventory_value_options = tk.Button(
     command=show_inventory_value_options,
     width=30
 )
-btn_inventory_value_options.pack(side=tk.LEFT, padx=5)
+btn_inventory_value_options.grid(column=4, row=0, sticky=tk.NSEW,
+                                 padx=2, pady=2)
+
+btn_inventory_value_options = tk.Button(
+    button_frame,
+    text="Total Inventory Value by Category",
+    command=show_inventory_value_options,
+    width=30
+)
+btn_inventory_value_options.grid(column=4, row=1, sticky=tk.NSEW,
+                                 padx=2, pady=2)
 
 # Create a label for output display
 output_label = tk.Label(
