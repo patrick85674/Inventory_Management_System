@@ -1,4 +1,3 @@
-from datetime import datetime
 import re  # For regex-based validations
 
 
@@ -65,7 +64,8 @@ class User:
             raise ValueError("Username must not exceed 20 characters.")
         if not re.match(r"^[a-zA-Z0-9_.-]+$", username):
             raise ValueError(
-                "Username can only contain letters, digits, underscores (_), hyphens (-), and dots (.)")
+                "Username can only contain letters, digits, underscores (_), "
+                "hyphens (-), and dots (.)")
 
     # Helper method for validating password
     def _validate_password(self, password: str):
@@ -78,16 +78,21 @@ class User:
         if not any(char.isdigit() for char in password):
             raise ValueError("Password must contain at least one digit.")
         if not any(char.isupper() for char in password):
-            raise ValueError("Password must contain at least one uppercase letter.")
+            raise ValueError("Password must contain at least one uppercase "
+                             "letter.")
         if not any(char.islower() for char in password):
-            raise ValueError("Password must contain at least one lowercase letter.")
+            raise ValueError("Password must contain at least one lowercase "
+                             "letter.")
         if not any(char in "!@#$%^&*()-_+=" for char in password):
-            raise ValueError("Password must contain at least one special character (!@#$%^&*()-_+=).")
+            raise ValueError("Password must contain at least one special "
+                             "character (!@#$%^&*()-_+=).")
 
     # Helper method for validating email
     def _validate_email(self, email: str):
         if email is not None:
-            if not isinstance(email, str) or not email.strip():
+            if not isinstance(email, str):
+                raise TypeError("Email must be a string.")
+            if not email.strip():
                 raise ValueError("Email must be a non-empty string.")
             if not re.match(r"^[^@]+@[^@]+\.[^@]+$", email):
                 raise ValueError("Invalid email format.")
@@ -95,7 +100,9 @@ class User:
     # Helper method for validating phone
     def _validate_phone(self, phone: str):
         if phone is not None:
-            if not isinstance(phone, str) or not phone.strip():
+            if not isinstance(phone, str):
+                raise TypeError("Phone must be a string.")
+            if not phone.strip():
                 raise ValueError("Phone must be a non-empty string.")
             if len(phone) < 3:
                 raise ValueError(
@@ -105,7 +112,9 @@ class User:
 
     # Helper method to validate failed attempts
     def _validate_failed_attempts(self, failed_attempts: int):
-        if not isinstance(failed_attempts, int) or failed_attempts < 0:
+        if not isinstance(failed_attempts, int):
+            raise TypeError("Failed attempts must be an integer.")
+        if failed_attempts < 0:
             raise ValueError("Failed attempts must be a non-negative integer.")
 
     # Helper method to validate lock_until field
@@ -115,11 +124,11 @@ class User:
 
     # Getter and setter methods
     @property
-    def user_id(self):
+    def user_id(self) -> int:
         return self.__user_id
 
     @property
-    def username(self):
+    def username(self) -> str:
         return self.__username
 
     @username.setter
@@ -128,7 +137,7 @@ class User:
         self.__username = value
 
     @property
-    def password(self):
+    def password(self) -> str:
         return self.__password
 
     @password.setter
@@ -137,11 +146,7 @@ class User:
         self.__password = value  # Assuming it's hashed before setting
 
     @property
-    def email(self):
-        return self.__email
-
-    @property
-    def email(self):
+    def email(self) -> str:
         return self.__email
 
     @email.setter
@@ -150,7 +155,7 @@ class User:
         self.__email = value
 
     @property
-    def phone(self):
+    def phone(self) -> str:
         return self.__phone
 
     @phone.setter
@@ -159,7 +164,7 @@ class User:
         self.__phone = value  # Setting the value after validation
 
     @property
-    def failed_attempts(self):
+    def failed_attempts(self) -> int:
         return self.__failed_attempts
 
     @failed_attempts.setter
@@ -168,7 +173,7 @@ class User:
         self.__failed_attempts = value
 
     @property
-    def lock_until(self):
+    def lock_until(self) -> float:
         return self.__lock_until
 
     @lock_until.setter
@@ -177,5 +182,7 @@ class User:
         self.__lock_until = value
 
     def __repr__(self):
-        return (f"User(user_id={self.user_id}, username='{self.username}', email='{self.email}', "
-                f"phone='{self.phone}', failed_attempts={self.failed_attempts}, lock_until={self.lock_until})")
+        return (f"User(user_id={self.user_id}, username='{self.username}', "
+                f"email='{self.email}', phone='{self.phone}', "
+                f"failed_attempts={self.failed_attempts}, "
+                f"lock_until={self.lock_until})")
