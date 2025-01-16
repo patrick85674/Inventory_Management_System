@@ -5,9 +5,8 @@ from user.user import User
 
 
 def require_login(func):
-    # Ensure user is logged in before accessing certain functions
     def wrapper(*args, **kwargs):
-        if not User.current_user:
+        if not UserManager.is_user_logged_in():
             print("You must be logged in to perform this action.")
             return None
         return func(*args, **kwargs)
@@ -200,6 +199,11 @@ class UserManager:
         User.current_user = user
         return user
 
+    @staticmethod
+    def is_user_logged_in():
+        """Returns True if a user is logged in, otherwise False."""
+        return bool(User.current_user)
+    
     @require_login
     def logout(self):
         """Logs out the current user."""
@@ -271,5 +275,12 @@ class UserManager:
         # Validate the phone number with the User class
         # Calling the static validation method
         User._validate_phone(User, phone)
+        user = User.current_user
+        user.phone = phone
+
+    @require_login
+    def update_user_phone(self, phone: str):
+        # Validate the phone number with the User class
+        User._validate_phone(User, phone)  # Calling the static validation method
         user = User.current_user
         user.phone = phone
