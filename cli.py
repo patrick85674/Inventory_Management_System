@@ -8,7 +8,7 @@ def main():
     """
     print("Welcome to the system!")
     
-    # Hier wird das Benutzer-Menü aufgerufen
+    # The user menu is called up here
     user_menu()  # Aufruf der Funktion user_menu aus menu/user.py
 
 if __name__ == "__main__":
