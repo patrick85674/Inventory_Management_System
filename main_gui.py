@@ -7,7 +7,7 @@ from data_handler import DataHandler
 # from datetime import datetime
 # import os
 # import json
-from PIL import Image, ImageTk  # Import Pillow to handle more image formats
+# from PIL import Image, ImageTk  # Import Pillow to handle more image formats
 
 # Define file name for JSON storage
 DATA_FILE = "inventory/data.json"
@@ -540,9 +540,9 @@ window.geometry(f"{screen_width}x{screen_height}")
 window.config(bg="black")
 
 # Load and set the background image
-image = Image.open("inv5.png")  # Load the image
-image = image.resize((screen_width, screen_height))  # Resize to screen size
-background_image = ImageTk.PhotoImage(image)
+# image = Image.open("inv5.png")  # Load the image
+# image = image.resize((screen_width, screen_height))  # Resize to screen size
+background_image = tk.PhotoImage(file="inv5b.png")
 
 # Create a label to hold the background image
 background_label = tk.Label(window, image=background_image)
