@@ -72,5 +72,6 @@ To install the **InventoryPro - Python inventory management system**, follow the
 
 Stay tuned for updates!
 
+
 ---
 Thank you for using **InventoryPro**. If you have any questions or suggestions, feel free to contribute or open an issue in the repository!
