@@ -5,14 +5,32 @@ This is an Inventory Management System for tracking products, categories, and th
 ![My Image](/logo_inventorypro.png)
 
 ## Features
-- Add, remove, and update products.
-- Manage product categories.
-- Track inventory levels and prices.
-- Retrieve product information.
+- **Product Management**:
+  - Add new products with details like name, category, price, and quantity.
+  - Update existing product information including stock levels and pricing.
+  - Remove products that are no longer available or needed.
+  - Search and retrieve detailed product information quickly and efficiently.
+- **Category Management**:
+  - Create and manage categories to organize products effectively.
+  - Assign products to categories for better tracking and reporting.
+  - Update or remove categories as inventory needs evolve.
+- **Inventory Tracking**:
+  - Monitor inventory levels to ensure optimal stock.
+  - Receive alerts or notifications for low stock levels (upcoming feature).
+- Graphical User Interface (GUI) for user-friendly interaction.
+- Supports multi-user functionality (upcoming update).
 
+## Screenshots
+Below are screenshots demonstrating how to use InventoryPro:
 
+### Main Interface
+![Main Interface](inv5.png)
 
-## **here will be the video or screenshots how to use it**
+### Add Product Form
+![Add Product](inv4.png)
+
+### Manage Categories
+![Manage Categories](inv5b.png)
 
 ## Installation
 To install the **InventoryPro - Python inventory management system**, follow the steps below:
@@ -21,25 +39,38 @@ To install the **InventoryPro - Python inventory management system**, follow the
 
    ```bash
    git clone https://github.com/patrick85674/Inventory_Management_System.git
+   ```
 
-2. To implement or use the inventory management system, you can follow the example below:
+2. Navigate to the project directory:
 
-```python
-from inventory.inventory_manager import InventoryManager
+   ```bash
+   cd Inventory_Management_System
+   ```
 
-class MyStore(InventoryManager):
-    def __init__(self):
-        super().__init__()
+3. Install required system dependencies:
 
-    def add_custom_product(self, id, name, price, quantity, category):
-        # Implement your custom method for adding products
-        pass    
-```
-3. Install dependencies (if any):
-```bash
-pip install -r requirements.txt
-```
-## Other updates coming soon
-Reports  
-User authentication and permissions  
-User interface 
+   ```bash
+   sudo apt-get install python3-tk
+   ```
+
+4. Install Python dependencies:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+5. Run the application:
+
+   ```bash
+   python main_gui.py
+   ```
+
+## Roadmap
+- **Reports**: Generate and export inventory reports.
+- **User Authentication and Permissions**: Secure system access for multiple users.
+- **Improved User Interface**: Enhanced GUI with more functionalities.
+
+Stay tuned for updates!
+
+---
+Thank you for using **InventoryPro**. If you have any questions or suggestions, feel free to contribute or open an issue in the repository!
