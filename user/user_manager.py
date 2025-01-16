@@ -61,7 +61,7 @@ class UserManager:
         }
 
 
-    def register(self, username: str, password: str, confirm_password: str, email: str, phone: int) -> User:
+    def register(self, username: str, password: str, confirm_password: str, email: str, phone: str) -> User:
         """
         Adds a new user to the user database.
         """
