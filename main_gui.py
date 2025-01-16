@@ -500,7 +500,7 @@ def show_value_by_category():
     new_category_window.bind('<Return>', submit_category_id)
 
     new_category_window.lift()
-    
+
 
 # Initialize the main window
 window = tk.Tk()
@@ -550,7 +550,7 @@ btn_show_products_by_category = tk.Button(
     command=show_products_by_category,
     width=30
 )
-btn_show_products_by_category.grid(column=1, row=0, sticky=tk.NSEW,
+btn_show_products_by_category.grid(column=3, row=0, sticky=tk.NSEW,
                                    padx=2, pady=2)
 
 btn_search_product = tk.Button(
@@ -559,7 +559,7 @@ btn_search_product = tk.Button(
     command=search_product,
     width=20
 )
-btn_search_product.grid(column=1, row=1, sticky=tk.NSEW, padx=2, pady=2)
+btn_search_product.grid(column=1, row=0, sticky=tk.NSEW, padx=2, pady=2)
 
 btn_add_product = tk.Button(
     button_frame,
@@ -584,7 +584,7 @@ btn_update_product = tk.Button(
     command=update_product,
     width=20
 )
-btn_update_product.grid(column=3, row=0, sticky=tk.NSEW, padx=2, pady=2)
+btn_update_product.grid(column=1, row=1, sticky=tk.NSEW, padx=2, pady=2)
 
 # Add the "Remove Product/Category" button to the main window
 btn_remove_item = tk.Button(
