@@ -30,14 +30,14 @@ class InventoryManager:
             category_id = prod.get("category_id", 0)
             description = prod.get("description", '')
             product = Product(
-                prod["id"],
-                prod["name"],
-                prod["price"],
-                prod["quantity"],
-                category_id,
-                prod["date_added"],
-                prod["last_modified"],
-                description
+                id=prod["id"],
+                name=prod["name"],
+                price=prod["price"],
+                quantity=prod["quantity"],
+                date_added=prod["date_added"],
+                last_modified=prod["last_modified"],
+                category_id=category_id,
+                description=description
             )
             self.load_products(product=product)
 

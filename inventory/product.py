@@ -5,10 +5,8 @@ class Product:
     """Represents a product with a name, price, quantity, and category."""
 
     def __init__(self, id: int, name: str, price: float, quantity: int,
-
+                 date_added: float, last_modified: float,
                  category_id: int = 0,
-                 date_added: float = None, last_modified: float = None,
-
                  description: str = ''):
         if not isinstance(id, int):
             raise TypeError("Product ID must be an integer.")
@@ -128,7 +126,7 @@ class Product:
         """Return a string representation of the product's information."""
         return (f"ID: {self.__id}, name: {self.__name}, "
                 f"price: {self.__price}, quantity: {self.__quantity}, "
-                f"cat_id: {self.__category_id}, "
+                f"category id: {self.__category_id}, "
                 f"date added: {self.__date_added}, "
                 f"last modified: {self.__last_modified}, "
                 f"description: {self.__description}"
