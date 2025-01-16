@@ -47,6 +47,16 @@ class TestProduct(unittest.TestCase):
         with self.assertRaises(TypeError):
             Product(id=self.product_id, name=self.name, price=self.price,
                     quantity=self.quantity,
+                    date_added="Test",
+                    last_modified=self.last_modified)
+        with self.assertRaises(TypeError):
+            Product(id=self.product_id, name=self.name, price=self.price,
+                    quantity=self.quantity,
+                    date_added=self.date_added,
+                    last_modified="Test")
+        with self.assertRaises(TypeError):
+            Product(id=self.product_id, name=self.name, price=self.price,
+                    quantity=self.quantity,
                     date_added=self.date_added,
                     last_modified=self.last_modified,
                     description=9)
@@ -61,6 +71,16 @@ class TestProduct(unittest.TestCase):
                     quantity=self.quantity,
                     date_added=self.date_added,
                     last_modified=self.last_modified)
+        with self.assertRaises(ValueError):
+            Product(id=self.product_id, name=self.name, price=self.price,
+                    quantity=self.quantity,
+                    date_added=-99,
+                    last_modified=self.last_modified)
+        with self.assertRaises(ValueError):
+            Product(id=self.product_id, name=self.name, price=self.price,
+                    quantity=self.quantity,
+                    date_added=self.date_added,
+                    last_modified=-99)
 
     def test_quantity(self):
         self.assertEqual(self.product.quantity, 50)

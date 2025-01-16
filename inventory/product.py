@@ -26,6 +26,14 @@ class Product:
             raise ValueError("Quantity must be a non-negative integer.")
         if (not isinstance(category_id, int)):
             raise TypeError("Category id must be an integer.")
+        if (not isinstance(date_added, (int, float))):
+            raise TypeError("Date added must be an integer or float.")
+        if date_added < 0:
+            raise ValueError("Date added must be non-negative.")
+        if (not isinstance(last_modified, (int, float))):
+            raise TypeError("Last modified date must be an integer or float.")
+        if last_modified < 0:
+            raise ValueError("Last modified date must be non-negative.")
         if not isinstance(description, str):
             raise TypeError("Description must be a string.")
 
