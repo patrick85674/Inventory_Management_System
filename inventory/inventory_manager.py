@@ -1,7 +1,6 @@
 from inventory.product import Product
 from inventory.category import Category
 from inventory.inventory_logger import InventoryLogger
-from datetime import datetime
 import time
 
 
@@ -13,6 +12,7 @@ class InventoryManager:
         self._products: dict[int, Product] = {}
         self._categories: dict[int, Category] = {}
         self._logger: InventoryLogger = InventoryLogger()
+        self._logger.logToFile(filename="inventory.log")
 
     def load_data_from_json(self, data):
         """Loads products and categories from a JSON structure."""
@@ -21,7 +21,7 @@ class InventoryManager:
             category = Category(
                 cat["id"],
                 cat["name"]
-                )  
+                )
             # Add the category to the inventory
             self.load_categories(category=category)
 
@@ -30,19 +30,19 @@ class InventoryManager:
             category_id = prod.get("category_id", 0)
             description = prod.get("description", '')
             product = Product(
-                prod["id"],
-                prod["name"],
-                prod["price"],
-                prod["quantity"],
-                category_id,
-                prod["date_added"],
-                prod["last_modified"],
-                description
+                id=prod["id"],
+                name=prod["name"],
+                price=prod["price"],
+                quantity=prod["quantity"],
+                date_added=prod["date_added"],
+                last_modified=prod["last_modified"],
+                category_id=category_id,
+                description=description
             )
             self.load_products(product=product)
 
     def export_to_json(self):
-        """Exports the current products and categories to a 
+        """Exports the current products and categories to a
         JSON-compatible dictionary."""
         # Serialize categories
         categories = [
@@ -132,8 +132,8 @@ class InventoryManager:
         # Generate new ID for the product
         new_id = self.get_max_product_id() + 1
 
-        date_added:float= float(time.time())
-        last_modified:float = date_added
+        date_added: float = float(time.time())
+        last_modified: float = date_added
 
         # Create a new Product object
         new_product = Product(id=new_id, name=name, price=price,
@@ -320,7 +320,10 @@ class InventoryManager:
         # Find products matching the keyword in their names (case insensitive)
         results = [product for product in self._products.values()
                    if keyword.lower() in product.name.lower()]
-        return results  # Return list of matching products
+        if results:
+            return results  # Return list of matching products
+        else:
+            return None
 
     def find_product_by_id(self, product_id: int) -> Product:
         """Finds a product by ID."""
@@ -351,7 +354,8 @@ class InventoryManager:
         product = self.validate_product_id(product_id)
 
         # Retrieve the category name using the product's category ID
-        category_name = self.get_category_info_by_id(product.category_id, "name")
+        category_name = self.get_category_info_by_id(product.category_id,
+                                                     "name")
         if not category_name:
             raise ValueError(f"Category ID {product.category_id} is invalid "
                              "or does not exist.")
@@ -367,10 +371,3 @@ class InventoryManager:
         product = self._products.get(product_id)
         # Check if the product exists and has a quantity greater than 0
         return product is not None and product.quantity > 0
-    
-    @staticmethod
-    def format_timestamp(timestamp):
-        # Gehe davon aus, dass der Timestamp ein String ist und wandle ihn in einen Integer um
-        timestamp = int(timestamp)  # Umwandlung von str zu int
-        return datetime.fromtimestamp(timestamp).strftime("%Y-%m-%d %H:%M:%S")
-

@@ -7,7 +7,7 @@ from data_handler import DataHandler
 # from datetime import datetime
 # import os
 # import json
-from PIL import Image, ImageTk  # Import Pillow to handle more image formats
+# from PIL import Image, ImageTk  # Import Pillow to handle more image formats
 
 # Define file name for JSON storage
 DATA_FILE = "inventory/data.json"
@@ -57,7 +57,7 @@ def show_categories():
 
 # Function to show products by categories
 def show_products_by_category():
-    def submit_category_id():
+    def submit_category_id(event=None):
         try:
             category_id = int(entry_category_id.get())
             if category_id in range(0, inventory.get_max_category_id() + 1):
@@ -93,28 +93,38 @@ def show_products_by_category():
         )
     submit_button.pack(pady=10)
 
+    new_category_window.bind('<Return>', submit_category_id)
+
+    new_category_window.lift()
+
 
 # Function to search for products
 def search_product():
-    def submit_search():
+    def submit_search(event=None):
         search_term = str(entry_search.get())
         if search_term:
-            try:
-                search_results = inventory.search_product(search_term)
-                output_text = f"Product Info for '{search_term}':\n"
-                if isinstance(search_results, list):
-                    for result in search_results:
-                        output_text += f"{result}\n{'-'*40}\n"
-                else:
-                    output_text += f"{search_results}\n{'-'*40}\n"
-                display_output(output_text)
-            except ValueError as e:
-                messagebox.showerror("Error", f"Error: {e}")
+            search_results = inventory.search_product(search_term)
+            output_text = f"Product Info for '{search_term}':\n"
+            # Check if the search result is empty or not found
+            if not search_results:
+                output_text = f"0 products found with '{search_term}'."
+            elif isinstance(search_results, list):
+                for result in search_results:
+                    output_text += f"{result}\n{'-'*40}\n"
+            else:
+                output_text += f"{search_results}\n{'-'*40}\n"
+            display_output(output_text)
         else:
             messagebox.showwarning(
                 "Input Error", "Please enter a product name."
                 )
 
+        # Lift the window to the front
+        new_window.lift()
+        # Destroy the window after submission
+        new_window.destroy()
+
+    # Create the new window
     new_window = tk.Toplevel(window)
     new_window.title("Product Search")
     new_window.geometry("400x200")
@@ -122,59 +132,90 @@ def search_product():
     tk.Label(new_window, text="Enter product name:").pack(pady=10)
     entry_search = tk.Entry(new_window)
     entry_search.pack(pady=10)
+
+    # Submit button
     submit_button = tk.Button(new_window, text="Search", command=submit_search)
     submit_button.pack(pady=10)
+
+    # Bind the Enter key to the submit_search function
+    new_window.bind('<Return>', submit_search)
+
+    # Ensure the new window is brought to the front when it's opened
+    new_window.lift()
 
 
 # Function to add new product
 def add_product():
-    def submit_product():
+    def submit_product(event=None):
         try:
-            details = entry_add_product.get().split(",")
-            if len(details) == 4:
-                product_name, price, quantity, category_id = details
+            product_name = entry_name.get()
+            price = entry_price.get()
+            quantity = entry_quantity.get()
+            category_id = entry_category.get()
+
+            # Check if all fields are filled
+            if product_name and price and quantity and category_id:
                 new_product = {
                     "name": product_name,
                     "price": float(price),
                     "quantity": int(quantity),
                     "category": int(category_id)
-                    }
+                }
                 inventory.add_product(new_product)
                 messagebox.showinfo(
                     "Success", f"Product '{product_name}' added successfully."
-                    )
+                )
                 save()
                 new_window.destroy()
             else:
                 messagebox.showwarning(
                     "Input Error",
-                    "Please provide product details in the format: "
-                    "name, price, quantity, category_id."
-                    )
-        except Exception as e:
-            messagebox.showerror("Error", f"Error: {e}")
+                    "Please provide all product details "
+                    "(name, price, quantity, category_id)."
+                )
+        except ValueError:
+            messagebox.showerror(
+                "Error",
+                "Please enter valid values for price, quantity, and category."
+            )
 
     new_window = tk.Toplevel(window)
     new_window.title("Add New Product")
-    new_window.geometry("400x200")
+    new_window.geometry("400x350")
 
-    tk.Label(
-        new_window,
-        text="Enter product details (name, price, quantity, category_id):"
-        ).pack(pady=10)
-    entry_add_product = tk.Entry(new_window)
-    entry_add_product.pack(pady=10)
+    # Labels and Entry widgets for each product detail
+    tk.Label(new_window, text="Enter product name:").pack(pady=5)
+    entry_name = tk.Entry(new_window)
+    entry_name.pack(pady=5)
+
+    tk.Label(new_window, text="Enter product price:").pack(pady=5)
+    entry_price = tk.Entry(new_window)
+    entry_price.pack(pady=5)
+
+    tk.Label(new_window, text="Enter product quantity:").pack(pady=5)
+    entry_quantity = tk.Entry(new_window)
+    entry_quantity.pack(pady=5)
+
+    tk.Label(new_window, text="Enter product category ID:").pack(pady=5)
+    entry_category = tk.Entry(new_window)
+    entry_category.pack(pady=5)
+
+    # Submit button
     submit_button = tk.Button(
         new_window,
         text="Add Product",
         command=submit_product
-        )
+    )
     submit_button.pack(pady=10)
+
+    new_window.bind('<Return>', submit_product)  # For the add_product function
+
+    new_window.lift()
 
 
 # Function to add new category
 def add_category():
-    def submit_category():
+    def submit_category(event=None):
         category_name = entry_add_category.get()
         if category_name:
             try:
@@ -206,10 +247,15 @@ def add_category():
         )
     submit_button.pack(pady=10)
 
+    # For the update_product function
+    new_window.bind('<Return>', submit_category)
+
+    new_window.lift()
+
 
 # Function to update product details
 def update_product():
-    def submit_update():
+    def submit_update(event=None):
         try:
             product_id = entry_product_id.get()
             new_value = entry_new_value.get()
@@ -217,7 +263,7 @@ def update_product():
             if not product_id or not new_value:
                 messagebox.showwarning(
                     "Input Error",
-                    "Please provide both product ID and new value."
+                    "Product ID does not exist."
                     )
                 return
 
@@ -257,7 +303,12 @@ def update_product():
                     "Please select a valid update option."
                     )
             save()
-            new_window.destroy()  # Close the update window after submission
+
+            # Lift the window to the front
+            new_window.lift()
+            # Destroy the window after submission
+            new_window.destroy()
+
         except Exception as e:
             messagebox.showerror("Error", f"Error: {e}")
 
@@ -304,10 +355,13 @@ def update_product():
         )
     submit_button.pack(pady=10)
 
+    # For the update_product function
+    new_window.bind('<Return>', submit_update)
+
 
 # Function to remove product or category
 def remove_item():
-    def submit_removal():
+    def submit_removal(event=None):
         try:
             choice = var_choice.get()
             if choice == 1:  # Remove Product
@@ -345,7 +399,12 @@ def remove_item():
                     "Please select either Product or Category to remove."
                     )
             save()
-            new_window.destroy()  # Close the removal window after submission
+
+            # Lift the window to the front
+            new_window.lift()
+            # Close the removal window after submission
+            new_window.destroy()
+
         except Exception as e:
             messagebox.showerror("Error", f"Error: {e}")
 
@@ -383,6 +442,10 @@ def remove_item():
         )
     submit_button.pack(pady=10)
 
+    new_window.bind('<Return>', submit_removal)  # For the remove_item function
+
+    new_window.lift()
+
 
 def show_inventory_value_options():
     def show_total_value():
@@ -395,7 +458,7 @@ def show_inventory_value_options():
         new_window.destroy()
 
     def show_value_by_category():
-        def submit_category_id():
+        def submit_category_id(event=None):
             try:
                 category_id = int(entry_category_id.get())
                 if category_id in range(
@@ -416,6 +479,12 @@ def show_inventory_value_options():
                     messagebox.showwarning(
                         "Invalid Input", "Category ID is not valid."
                         )
+
+                # Lift the window to the front
+                new_window.lift()
+                # Destroy the window after submission
+                new_window.destroy()
+
             except ValueError as e:
                 messagebox.showerror("Error", f"Invalid input: {e}")
 
@@ -434,6 +503,9 @@ def show_inventory_value_options():
             command=submit_category_id
             )
         submit_button.pack(pady=10)
+
+        # For the update_product function
+        new_category_window.bind('<Return>', submit_category_id)
 
     # Create a new window with options to choose
     new_window = tk.Toplevel(window)
@@ -468,94 +540,105 @@ window.geometry(f"{screen_width}x{screen_height}")
 window.config(bg="black")
 
 # Load and set the background image
-image = Image.open("inv5.png")  # Load the image
-image = image.resize((screen_width, screen_height))  # Resize to screen size
-background_image = ImageTk.PhotoImage(image)
+# image = Image.open("inv5.png")  # Load the image
+# image = image.resize((screen_width, screen_height))  # Resize to screen size
+background_image = tk.PhotoImage(file="inv5b.png")
 
 # Create a label to hold the background image
 background_label = tk.Label(window, image=background_image)
 background_label.place(relwidth=1, relheight=1)  # It covers the full window
 
 # Create a frame for buttons
-button_frame = tk.Frame(window, bg="blue")
-button_frame.pack(fill=tk.X, pady=10)
+button_frame = tk.Frame(window, bg="black")
+button_frame.pack(pady=10)
 
 # Add buttons for menu options
 btn_show_products = tk.Button(
     button_frame,
-    text="Show Products",
+    text="List all products",
     command=show_products,
     width=20
 )
-btn_show_products.pack(side=tk.LEFT, padx=5)
+btn_show_products.grid(column=0, row=0, sticky=tk.NSEW, padx=2, pady=2)
 
 btn_show_categories = tk.Button(
     button_frame,
-    text="Show Categories",
+    text="List all categories",
     command=show_categories,
     width=20
 )
-btn_show_categories.pack(side=tk.LEFT, padx=5)
+btn_show_categories.grid(column=0, row=1, sticky=tk.NSEW, padx=2, pady=2)
 
 # Add a new button for showing products by category
 btn_show_products_by_category = tk.Button(
     button_frame,
-    text="Show Products by Category",
+    text="List products by category",
     command=show_products_by_category,
     width=30
 )
-btn_show_products_by_category.pack(side=tk.LEFT, padx=5)
+btn_show_products_by_category.grid(column=1, row=0, sticky=tk.NSEW,
+                                   padx=2, pady=2)
 
 btn_search_product = tk.Button(
     button_frame,
-    text="Search Product",
+    text="Search product",
     command=search_product,
     width=20
 )
-btn_search_product.pack(side=tk.LEFT, padx=5)
+btn_search_product.grid(column=1, row=1, sticky=tk.NSEW, padx=2, pady=2)
 
 btn_add_product = tk.Button(
     button_frame,
-    text="Add Product",
+    text="Add product",
     command=add_product,
     width=20
 )
-btn_add_product.pack(side=tk.LEFT, padx=5)
+btn_add_product.grid(column=2, row=0, sticky=tk.NSEW, padx=2, pady=2)
 
 btn_add_category = tk.Button(
     button_frame,
-    text="Add Category",
+    text="Add category",
     command=add_category,
     width=20
 )
-btn_add_category.pack(side=tk.LEFT, padx=5)
+btn_add_category.grid(column=2, row=1, sticky=tk.NSEW, padx=2, pady=2)
 
 # Add the "Update Product" button to the main window
 btn_update_product = tk.Button(
     button_frame,
-    text="Update Product",
+    text="Update product",
     command=update_product,
     width=20
 )
-btn_update_product.pack(side=tk.LEFT, padx=5)
+btn_update_product.grid(column=3, row=0, sticky=tk.NSEW, padx=2, pady=2)
 
 # Add the "Remove Product/Category" button to the main window
 btn_remove_item = tk.Button(
     button_frame,
-    text="Remove Product/Category",
+    text="Remove product/category",
     command=remove_item,
     width=20
 )
-btn_remove_item.pack(side=tk.LEFT, padx=5)
+btn_remove_item.grid(column=3, row=1, sticky=tk.NSEW, padx=2, pady=2)
 
 # Add a new button for Total Inventory Value options
 btn_inventory_value_options = tk.Button(
     button_frame,
-    text="Total Inventory Value",
+    text="Total inventory value",
     command=show_inventory_value_options,
     width=30
 )
-btn_inventory_value_options.pack(side=tk.LEFT, padx=5)
+btn_inventory_value_options.grid(column=4, row=0, sticky=tk.NSEW,
+                                 padx=2, pady=2)
+
+btn_inventory_value_options = tk.Button(
+    button_frame,
+    text="Total inventory value by category",
+    command=show_inventory_value_options,
+    width=30
+)
+btn_inventory_value_options.grid(column=4, row=1, sticky=tk.NSEW,
+                                 padx=2, pady=2)
 
 # Create a label for output display
 output_label = tk.Label(

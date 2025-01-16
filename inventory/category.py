@@ -14,6 +14,9 @@ class Category:
         self.__id = category_id
         self.__name = name
 
+    def __str__(self) -> str:
+        return self.get_info()
+
     @property
     def id(self) -> int:
         """Returns the ID of the category."""
@@ -35,4 +38,4 @@ class Category:
 
     def get_info(self) -> str:
         """Return a string representation of the categorie's information."""
-        return (f"CategoryID: {self.__id}, Category name: {self.__name}")
+        return (f"Category ID: {self.__id}, Category name: {self.__name}")

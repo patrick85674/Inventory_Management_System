@@ -1,4 +1,5 @@
 from datetime import datetime
+import atexit
 
 
 class InventoryLogger:
@@ -12,10 +13,16 @@ class InventoryLogger:
         self.__logs: list[str] = []
         self.__filename: str = filename
         self._filestream = None
-        self._open_filestream()
+        if filename:
+            self.logToFile(filename=filename)
+        atexit.register(self._close_filestream)
 
-    def __del__(self):
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
         self._close_filestream()
+        return self
 
     @property
     def filename(self) -> str:
@@ -49,8 +56,17 @@ class InventoryLogger:
         """Log a message by appending it to the log storage."""
         self.__logs.append(message)
         if self._filestream:
-            self._filestream.write(message + '\n')
+            now: str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            self._filestream.write(f"[{now}]" + message + '\n')
 
     def get_logs(self) -> str:
         """Return the stored messages as a text with line breaks."""
         return '\n'.join(self.__logs)
+
+    def logToFile(self, enable=True, filename=None):
+        self._close_filestream()
+        if not enable:
+            return
+        if filename:
+            self.__filename = filename
+        self._open_filestream()
