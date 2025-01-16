@@ -5,10 +5,8 @@ class Product:
     """Represents a product with a name, price, quantity, and category."""
 
     def __init__(self, id: int, name: str, price: float, quantity: int,
-
+                 date_added: float, last_modified: float,
                  category_id: int = 0,
-                 date_added: float = None, last_modified: float = None,
-
                  description: str = ''):
         if not isinstance(id, int):
             raise TypeError("Product ID must be an integer.")
@@ -28,6 +26,14 @@ class Product:
             raise ValueError("Quantity must be a non-negative integer.")
         if (not isinstance(category_id, int)):
             raise TypeError("Category id must be an integer.")
+        if (not isinstance(date_added, (int, float))):
+            raise TypeError("Date added must be an integer or float.")
+        if date_added < 0:
+            raise ValueError("Date added must be non-negative.")
+        if (not isinstance(last_modified, (int, float))):
+            raise TypeError("Last modified date must be an integer or float.")
+        if last_modified < 0:
+            raise ValueError("Last modified date must be non-negative.")
         if not isinstance(description, str):
             raise TypeError("Description must be a string.")
 
@@ -128,7 +134,7 @@ class Product:
         """Return a string representation of the product's information."""
         return (f"ID: {self.__id}, name: {self.__name}, "
                 f"price: {self.__price}, quantity: {self.__quantity}, "
-                f"cat_id: {self.__category_id}, "
+                f"category id: {self.__category_id}, "
                 f"date added: {self.__date_added}, "
                 f"last modified: {self.__last_modified}, "
                 f"description: {self.__description}"
