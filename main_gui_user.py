@@ -8,7 +8,7 @@ from data_handler import DataHandler
 # from datetime import datetime
 # import os
 # import json
-from PIL import Image, ImageTk
+# from PIL import Image, ImageTk
 
 # Create an instance of UserManager to handle login
 user_manager = UserManager()
@@ -298,12 +298,12 @@ def show_main_window():
                 if not product_id or not new_value:
                     messagebox.showwarning(
                         "Input Error",
-                        "Please provide both product ID and new value."
+                        "Product ID does not exist."
                         )
                     return
 
                 if choice.get() == 1:  # Update product name
-                    inventory.update_product_name(int(product_id), new_value)
+                    inventory.update_product_name(int(product_id), str(new_value))
                     messagebox.showinfo(
                         "Success",
                         f"Product {product_id} name updated to '{new_value}'."
@@ -322,25 +322,27 @@ def show_main_window():
                         )
                     messagebox.showinfo(
                         "Success",
-                        f"Product {product_id} "
-                        f"quantity updated to {new_value}."
+                        f"Product {product_id} quantity updated to {new_value}."
                         )
                 elif choice.get() == 4:  # Update category
-                    inventory.update_category_name(int(product_id), new_value)
-                    messagebox.showinfo(
-                        "Success",
-                        f"Product {product_id} "
-                        f"category updated to '{new_value}'."
-                        )
+                    if category_exists(new_value):
+                        inventory.update_product_category(
+                            int(product_id), int(new_value)
+                            )
+                        messagebox.showinfo(
+                            "Success",
+                            f"Product {product_id} category updated to '{new_value}'."
+                            )
                 else:
                     messagebox.showwarning(
-                        "Input Error", "Please select a valid update option."
+                        "Input Error",
+                        "Please select a valid update option."
                         )
                 save()
 
                 # Lift the window to the front
                 new_window.lift()
-                # Close the update window after submission
+                # Destroy the window after submission
                 new_window.destroy()
 
             except Exception as e:
@@ -352,9 +354,7 @@ def show_main_window():
         new_window.geometry("500x400")
 
         # Radio buttons for selecting the update option
-        choice_label = tk.Label(
-            new_window, text="What would you like to update?"
-            )
+        choice_label = tk.Label(new_window, text="What would you like to update?")
         choice_label.pack(pady=10)
 
         choice = tk.IntVar()
@@ -369,7 +369,7 @@ def show_main_window():
             new_window, text="Product Quantity", variable=choice, value=3
             ).pack()
         tk.Radiobutton(
-            new_window, text="Category", variable=choice, value=4
+            new_window, text="Product Category", variable=choice, value=4
             ).pack()
 
         # Entry fields for product ID and new value
@@ -385,10 +385,13 @@ def show_main_window():
 
         # Submit button
         submit_button = tk.Button(
-            new_window, text="Submit Update", command=submit_update
+            new_window,
+            text="Submit Update",
+            command=submit_update
             )
         submit_button.pack(pady=10)
 
+        # For the update_product function
         new_window.bind('<Return>', submit_update)
 
     # Function to remove product or category
@@ -478,87 +481,56 @@ def show_main_window():
 
         new_window.lift()
 
-    def show_inventory_value_options():
-        def show_total_value():
-            total_value = inventory.get_total_inventory_value()
-            output_text = (
-                "\nTotal Inventory Value for All Products: "
-                f"€{total_value:.2f}\n"
-                )
-            display_output(output_text)
-            new_window.destroy()
+    def show_total_value():
+        total_value = inventory.get_total_inventory_value()
+        output_text = (
+            f"\nTotal Inventory Value for All Products: €"
+            f"{total_value:.2f}\n"
+            )
+        display_output(output_text)
 
-        def show_value_by_category():
-            def submit_category_id(event=None):
-                try:
-                    category_id = int(entry_category_id.get())
-                    if category_id in range(
-                        0, inventory.get_max_category_id() + 1
-                    ):
-                        total_value = (
-                            inventory.get_total_inventory_value_by_category(
-                                category_id
-                                )
+    def show_value_by_category():
+        def submit_category_id(event=None):
+            try:
+                category_id = int(entry_category_id.get())
+                if category_id in range(
+                    0, inventory.get_max_category_id() + 1
+                ):
+                    total_value = (
+                        inventory.get_total_inventory_value_by_category(
+                            category_id
+                            )
+                    )
+                    output_text = (
+                        f"\nTotal Inventory Value for Category ID"
+                        f"{category_id}: €{total_value:.2f}\n"
+                    )
+                    display_output(output_text)
+                    new_category_window.destroy()
+                else:
+                    messagebox.showwarning(
+                        "Invalid Input", "Category ID is not valid."
                         )
-                        output_text = (
-                            "\nTotal Inventory Value for Category ID "
-                            f"{category_id}: ${total_value:.2f}\n"
-                            )
-                        display_output(output_text)
-                        new_category_window.destroy()
-                    else:
-                        messagebox.showwarning(
-                            "Invalid Input", "Category ID is not valid."
-                            )
+            except ValueError as e:
+                messagebox.showerror("Error", f"Invalid input: {e}")
 
-                    # Lift the window to the front
-                    new_window.lift()
-                    # Destroy the window after submission
-                    new_window.destroy()
+        # New window to enter category ID
+        new_category_window = tk.Toplevel(window)
+        new_category_window.title("Enter Category ID")
+        new_category_window.geometry("400x200")
 
-                except ValueError as e:
-                    messagebox.showerror("Error", f"Invalid input: {e}")
+        tk.Label(new_category_window, text="Enter category ID:").pack(pady=10)
+        entry_category_id = tk.Entry(new_category_window)
+        entry_category_id.pack(pady=10)
 
-            # New window to enter category ID
-            new_category_window = tk.Toplevel(window)
-            new_category_window.title("Enter Category ID")
-            new_category_window.geometry("400x200")
-
-            tk.Label(
-                new_category_window, text="Enter category ID:"
-                ).pack(pady=10)
-            entry_category_id = tk.Entry(new_category_window)
-            entry_category_id.pack(pady=10)
-
-            submit_button = tk.Button(
-                new_category_window,
-                text="Get Value by Category",
-                command=submit_category_id
-                )
-            submit_button.pack(pady=10)
-
-            # For the update_product function
-            new_category_window.bind('<Return>', submit_category_id)
-
-        # Create a new window with options to choose
-        new_window = tk.Toplevel(window)
-        new_window.title("Total Inventory Value Options")
-        new_window.geometry("400x200")
-
-        # Add buttons for both options
-        btn_total_value = tk.Button(
-            new_window,
-            text="Total Inventory Value (All Products)",
-            command=show_total_value
+        submit_button = tk.Button(
+            new_category_window,
+            text="Get Value by Category",
+            command=submit_category_id
             )
-        btn_total_value.pack(pady=10)
+        submit_button.pack(pady=10)
 
-        btn_value_by_category = tk.Button(
-            new_window,
-            text="Total Value by Category",
-            command=show_value_by_category
-            )
-        btn_value_by_category.pack(pady=10)
+        new_category_window.bind('<Return>', submit_category_id)
 
     # Initialize the main window
     window.deiconify()  # Show the main window after login
@@ -572,94 +544,129 @@ def show_main_window():
     window.config(bg="black")
 
     # Load and set the background image
-    image = Image.open("inv5.png")  # Load the image
-    image = image.resize((screen_width, screen_height))  # Resize the screen
-    background_image = ImageTk.PhotoImage(image)
+    # image = Image.open("inv5.png")  # Load the image
+    # image = image.resize((screen_width, screen_height))
 
     # Create a label to hold the background image
+    background_image = tk.PhotoImage(file="inv6.png")
     background_label = tk.Label(window, image=background_image)
-    background_label.place(relwidth=1, relheight=1)  # Ensuring full window
+    # It covers the full window
+    background_label.place(relwidth=1, relheight=1)
+
+    # To prevent garbage collection of the image
+    # Store the reference to the image
+    background_label.image = background_image
 
     # Create a frame for buttons
-    button_frame = tk.Frame(window, bg="blue")
-    button_frame.pack(fill=tk.X, pady=10)
+    button_frame = tk.Frame(window, bg="black")
+    button_frame.pack(pady=10)
 
     # Add buttons for menu options
     btn_show_products = tk.Button(
         button_frame,
-        text="Show Products",
+        text="List all products",
         command=show_products,
         width=20
-        )
-    btn_show_products.pack(side=tk.LEFT, padx=5)
+    )
+    btn_show_products.grid(column=0, row=0, sticky=tk.NSEW, padx=2, pady=2)
 
     btn_show_categories = tk.Button(
         button_frame,
-        text="Show Categories",
+        text="List all categories",
         command=show_categories,
         width=20
-        )
-    btn_show_categories.pack(side=tk.LEFT, padx=5)
+    )
+    btn_show_categories.grid(column=0, row=1, sticky=tk.NSEW, padx=2, pady=2)
 
     # Add a new button for showing products by category
     btn_show_products_by_category = tk.Button(
         button_frame,
-        text="Show Products by Category",
+        text="List products by category",
         command=show_products_by_category,
         width=30
+    )
+
+    btn_show_products_by_category.grid(
+        column=3,
+        row=0,
+        sticky=tk.NSEW,
+        padx=2,
+        pady=2
         )
-    btn_show_products_by_category.pack(side=tk.LEFT, padx=5)
 
     btn_search_product = tk.Button(
         button_frame,
-        text="Search Product",
+        text="Search product",
         command=search_product,
         width=20
-        )
-    btn_search_product.pack(side=tk.LEFT, padx=5)
+    )
+
+    btn_search_product.grid(column=1, row=0, sticky=tk.NSEW, padx=2, pady=2)
 
     btn_add_product = tk.Button(
         button_frame,
-        text="Add Product",
+        text="Add product",
         command=add_product,
         width=20
-        )
-    btn_add_product.pack(side=tk.LEFT, padx=5)
+    )
+    btn_add_product.grid(column=2, row=0, sticky=tk.NSEW, padx=2, pady=2)
 
     btn_add_category = tk.Button(
         button_frame,
-        text="Add Category",
+        text="Add category",
         command=add_category,
         width=20
-        )
-    btn_add_category.pack(side=tk.LEFT, padx=5)
+    )
+    btn_add_category.grid(column=2, row=1, sticky=tk.NSEW, padx=2, pady=2)
 
     # Add the "Update Product" button to the main window
     btn_update_product = tk.Button(
         button_frame,
-        text="Update Product",
+        text="Update product",
         command=update_product,
         width=20
-        )
-    btn_update_product.pack(side=tk.LEFT, padx=5)
+    )
+
+    btn_update_product.grid(column=1, row=1, sticky=tk.NSEW, padx=2, pady=2)
 
     # Add the "Remove Product/Category" button to the main window
     btn_remove_item = tk.Button(
         button_frame,
-        text="Remove Product/Category",
+        text="Remove product/category",
         command=remove_item,
         width=20
-        )
-    btn_remove_item.pack(side=tk.LEFT, padx=5)
+    )
+    btn_remove_item.grid(column=3, row=1, sticky=tk.NSEW, padx=2, pady=2)
 
     # Add a new button for Total Inventory Value options
     btn_inventory_value_options = tk.Button(
         button_frame,
         text="Total Inventory Value",
-        command=show_inventory_value_options,
+        command=show_total_value,
         width=30
+    )
+    btn_inventory_value_options.grid(
+        column=4,
+        row=0,
+        sticky=tk.NSEW,
+        padx=2,
+        pady=2
         )
-    btn_inventory_value_options.pack(side=tk.LEFT, padx=5)
+
+    btn_inventory_value_options = tk.Button(
+        button_frame,
+        text="Total Inventory Value by Category",
+        command=show_value_by_category,
+        width=30
+    )
+
+    btn_inventory_value_options.grid(
+        column=4,
+        row=1,
+        sticky=tk.NSEW,
+        padx=2,
+        pady=2
+        )
 
     # Create a label for output display
     output_label = tk.Label(
@@ -668,7 +675,7 @@ def show_main_window():
         fg="white",
         bg="black",
         font=("Arial", 18, "bold")
-        )
+    )
     output_label.pack(pady=10)
 
     # Create a scrollable output box with increased width and height
@@ -680,7 +687,7 @@ def show_main_window():
         font=("Arial", 12),
         bg="#cacaca",
         fg="black"
-        )
+    )
     output_box.pack(pady=10)
     output_box.config(state=tk.DISABLED)  # Make it read-only initially
 
