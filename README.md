@@ -26,11 +26,6 @@ Below are screenshots demonstrating how to use InventoryPro:
 ### Main Interface
 ![Main Interface](inv5.png)
 
-### Add Product Form
-![Add Product](inv4.png)
-
-### Manage Categories
-![Manage Categories](inv5b.png)
 
 ## Installation
 To install the **InventoryPro - Python inventory management system**, follow the steps below:
