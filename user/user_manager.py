@@ -1,4 +1,3 @@
-import re
 from datetime import datetime, timedelta
 import bcrypt
 from user.user import User
@@ -203,7 +202,7 @@ class UserManager:
     def is_user_logged_in():
         """Returns True if a user is logged in, otherwise False."""
         return bool(User.current_user)
-    
+
     @require_login
     def logout(self):
         """Logs out the current user."""
@@ -275,12 +274,5 @@ class UserManager:
         # Validate the phone number with the User class
         # Calling the static validation method
         User._validate_phone(User, phone)
-        user = User.current_user
-        user.phone = phone
-
-    @require_login
-    def update_user_phone(self, phone: str):
-        # Validate the phone number with the User class
-        User._validate_phone(User, phone)  # Calling the static validation method
         user = User.current_user
         user.phone = phone
