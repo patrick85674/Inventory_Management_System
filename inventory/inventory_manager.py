@@ -4,7 +4,23 @@ from inventory.inventory_logger import InventoryLogger
 import time
 from user.user_manager import require_login
 
-@require_login
+
+# import global variable
+try:
+    from cli import IS_CLI
+except ImportError:
+    IS_CLI = False
+
+def require_login_for_all_methods(cls):
+    """Decorator to require login for all methods of a class in CLI mode."""
+    if IS_CLI:  # Only apply the login requirement in CLI mode
+        for attr_name, attr_value in cls.__dict__.items():
+            # Check if the attribute is a method (callable and not a class/static method)
+            if isinstance(attr_value, (types.FunctionType, types.MethodType)):
+                setattr(cls, attr_name, require_login(attr_value))
+    return cls  # Always return the original or modified class
+
+@require_login_for_all_methods
 class InventoryManager:
     """Manages a collection of products and categories in an inventory."""
 
