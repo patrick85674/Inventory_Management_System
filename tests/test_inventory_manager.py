@@ -1,7 +1,6 @@
 import unittest
 from unittest.mock import patch
 from inventory.inventory_manager import InventoryManager
-from user.user_manager import require_login
 
 
 class TestInventoryManager(unittest.TestCase):
